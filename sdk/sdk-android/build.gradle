@@ -10,7 +10,7 @@ ext {
     PUBLISH_DESCRIPTION = 'Android Bindings to the Matrix Rust SDK'
 }
 
-apply from: "${rootDir}/scripts/publish-module.gradle"
+apply from: "${rootDir}/scripts/publish-module-gh.gradle"
 
 android {
 

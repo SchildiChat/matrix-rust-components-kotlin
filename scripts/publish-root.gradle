@@ -21,6 +21,7 @@ if (secretPropsFile.exists()) {
     ext["signing.key"] = System.getenv('SIGNING_KEY')
 }
 
+/*
 nexusPublishing {
     repositories {
         sonatype {
@@ -32,3 +33,4 @@ nexusPublishing {
         }
     }
 }
+*/
