@@ -536,6 +536,8 @@ internal interface _UniFFILib : Library {
     ): Pointer
     fun uniffi_matrix_sdk_ffi_fn_free_encryption(`ptr`: Pointer,_uniffi_out_err: RustCallStatus, 
     ): Unit
+    fun uniffi_matrix_sdk_ffi_fn_method_encryption_backup_exists_on_server(`ptr`: Pointer,
+    ): Pointer
     fun uniffi_matrix_sdk_ffi_fn_method_encryption_backup_state(`ptr`: Pointer,_uniffi_out_err: RustCallStatus, 
     ): RustBuffer.ByValue
     fun uniffi_matrix_sdk_ffi_fn_method_encryption_backup_state_listener(`ptr`: Pointer,`listener`: Long,_uniffi_out_err: RustCallStatus, 
@@ -632,6 +634,8 @@ internal interface _UniFFILib : Library {
     ): Pointer
     fun uniffi_matrix_sdk_ffi_fn_free_notificationsettings(`ptr`: Pointer,_uniffi_out_err: RustCallStatus, 
     ): Unit
+    fun uniffi_matrix_sdk_ffi_fn_method_notificationsettings_can_homeserver_push_encrypted_event_to_device(`ptr`: Pointer,
+    ): Pointer
     fun uniffi_matrix_sdk_ffi_fn_method_notificationsettings_contains_keywords_rules(`ptr`: Pointer,
     ): Pointer
     fun uniffi_matrix_sdk_ffi_fn_method_notificationsettings_get_default_room_notification_mode(`ptr`: Pointer,`isEncrypted`: Byte,`isOneToOne`: Byte,
@@ -1074,6 +1078,8 @@ internal interface _UniFFILib : Library {
     ): RustBuffer.ByValue
     fun uniffi_matrix_sdk_ffi_fn_func_generate_webview_url(`widgetSettings`: RustBuffer.ByValue,`room`: Pointer,`props`: RustBuffer.ByValue,
     ): Pointer
+    fun uniffi_matrix_sdk_ffi_fn_func_get_element_call_required_permissions(_uniffi_out_err: RustCallStatus, 
+    ): RustBuffer.ByValue
     fun uniffi_matrix_sdk_ffi_fn_func_log_event(`file`: RustBuffer.ByValue,`line`: RustBuffer.ByValue,`level`: RustBuffer.ByValue,`target`: RustBuffer.ByValue,`message`: RustBuffer.ByValue,_uniffi_out_err: RustCallStatus, 
     ): Unit
     fun uniffi_matrix_sdk_ffi_fn_func_make_widget_driver(`settings`: RustBuffer.ByValue,_uniffi_out_err: RustCallStatus, 
@@ -1214,6 +1220,8 @@ internal interface _UniFFILib : Library {
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_func_generate_webview_url(
     ): Short
+    fun uniffi_matrix_sdk_ffi_checksum_func_get_element_call_required_permissions(
+    ): Short
     fun uniffi_matrix_sdk_ffi_checksum_func_log_event(
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_func_make_widget_driver(
@@ -1350,6 +1358,8 @@ internal interface _UniFFILib : Library {
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_clientbuilder_username(
     ): Short
+    fun uniffi_matrix_sdk_ffi_checksum_method_encryption_backup_exists_on_server(
+    ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_encryption_backup_state(
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_encryption_backup_state_listener(
@@ -1431,6 +1441,8 @@ internal interface _UniFFILib : Library {
     fun uniffi_matrix_sdk_ffi_checksum_method_notificationclientbuilder_filter_by_push_rules(
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_notificationclientbuilder_finish(
+    ): Short
+    fun uniffi_matrix_sdk_ffi_checksum_method_notificationsettings_can_homeserver_push_encrypted_event_to_device(
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_notificationsettings_contains_keywords_rules(
     ): Short
@@ -1869,6 +1881,9 @@ private fun uniffiCheckApiChecksums(lib: _UniFFILib) {
     if (lib.uniffi_matrix_sdk_ffi_checksum_func_generate_webview_url() != 16581.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
+    if (lib.uniffi_matrix_sdk_ffi_checksum_func_get_element_call_required_permissions() != 51289.toShort()) {
+        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    }
     if (lib.uniffi_matrix_sdk_ffi_checksum_func_log_event() != 58164.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
@@ -2073,6 +2088,9 @@ private fun uniffiCheckApiChecksums(lib: _UniFFILib) {
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_clientbuilder_username() != 64379.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
+    if (lib.uniffi_matrix_sdk_ffi_checksum_method_encryption_backup_exists_on_server() != 17130.toShort()) {
+        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    }
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_encryption_backup_state() != 13611.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
@@ -2194,6 +2212,9 @@ private fun uniffiCheckApiChecksums(lib: _UniFFILib) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_notificationclientbuilder_finish() != 12382.toShort()) {
+        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    }
+    if (lib.uniffi_matrix_sdk_ffi_checksum_method_notificationsettings_can_homeserver_push_encrypted_event_to_device() != 22382.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_notificationsettings_contains_keywords_rules() != 42972.toShort()) {
@@ -4140,6 +4161,7 @@ public object FfiConverterTypeClientBuilder: FfiConverter<ClientBuilder, Pointer
 
 
 public interface EncryptionInterface {
+    suspend fun `backupExistsOnServer`(): Boolean
     fun `backupState`(): BackupState
     fun `backupStateListener`(`listener`: BackupStateListener): TaskHandle
     suspend fun `disableRecovery`()
@@ -4174,6 +4196,26 @@ class Encryption(
         }
     }
 
+    
+    @Throws(ClientException::class)
+    @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
+    override suspend fun `backupExistsOnServer`() : Boolean {
+        return uniffiRustCallAsync(
+            callWithPointer { thisPtr ->
+                _UniFFILib.INSTANCE.uniffi_matrix_sdk_ffi_fn_method_encryption_backup_exists_on_server(
+                    thisPtr,
+                    
+                )
+            },
+            { future, callback, continuation -> _UniFFILib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_poll_i8(future, callback, continuation) },
+            { future, continuation -> _UniFFILib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_complete_i8(future, continuation) },
+            { future -> _UniFFILib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_free_i8(future) },
+            // lift function
+            { FfiConverterBoolean.lift(it) },
+            // Error FFI converter
+            ClientException.ErrorHandler,
+        )
+    }
     override fun `backupState`(): BackupState =
         callWithPointer {
     rustCall() { _status ->
@@ -5205,6 +5247,7 @@ public object FfiConverterTypeNotificationClientBuilder: FfiConverter<Notificati
 
 
 public interface NotificationSettingsInterface {
+    suspend fun `canHomeserverPushEncryptedEventToDevice`(): Boolean
     suspend fun `containsKeywordsRules`(): Boolean
     suspend fun `getDefaultRoomNotificationMode`(`isEncrypted`: Boolean, `isOneToOne`: Boolean): RoomNotificationMode
     suspend fun `getRoomNotificationSettings`(`roomId`: String, `isEncrypted`: Boolean, `isOneToOne`: Boolean): RoomNotificationSettings
@@ -5243,6 +5286,25 @@ class NotificationSettings(
         }
     }
 
+    
+    @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
+    override suspend fun `canHomeserverPushEncryptedEventToDevice`() : Boolean {
+        return uniffiRustCallAsync(
+            callWithPointer { thisPtr ->
+                _UniFFILib.INSTANCE.uniffi_matrix_sdk_ffi_fn_method_notificationsettings_can_homeserver_push_encrypted_event_to_device(
+                    thisPtr,
+                    
+                )
+            },
+            { future, callback, continuation -> _UniFFILib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_poll_i8(future, callback, continuation) },
+            { future, continuation -> _UniFFILib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_complete_i8(future, continuation) },
+            { future -> _UniFFILib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_free_i8(future) },
+            // lift function
+            { FfiConverterBoolean.lift(it) },
+            // Error FFI converter
+            NullCallStatusErrorHandler,
+        )
+    }
     
     @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
     override suspend fun `containsKeywordsRules`() : Boolean {
@@ -9829,7 +9891,8 @@ data class NotificationItem (
     var `event`: NotificationEvent, 
     var `senderInfo`: NotificationSenderInfo, 
     var `roomInfo`: NotificationRoomInfo, 
-    var `isNoisy`: Boolean?
+    var `isNoisy`: Boolean?, 
+    var `hasMention`: Boolean?
 ) : Disposable {
     
     @Suppress("UNNECESSARY_SAFE_CALL") // codegen is much simpler if we unconditionally emit safe calls here
@@ -9839,7 +9902,8 @@ data class NotificationItem (
         this.`event`, 
         this.`senderInfo`, 
         this.`roomInfo`, 
-        this.`isNoisy`)
+        this.`isNoisy`, 
+        this.`hasMention`)
     }
     
     companion object
@@ -9852,6 +9916,7 @@ public object FfiConverterTypeNotificationItem: FfiConverterRustBuffer<Notificat
             FfiConverterTypeNotificationSenderInfo.read(buf),
             FfiConverterTypeNotificationRoomInfo.read(buf),
             FfiConverterOptionalBoolean.read(buf),
+            FfiConverterOptionalBoolean.read(buf),
         )
     }
 
@@ -9859,7 +9924,8 @@ public object FfiConverterTypeNotificationItem: FfiConverterRustBuffer<Notificat
             FfiConverterTypeNotificationEvent.allocationSize(value.`event`) +
             FfiConverterTypeNotificationSenderInfo.allocationSize(value.`senderInfo`) +
             FfiConverterTypeNotificationRoomInfo.allocationSize(value.`roomInfo`) +
-            FfiConverterOptionalBoolean.allocationSize(value.`isNoisy`)
+            FfiConverterOptionalBoolean.allocationSize(value.`isNoisy`) +
+            FfiConverterOptionalBoolean.allocationSize(value.`hasMention`)
     )
 
     override fun write(value: NotificationItem, buf: ByteBuffer) {
@@ -9867,6 +9933,7 @@ public object FfiConverterTypeNotificationItem: FfiConverterRustBuffer<Notificat
             FfiConverterTypeNotificationSenderInfo.write(value.`senderInfo`, buf)
             FfiConverterTypeNotificationRoomInfo.write(value.`roomInfo`, buf)
             FfiConverterOptionalBoolean.write(value.`isNoisy`, buf)
+            FfiConverterOptionalBoolean.write(value.`hasMention`, buf)
     }
 }
 
@@ -11478,7 +11545,7 @@ public object FfiConverterTypeBackPaginationStatus: FfiConverterRustBuffer<BackP
 
 
 enum class BackupState {
-    UNKNOWN,CREATING,ENABLING,RESUMING,ENABLED,DOWNLOADING,DISABLING,DISABLED;
+    UNKNOWN,CREATING,ENABLING,RESUMING,ENABLED,DOWNLOADING,DISABLING;
     companion object
 }
 
@@ -13544,7 +13611,7 @@ public object FfiConverterTypeOtherState : FfiConverterRustBuffer<OtherState>{
 
 
 sealed class PaginationOptions {
-    data class SingleRequest(
+    data class SimpleRequest(
         val `eventLimit`: UShort, 
         val `waitForToken`: Boolean
         ) : PaginationOptions() {
@@ -13566,7 +13633,7 @@ sealed class PaginationOptions {
 public object FfiConverterTypePaginationOptions : FfiConverterRustBuffer<PaginationOptions>{
     override fun read(buf: ByteBuffer): PaginationOptions {
         return when(buf.getInt()) {
-            1 -> PaginationOptions.SingleRequest(
+            1 -> PaginationOptions.SimpleRequest(
                 FfiConverterUShort.read(buf),
                 FfiConverterBoolean.read(buf),
                 )
@@ -13580,7 +13647,7 @@ public object FfiConverterTypePaginationOptions : FfiConverterRustBuffer<Paginat
     }
 
     override fun allocationSize(value: PaginationOptions) = when(value) {
-        is PaginationOptions.SingleRequest -> {
+        is PaginationOptions.SimpleRequest -> {
             // Add the size for the Int that specifies the variant plus the size needed for all fields
             (
                 4
@@ -13601,7 +13668,7 @@ public object FfiConverterTypePaginationOptions : FfiConverterRustBuffer<Paginat
 
     override fun write(value: PaginationOptions, buf: ByteBuffer) {
         when(value) {
-            is PaginationOptions.SingleRequest -> {
+            is PaginationOptions.SimpleRequest -> {
                 buf.putInt(1)
                 FfiConverterUShort.write(value.`eventLimit`, buf)
                 FfiConverterBoolean.write(value.`waitForToken`, buf)
@@ -19733,6 +19800,14 @@ suspend fun `generateWebviewUrl`(`widgetSettings`: WidgetSettings, `room`: Room,
         ParseException.ErrorHandler,
     )
 }
+
+fun `getElementCallRequiredPermissions`(): WidgetCapabilities {
+    return FfiConverterTypeWidgetCapabilities.lift(
+    rustCall() { _status ->
+    _UniFFILib.INSTANCE.uniffi_matrix_sdk_ffi_fn_func_get_element_call_required_permissions(_status)
+})
+}
+
 
 fun `logEvent`(`file`: String, `line`: UInt?, `level`: LogLevel, `target`: String, `message`: String) =
     
