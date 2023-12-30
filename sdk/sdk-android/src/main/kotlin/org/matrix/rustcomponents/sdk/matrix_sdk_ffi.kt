@@ -10037,6 +10037,8 @@ public object FfiConverterTypeAudioInfo: FfiConverterRustBuffer<AudioInfo> {
 
 data class AudioMessageContent (
     var `body`: String, 
+    var `formatted`: FormattedBody?, 
+    var `filename`: String?, 
     var `source`: MediaSource, 
     var `info`: AudioInfo?, 
     var `audio`: UnstableAudioDetailsContent?, 
@@ -10048,6 +10050,8 @@ data class AudioMessageContent (
         
     Disposable.destroy(
         this.`body`, 
+        this.`formatted`, 
+        this.`filename`, 
         this.`source`, 
         this.`info`, 
         this.`audio`, 
@@ -10061,6 +10065,8 @@ public object FfiConverterTypeAudioMessageContent: FfiConverterRustBuffer<AudioM
     override fun read(buf: ByteBuffer): AudioMessageContent {
         return AudioMessageContent(
             FfiConverterString.read(buf),
+            FfiConverterOptionalTypeFormattedBody.read(buf),
+            FfiConverterOptionalString.read(buf),
             FfiConverterTypeMediaSource.read(buf),
             FfiConverterOptionalTypeAudioInfo.read(buf),
             FfiConverterOptionalTypeUnstableAudioDetailsContent.read(buf),
@@ -10070,6 +10076,8 @@ public object FfiConverterTypeAudioMessageContent: FfiConverterRustBuffer<AudioM
 
     override fun allocationSize(value: AudioMessageContent) = (
             FfiConverterString.allocationSize(value.`body`) +
+            FfiConverterOptionalTypeFormattedBody.allocationSize(value.`formatted`) +
+            FfiConverterOptionalString.allocationSize(value.`filename`) +
             FfiConverterTypeMediaSource.allocationSize(value.`source`) +
             FfiConverterOptionalTypeAudioInfo.allocationSize(value.`info`) +
             FfiConverterOptionalTypeUnstableAudioDetailsContent.allocationSize(value.`audio`) +
@@ -10078,6 +10086,8 @@ public object FfiConverterTypeAudioMessageContent: FfiConverterRustBuffer<AudioM
 
     override fun write(value: AudioMessageContent, buf: ByteBuffer) {
             FfiConverterString.write(value.`body`, buf)
+            FfiConverterOptionalTypeFormattedBody.write(value.`formatted`, buf)
+            FfiConverterOptionalString.write(value.`filename`, buf)
             FfiConverterTypeMediaSource.write(value.`source`, buf)
             FfiConverterOptionalTypeAudioInfo.write(value.`info`, buf)
             FfiConverterOptionalTypeUnstableAudioDetailsContent.write(value.`audio`, buf)
@@ -10288,6 +10298,7 @@ public object FfiConverterTypeFileInfo: FfiConverterRustBuffer<FileInfo> {
 
 data class FileMessageContent (
     var `body`: String, 
+    var `formatted`: FormattedBody?, 
     var `filename`: String?, 
     var `source`: MediaSource, 
     var `info`: FileInfo?
@@ -10298,6 +10309,7 @@ data class FileMessageContent (
         
     Disposable.destroy(
         this.`body`, 
+        this.`formatted`, 
         this.`filename`, 
         this.`source`, 
         this.`info`)
@@ -10310,6 +10322,7 @@ public object FfiConverterTypeFileMessageContent: FfiConverterRustBuffer<FileMes
     override fun read(buf: ByteBuffer): FileMessageContent {
         return FileMessageContent(
             FfiConverterString.read(buf),
+            FfiConverterOptionalTypeFormattedBody.read(buf),
             FfiConverterOptionalString.read(buf),
             FfiConverterTypeMediaSource.read(buf),
             FfiConverterOptionalTypeFileInfo.read(buf),
@@ -10318,6 +10331,7 @@ public object FfiConverterTypeFileMessageContent: FfiConverterRustBuffer<FileMes
 
     override fun allocationSize(value: FileMessageContent) = (
             FfiConverterString.allocationSize(value.`body`) +
+            FfiConverterOptionalTypeFormattedBody.allocationSize(value.`formatted`) +
             FfiConverterOptionalString.allocationSize(value.`filename`) +
             FfiConverterTypeMediaSource.allocationSize(value.`source`) +
             FfiConverterOptionalTypeFileInfo.allocationSize(value.`info`)
@@ -10325,6 +10339,7 @@ public object FfiConverterTypeFileMessageContent: FfiConverterRustBuffer<FileMes
 
     override fun write(value: FileMessageContent, buf: ByteBuffer) {
             FfiConverterString.write(value.`body`, buf)
+            FfiConverterOptionalTypeFormattedBody.write(value.`formatted`, buf)
             FfiConverterOptionalString.write(value.`filename`, buf)
             FfiConverterTypeMediaSource.write(value.`source`, buf)
             FfiConverterOptionalTypeFileInfo.write(value.`info`, buf)
@@ -10459,6 +10474,8 @@ public object FfiConverterTypeImageInfo: FfiConverterRustBuffer<ImageInfo> {
 
 data class ImageMessageContent (
     var `body`: String, 
+    var `formatted`: FormattedBody?, 
+    var `filename`: String?, 
     var `source`: MediaSource, 
     var `info`: ImageInfo?
 ) : Disposable {
@@ -10468,6 +10485,8 @@ data class ImageMessageContent (
         
     Disposable.destroy(
         this.`body`, 
+        this.`formatted`, 
+        this.`filename`, 
         this.`source`, 
         this.`info`)
     }
@@ -10479,6 +10498,8 @@ public object FfiConverterTypeImageMessageContent: FfiConverterRustBuffer<ImageM
     override fun read(buf: ByteBuffer): ImageMessageContent {
         return ImageMessageContent(
             FfiConverterString.read(buf),
+            FfiConverterOptionalTypeFormattedBody.read(buf),
+            FfiConverterOptionalString.read(buf),
             FfiConverterTypeMediaSource.read(buf),
             FfiConverterOptionalTypeImageInfo.read(buf),
         )
@@ -10486,12 +10507,16 @@ public object FfiConverterTypeImageMessageContent: FfiConverterRustBuffer<ImageM
 
     override fun allocationSize(value: ImageMessageContent) = (
             FfiConverterString.allocationSize(value.`body`) +
+            FfiConverterOptionalTypeFormattedBody.allocationSize(value.`formatted`) +
+            FfiConverterOptionalString.allocationSize(value.`filename`) +
             FfiConverterTypeMediaSource.allocationSize(value.`source`) +
             FfiConverterOptionalTypeImageInfo.allocationSize(value.`info`)
     )
 
     override fun write(value: ImageMessageContent, buf: ByteBuffer) {
             FfiConverterString.write(value.`body`, buf)
+            FfiConverterOptionalTypeFormattedBody.write(value.`formatted`, buf)
+            FfiConverterOptionalString.write(value.`filename`, buf)
             FfiConverterTypeMediaSource.write(value.`source`, buf)
             FfiConverterOptionalTypeImageInfo.write(value.`info`, buf)
     }
@@ -11954,6 +11979,8 @@ public object FfiConverterTypeVideoInfo: FfiConverterRustBuffer<VideoInfo> {
 
 data class VideoMessageContent (
     var `body`: String, 
+    var `formatted`: FormattedBody?, 
+    var `filename`: String?, 
     var `source`: MediaSource, 
     var `info`: VideoInfo?
 ) : Disposable {
@@ -11963,6 +11990,8 @@ data class VideoMessageContent (
         
     Disposable.destroy(
         this.`body`, 
+        this.`formatted`, 
+        this.`filename`, 
         this.`source`, 
         this.`info`)
     }
@@ -11974,6 +12003,8 @@ public object FfiConverterTypeVideoMessageContent: FfiConverterRustBuffer<VideoM
     override fun read(buf: ByteBuffer): VideoMessageContent {
         return VideoMessageContent(
             FfiConverterString.read(buf),
+            FfiConverterOptionalTypeFormattedBody.read(buf),
+            FfiConverterOptionalString.read(buf),
             FfiConverterTypeMediaSource.read(buf),
             FfiConverterOptionalTypeVideoInfo.read(buf),
         )
@@ -11981,12 +12012,16 @@ public object FfiConverterTypeVideoMessageContent: FfiConverterRustBuffer<VideoM
 
     override fun allocationSize(value: VideoMessageContent) = (
             FfiConverterString.allocationSize(value.`body`) +
+            FfiConverterOptionalTypeFormattedBody.allocationSize(value.`formatted`) +
+            FfiConverterOptionalString.allocationSize(value.`filename`) +
             FfiConverterTypeMediaSource.allocationSize(value.`source`) +
             FfiConverterOptionalTypeVideoInfo.allocationSize(value.`info`)
     )
 
     override fun write(value: VideoMessageContent, buf: ByteBuffer) {
             FfiConverterString.write(value.`body`, buf)
+            FfiConverterOptionalTypeFormattedBody.write(value.`formatted`, buf)
+            FfiConverterOptionalString.write(value.`filename`, buf)
             FfiConverterTypeMediaSource.write(value.`source`, buf)
             FfiConverterOptionalTypeVideoInfo.write(value.`info`, buf)
     }
