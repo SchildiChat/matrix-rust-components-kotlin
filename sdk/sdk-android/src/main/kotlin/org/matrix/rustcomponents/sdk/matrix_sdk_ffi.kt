@@ -11204,6 +11204,7 @@ data class RoomInfo (
     var `joinedMembersCount`: ULong, 
     var `highlightCount`: ULong, 
     var `notificationCount`: ULong, 
+    var `unreadCount`: ULong, 
     var `userDefinedNotificationMode`: RoomNotificationMode?, 
     var `hasRoomCall`: Boolean, 
     var `activeRoomCallParticipants`: List<String>
@@ -11231,6 +11232,7 @@ data class RoomInfo (
         this.`joinedMembersCount`, 
         this.`highlightCount`, 
         this.`notificationCount`, 
+        this.`unreadCount`, 
         this.`userDefinedNotificationMode`, 
         this.`hasRoomCall`, 
         this.`activeRoomCallParticipants`)
@@ -11255,6 +11257,7 @@ public object FfiConverterTypeRoomInfo: FfiConverterRustBuffer<RoomInfo> {
             FfiConverterTypeMembership.read(buf),
             FfiConverterOptionalTypeEventTimelineItem.read(buf),
             FfiConverterOptionalTypeRoomMember.read(buf),
+            FfiConverterULong.read(buf),
             FfiConverterULong.read(buf),
             FfiConverterULong.read(buf),
             FfiConverterULong.read(buf),
@@ -11285,6 +11288,7 @@ public object FfiConverterTypeRoomInfo: FfiConverterRustBuffer<RoomInfo> {
             FfiConverterULong.allocationSize(value.`joinedMembersCount`) +
             FfiConverterULong.allocationSize(value.`highlightCount`) +
             FfiConverterULong.allocationSize(value.`notificationCount`) +
+            FfiConverterULong.allocationSize(value.`unreadCount`) +
             FfiConverterOptionalTypeRoomNotificationMode.allocationSize(value.`userDefinedNotificationMode`) +
             FfiConverterBoolean.allocationSize(value.`hasRoomCall`) +
             FfiConverterSequenceString.allocationSize(value.`activeRoomCallParticipants`)
@@ -11309,6 +11313,7 @@ public object FfiConverterTypeRoomInfo: FfiConverterRustBuffer<RoomInfo> {
             FfiConverterULong.write(value.`joinedMembersCount`, buf)
             FfiConverterULong.write(value.`highlightCount`, buf)
             FfiConverterULong.write(value.`notificationCount`, buf)
+            FfiConverterULong.write(value.`unreadCount`, buf)
             FfiConverterOptionalTypeRoomNotificationMode.write(value.`userDefinedNotificationMode`, buf)
             FfiConverterBoolean.write(value.`hasRoomCall`, buf)
             FfiConverterSequenceString.write(value.`activeRoomCallParticipants`, buf)
