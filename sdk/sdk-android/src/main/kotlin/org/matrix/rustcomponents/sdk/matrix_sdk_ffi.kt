@@ -678,6 +678,8 @@ internal interface _UniFFILib : Library {
     ): RustBuffer.ByValue
     fun uniffi_matrix_sdk_ffi_fn_free_room(`ptr`: Pointer,_uniffi_out_err: RustCallStatus, 
     ): Unit
+    fun uniffi_matrix_sdk_ffi_fn_method_room_account_data(`ptr`: Pointer,`eventType`: RustBuffer.ByValue,_uniffi_out_err: RustCallStatus, 
+    ): RustBuffer.ByValue
     fun uniffi_matrix_sdk_ffi_fn_method_room_active_members_count(`ptr`: Pointer,_uniffi_out_err: RustCallStatus, 
     ): Long
     fun uniffi_matrix_sdk_ffi_fn_method_room_active_room_call_participants(`ptr`: Pointer,_uniffi_out_err: RustCallStatus, 
@@ -764,6 +766,8 @@ internal interface _UniFFILib : Library {
     ): Unit
     fun uniffi_matrix_sdk_ffi_fn_method_room_set_topic(`ptr`: Pointer,`topic`: RustBuffer.ByValue,_uniffi_out_err: RustCallStatus, 
     ): Unit
+    fun uniffi_matrix_sdk_ffi_fn_method_room_space_children(`ptr`: Pointer,_uniffi_out_err: RustCallStatus, 
+    ): RustBuffer.ByValue
     fun uniffi_matrix_sdk_ffi_fn_method_room_subscribe_to_room_info_updates(`ptr`: Pointer,`listener`: Long,_uniffi_out_err: RustCallStatus, 
     ): Pointer
     fun uniffi_matrix_sdk_ffi_fn_method_room_timeline(`ptr`: Pointer,
@@ -825,6 +829,8 @@ internal interface _UniFFILib : Library {
     fun uniffi_matrix_sdk_ffi_fn_free_roomlistservice(`ptr`: Pointer,_uniffi_out_err: RustCallStatus, 
     ): Unit
     fun uniffi_matrix_sdk_ffi_fn_method_roomlistservice_all_rooms(`ptr`: Pointer,
+    ): Pointer
+    fun uniffi_matrix_sdk_ffi_fn_method_roomlistservice_all_spaces(`ptr`: Pointer,
     ): Pointer
     fun uniffi_matrix_sdk_ffi_fn_method_roomlistservice_apply_input(`ptr`: Pointer,`input`: RustBuffer.ByValue,
     ): Pointer
@@ -1500,6 +1506,8 @@ internal interface _UniFFILib : Library {
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_oidcauthenticationdata_login_url(
     ): Short
+    fun uniffi_matrix_sdk_ffi_checksum_method_room_account_data(
+    ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_room_active_members_count(
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_room_active_room_call_participants(
@@ -1586,6 +1594,8 @@ internal interface _UniFFILib : Library {
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_room_set_topic(
     ): Short
+    fun uniffi_matrix_sdk_ffi_checksum_method_room_space_children(
+    ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_room_subscribe_to_room_info_updates(
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_room_timeline(
@@ -1639,6 +1649,8 @@ internal interface _UniFFILib : Library {
     fun uniffi_matrix_sdk_ffi_checksum_method_roomlistitem_unsubscribe(
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_roomlistservice_all_rooms(
+    ): Short
+    fun uniffi_matrix_sdk_ffi_checksum_method_roomlistservice_all_spaces(
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_roomlistservice_apply_input(
     ): Short
@@ -2308,6 +2320,9 @@ private fun uniffiCheckApiChecksums(lib: _UniFFILib) {
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_oidcauthenticationdata_login_url() != 2455.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
+    if (lib.uniffi_matrix_sdk_ffi_checksum_method_room_account_data() != 62839.toShort()) {
+        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    }
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_room_active_members_count() != 62367.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
@@ -2437,6 +2452,9 @@ private fun uniffiCheckApiChecksums(lib: _UniFFILib) {
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_room_set_topic() != 55348.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
+    if (lib.uniffi_matrix_sdk_ffi_checksum_method_room_space_children() != 18544.toShort()) {
+        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    }
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_room_subscribe_to_room_info_updates() != 43609.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
@@ -2516,6 +2534,9 @@ private fun uniffiCheckApiChecksums(lib: _UniFFILib) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_roomlistservice_all_rooms() != 37160.toShort()) {
+        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    }
+    if (lib.uniffi_matrix_sdk_ffi_checksum_method_roomlistservice_all_spaces() != 1725.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_roomlistservice_apply_input() != 46775.toShort()) {
@@ -6034,6 +6055,7 @@ public object FfiConverterTypeOidcAuthenticationData: FfiConverter<OidcAuthentic
 
 
 public interface RoomInterface {
+    fun `accountData`(`eventType`: String): String?
     fun `activeMembersCount`(): ULong
     fun `activeRoomCallParticipants`(): List<String>
     fun `alternativeAliases`(): List<String>
@@ -6077,6 +6099,7 @@ public interface RoomInterface {
     suspend fun `roomInfo`(): RoomInfo
     fun `setName`(`name`: String)
     fun `setTopic`(`topic`: String)
+    fun `spaceChildren`(): List<String>
     fun `subscribeToRoomInfoUpdates`(`listener`: RoomInfoListener): TaskHandle
     suspend fun `timeline`(): Timeline
     fun `topic`(): String?
@@ -6117,6 +6140,18 @@ open class Room : FFIObject, RoomInterface {
         }
     }
 
+    
+    @Throws(ClientException::class)override fun `accountData`(`eventType`: String): String? =
+        callWithPointer {
+    rustCallWithError(ClientException) { _status ->
+    _UniFFILib.INSTANCE.uniffi_matrix_sdk_ffi_fn_method_room_account_data(it,
+        FfiConverterString.lower(`eventType`),
+        _status)
+}
+        }.let {
+            FfiConverterOptionalString.lift(it)
+        }
+    
     override fun `activeMembersCount`(): ULong =
         callWithPointer {
     rustCall() { _status ->
@@ -6711,6 +6746,17 @@ open class Room : FFIObject, RoomInterface {
 }
         }
     
+    
+    override fun `spaceChildren`(): List<String> =
+        callWithPointer {
+    rustCall() { _status ->
+    _UniFFILib.INSTANCE.uniffi_matrix_sdk_ffi_fn_method_room_space_children(it,
+        
+        _status)
+}
+        }.let {
+            FfiConverterSequenceString.lift(it)
+        }
     
     override fun `subscribeToRoomInfoUpdates`(`listener`: RoomInfoListener): TaskHandle =
         callWithPointer {
@@ -7316,6 +7362,7 @@ public object FfiConverterTypeRoomListItem: FfiConverter<RoomListItem, Pointer> 
 
 public interface RoomListServiceInterface {
     suspend fun `allRooms`(): RoomList
+    suspend fun `allSpaces`(): RoomList
     suspend fun `applyInput`(`input`: RoomListInput)
     suspend fun `invites`(): RoomList
     fun `room`(`roomId`: String): RoomListItem
@@ -7362,6 +7409,26 @@ open class RoomListService : FFIObject, RoomListServiceInterface {
         return uniffiRustCallAsync(
             callWithPointer { thisPtr ->
                 _UniFFILib.INSTANCE.uniffi_matrix_sdk_ffi_fn_method_roomlistservice_all_rooms(
+                    thisPtr,
+                    
+                )
+            },
+            { future, callback, continuation -> _UniFFILib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_poll_pointer(future, callback, continuation) },
+            { future, continuation -> _UniFFILib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_complete_pointer(future, continuation) },
+            { future -> _UniFFILib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_free_pointer(future) },
+            // lift function
+            { FfiConverterTypeRoomList.lift(it) },
+            // Error FFI converter
+            RoomListException.ErrorHandler,
+        )
+    }
+    
+    @Throws(RoomListException::class)
+    @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
+    override suspend fun `allSpaces`() : RoomList {
+        return uniffiRustCallAsync(
+            callWithPointer { thisPtr ->
+                _UniFFILib.INSTANCE.uniffi_matrix_sdk_ffi_fn_method_roomlistservice_all_spaces(
                     thisPtr,
                     
                 )
@@ -11193,6 +11260,7 @@ data class RoomInfo (
     var `isDirect`: Boolean, 
     var `isPublic`: Boolean, 
     var `isSpace`: Boolean, 
+    var `spaceChildren`: List<String>, 
     var `isTombstoned`: Boolean, 
     var `canonicalAlias`: String?, 
     var `alternativeAliases`: List<String>, 
@@ -11221,6 +11289,7 @@ data class RoomInfo (
         this.`isDirect`, 
         this.`isPublic`, 
         this.`isSpace`, 
+        this.`spaceChildren`, 
         this.`isTombstoned`, 
         this.`canonicalAlias`, 
         this.`alternativeAliases`, 
@@ -11251,6 +11320,7 @@ public object FfiConverterTypeRoomInfo: FfiConverterRustBuffer<RoomInfo> {
             FfiConverterBoolean.read(buf),
             FfiConverterBoolean.read(buf),
             FfiConverterBoolean.read(buf),
+            FfiConverterSequenceString.read(buf),
             FfiConverterBoolean.read(buf),
             FfiConverterOptionalString.read(buf),
             FfiConverterSequenceString.read(buf),
@@ -11277,6 +11347,7 @@ public object FfiConverterTypeRoomInfo: FfiConverterRustBuffer<RoomInfo> {
             FfiConverterBoolean.allocationSize(value.`isDirect`) +
             FfiConverterBoolean.allocationSize(value.`isPublic`) +
             FfiConverterBoolean.allocationSize(value.`isSpace`) +
+            FfiConverterSequenceString.allocationSize(value.`spaceChildren`) +
             FfiConverterBoolean.allocationSize(value.`isTombstoned`) +
             FfiConverterOptionalString.allocationSize(value.`canonicalAlias`) +
             FfiConverterSequenceString.allocationSize(value.`alternativeAliases`) +
@@ -11302,6 +11373,7 @@ public object FfiConverterTypeRoomInfo: FfiConverterRustBuffer<RoomInfo> {
             FfiConverterBoolean.write(value.`isDirect`, buf)
             FfiConverterBoolean.write(value.`isPublic`, buf)
             FfiConverterBoolean.write(value.`isSpace`, buf)
+            FfiConverterSequenceString.write(value.`spaceChildren`, buf)
             FfiConverterBoolean.write(value.`isTombstoned`, buf)
             FfiConverterOptionalString.write(value.`canonicalAlias`, buf)
             FfiConverterSequenceString.write(value.`alternativeAliases`, buf)
