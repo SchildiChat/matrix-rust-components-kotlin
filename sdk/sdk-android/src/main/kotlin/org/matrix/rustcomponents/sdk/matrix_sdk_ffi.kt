@@ -11275,7 +11275,10 @@ data class RoomInfo (
     var `unreadCount`: ULong, 
     var `userDefinedNotificationMode`: RoomNotificationMode?, 
     var `hasRoomCall`: Boolean, 
-    var `activeRoomCallParticipants`: List<String>
+    var `activeRoomCallParticipants`: List<String>, 
+    var `numUnreadMessages`: ULong, 
+    var `numUnreadNotifications`: ULong, 
+    var `numUnreadMentions`: ULong
 ) : Disposable {
     
     @Suppress("UNNECESSARY_SAFE_CALL") // codegen is much simpler if we unconditionally emit safe calls here
@@ -11304,7 +11307,10 @@ data class RoomInfo (
         this.`unreadCount`, 
         this.`userDefinedNotificationMode`, 
         this.`hasRoomCall`, 
-        this.`activeRoomCallParticipants`)
+        this.`activeRoomCallParticipants`, 
+        this.`numUnreadMessages`, 
+        this.`numUnreadNotifications`, 
+        this.`numUnreadMentions`)
     }
     
     companion object
@@ -11336,6 +11342,9 @@ public object FfiConverterTypeRoomInfo: FfiConverterRustBuffer<RoomInfo> {
             FfiConverterOptionalTypeRoomNotificationMode.read(buf),
             FfiConverterBoolean.read(buf),
             FfiConverterSequenceString.read(buf),
+            FfiConverterULong.read(buf),
+            FfiConverterULong.read(buf),
+            FfiConverterULong.read(buf),
         )
     }
 
@@ -11362,7 +11371,10 @@ public object FfiConverterTypeRoomInfo: FfiConverterRustBuffer<RoomInfo> {
             FfiConverterULong.allocationSize(value.`unreadCount`) +
             FfiConverterOptionalTypeRoomNotificationMode.allocationSize(value.`userDefinedNotificationMode`) +
             FfiConverterBoolean.allocationSize(value.`hasRoomCall`) +
-            FfiConverterSequenceString.allocationSize(value.`activeRoomCallParticipants`)
+            FfiConverterSequenceString.allocationSize(value.`activeRoomCallParticipants`) +
+            FfiConverterULong.allocationSize(value.`numUnreadMessages`) +
+            FfiConverterULong.allocationSize(value.`numUnreadNotifications`) +
+            FfiConverterULong.allocationSize(value.`numUnreadMentions`)
     )
 
     override fun write(value: RoomInfo, buf: ByteBuffer) {
@@ -11389,6 +11401,9 @@ public object FfiConverterTypeRoomInfo: FfiConverterRustBuffer<RoomInfo> {
             FfiConverterOptionalTypeRoomNotificationMode.write(value.`userDefinedNotificationMode`, buf)
             FfiConverterBoolean.write(value.`hasRoomCall`, buf)
             FfiConverterSequenceString.write(value.`activeRoomCallParticipants`, buf)
+            FfiConverterULong.write(value.`numUnreadMessages`, buf)
+            FfiConverterULong.write(value.`numUnreadNotifications`, buf)
+            FfiConverterULong.write(value.`numUnreadMentions`, buf)
     }
 }
 
