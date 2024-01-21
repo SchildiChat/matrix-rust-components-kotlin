@@ -834,6 +834,10 @@ internal interface _UniFFILib : Library {
     ): Pointer
     fun uniffi_matrix_sdk_ffi_fn_method_roomlistservice_apply_input(`ptr`: Pointer,`input`: RustBuffer.ByValue,
     ): Pointer
+    fun uniffi_matrix_sdk_ffi_fn_method_roomlistservice_apply_input_for_space(`ptr`: Pointer,`input`: RustBuffer.ByValue,
+    ): Pointer
+    fun uniffi_matrix_sdk_ffi_fn_method_roomlistservice_apply_visible_space_filter(`ptr`: Pointer,`spaceIds`: RustBuffer.ByValue,
+    ): Pointer
     fun uniffi_matrix_sdk_ffi_fn_method_roomlistservice_invites(`ptr`: Pointer,
     ): Pointer
     fun uniffi_matrix_sdk_ffi_fn_method_roomlistservice_room(`ptr`: Pointer,`roomId`: RustBuffer.ByValue,_uniffi_out_err: RustCallStatus, 
@@ -1653,6 +1657,10 @@ internal interface _UniFFILib : Library {
     fun uniffi_matrix_sdk_ffi_checksum_method_roomlistservice_all_spaces(
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_roomlistservice_apply_input(
+    ): Short
+    fun uniffi_matrix_sdk_ffi_checksum_method_roomlistservice_apply_input_for_space(
+    ): Short
+    fun uniffi_matrix_sdk_ffi_checksum_method_roomlistservice_apply_visible_space_filter(
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_roomlistservice_invites(
     ): Short
@@ -2540,6 +2548,12 @@ private fun uniffiCheckApiChecksums(lib: _UniFFILib) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_roomlistservice_apply_input() != 46775.toShort()) {
+        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    }
+    if (lib.uniffi_matrix_sdk_ffi_checksum_method_roomlistservice_apply_input_for_space() != 10334.toShort()) {
+        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    }
+    if (lib.uniffi_matrix_sdk_ffi_checksum_method_roomlistservice_apply_visible_space_filter() != 50156.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_roomlistservice_invites() != 56087.toShort()) {
@@ -7364,6 +7378,8 @@ public interface RoomListServiceInterface {
     suspend fun `allRooms`(): RoomList
     suspend fun `allSpaces`(): RoomList
     suspend fun `applyInput`(`input`: RoomListInput)
+    suspend fun `applyInputForSpace`(`input`: RoomListInput)
+    suspend fun `applyVisibleSpaceFilter`(`spaceIds`: List<String>?)
     suspend fun `invites`(): RoomList
     fun `room`(`roomId`: String): RoomListItem
     fun `state`(`listener`: RoomListServiceStateListener): TaskHandle
@@ -7451,6 +7467,48 @@ open class RoomListService : FFIObject, RoomListServiceInterface {
                 _UniFFILib.INSTANCE.uniffi_matrix_sdk_ffi_fn_method_roomlistservice_apply_input(
                     thisPtr,
                     FfiConverterTypeRoomListInput.lower(`input`),
+                )
+            },
+            { future, callback, continuation -> _UniFFILib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_poll_void(future, callback, continuation) },
+            { future, continuation -> _UniFFILib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_complete_void(future, continuation) },
+            { future -> _UniFFILib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_free_void(future) },
+            // lift function
+            { Unit },
+            
+            // Error FFI converter
+            RoomListException.ErrorHandler,
+        )
+    }
+    
+    @Throws(RoomListException::class)
+    @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
+    override suspend fun `applyInputForSpace`(`input`: RoomListInput) {
+        return uniffiRustCallAsync(
+            callWithPointer { thisPtr ->
+                _UniFFILib.INSTANCE.uniffi_matrix_sdk_ffi_fn_method_roomlistservice_apply_input_for_space(
+                    thisPtr,
+                    FfiConverterTypeRoomListInput.lower(`input`),
+                )
+            },
+            { future, callback, continuation -> _UniFFILib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_poll_void(future, callback, continuation) },
+            { future, continuation -> _UniFFILib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_complete_void(future, continuation) },
+            { future -> _UniFFILib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_free_void(future) },
+            // lift function
+            { Unit },
+            
+            // Error FFI converter
+            RoomListException.ErrorHandler,
+        )
+    }
+    
+    @Throws(RoomListException::class)
+    @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
+    override suspend fun `applyVisibleSpaceFilter`(`spaceIds`: List<String>?) {
+        return uniffiRustCallAsync(
+            callWithPointer { thisPtr ->
+                _UniFFILib.INSTANCE.uniffi_matrix_sdk_ffi_fn_method_roomlistservice_apply_visible_space_filter(
+                    thisPtr,
+                    FfiConverterOptionalSequenceString.lower(`spaceIds`),
                 )
             },
             { future, callback, continuation -> _UniFFILib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_poll_void(future, callback, continuation) },
