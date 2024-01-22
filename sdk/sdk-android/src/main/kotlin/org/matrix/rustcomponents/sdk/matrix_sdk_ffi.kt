@@ -2460,7 +2460,7 @@ private fun uniffiCheckApiChecksums(lib: _UniFFILib) {
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_room_set_topic() != 55348.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
-    if (lib.uniffi_matrix_sdk_ffi_checksum_method_room_space_children() != 18544.toShort()) {
+    if (lib.uniffi_matrix_sdk_ffi_checksum_method_room_space_children() != 64280.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_room_subscribe_to_room_info_updates() != 43609.toShort()) {
@@ -6113,7 +6113,7 @@ public interface RoomInterface {
     suspend fun `roomInfo`(): RoomInfo
     fun `setName`(`name`: String)
     fun `setTopic`(`topic`: String)
-    fun `spaceChildren`(): List<String>
+    fun `spaceChildren`(): List<SpaceChildInfo>
     fun `subscribeToRoomInfoUpdates`(`listener`: RoomInfoListener): TaskHandle
     suspend fun `timeline`(): Timeline
     fun `topic`(): String?
@@ -6761,7 +6761,7 @@ open class Room : FFIObject, RoomInterface {
         }
     
     
-    override fun `spaceChildren`(): List<String> =
+    override fun `spaceChildren`(): List<SpaceChildInfo> =
         callWithPointer {
     rustCall() { _status ->
     _UniFFILib.INSTANCE.uniffi_matrix_sdk_ffi_fn_method_room_space_children(it,
@@ -6769,7 +6769,7 @@ open class Room : FFIObject, RoomInterface {
         _status)
 }
         }.let {
-            FfiConverterSequenceString.lift(it)
+            FfiConverterSequenceTypeSpaceChildInfo.lift(it)
         }
     
     override fun `subscribeToRoomInfoUpdates`(`listener`: RoomInfoListener): TaskHandle =
@@ -11318,7 +11318,6 @@ data class RoomInfo (
     var `isDirect`: Boolean, 
     var `isPublic`: Boolean, 
     var `isSpace`: Boolean, 
-    var `spaceChildren`: List<String>, 
     var `isTombstoned`: Boolean, 
     var `canonicalAlias`: String?, 
     var `alternativeAliases`: List<String>, 
@@ -11350,7 +11349,6 @@ data class RoomInfo (
         this.`isDirect`, 
         this.`isPublic`, 
         this.`isSpace`, 
-        this.`spaceChildren`, 
         this.`isTombstoned`, 
         this.`canonicalAlias`, 
         this.`alternativeAliases`, 
@@ -11384,7 +11382,6 @@ public object FfiConverterTypeRoomInfo: FfiConverterRustBuffer<RoomInfo> {
             FfiConverterBoolean.read(buf),
             FfiConverterBoolean.read(buf),
             FfiConverterBoolean.read(buf),
-            FfiConverterSequenceString.read(buf),
             FfiConverterBoolean.read(buf),
             FfiConverterOptionalString.read(buf),
             FfiConverterSequenceString.read(buf),
@@ -11414,7 +11411,6 @@ public object FfiConverterTypeRoomInfo: FfiConverterRustBuffer<RoomInfo> {
             FfiConverterBoolean.allocationSize(value.`isDirect`) +
             FfiConverterBoolean.allocationSize(value.`isPublic`) +
             FfiConverterBoolean.allocationSize(value.`isSpace`) +
-            FfiConverterSequenceString.allocationSize(value.`spaceChildren`) +
             FfiConverterBoolean.allocationSize(value.`isTombstoned`) +
             FfiConverterOptionalString.allocationSize(value.`canonicalAlias`) +
             FfiConverterSequenceString.allocationSize(value.`alternativeAliases`) +
@@ -11443,7 +11439,6 @@ public object FfiConverterTypeRoomInfo: FfiConverterRustBuffer<RoomInfo> {
             FfiConverterBoolean.write(value.`isDirect`, buf)
             FfiConverterBoolean.write(value.`isPublic`, buf)
             FfiConverterBoolean.write(value.`isSpace`, buf)
-            FfiConverterSequenceString.write(value.`spaceChildren`, buf)
             FfiConverterBoolean.write(value.`isTombstoned`, buf)
             FfiConverterOptionalString.write(value.`canonicalAlias`, buf)
             FfiConverterSequenceString.write(value.`alternativeAliases`, buf)
@@ -11812,6 +11807,39 @@ public object FfiConverterTypeSetData: FfiConverterRustBuffer<SetData> {
     override fun write(value: SetData, buf: ByteBuffer) {
             FfiConverterUInt.write(value.`index`, buf)
             FfiConverterTypeTimelineItem.write(value.`item`, buf)
+    }
+}
+
+
+
+data class SpaceChildInfo (
+    var `roomId`: String, 
+    var `order`: String?, 
+    var `suggested`: Boolean
+) {
+    
+    companion object
+}
+
+public object FfiConverterTypeSpaceChildInfo: FfiConverterRustBuffer<SpaceChildInfo> {
+    override fun read(buf: ByteBuffer): SpaceChildInfo {
+        return SpaceChildInfo(
+            FfiConverterString.read(buf),
+            FfiConverterOptionalString.read(buf),
+            FfiConverterBoolean.read(buf),
+        )
+    }
+
+    override fun allocationSize(value: SpaceChildInfo) = (
+            FfiConverterString.allocationSize(value.`roomId`) +
+            FfiConverterOptionalString.allocationSize(value.`order`) +
+            FfiConverterBoolean.allocationSize(value.`suggested`)
+    )
+
+    override fun write(value: SpaceChildInfo, buf: ByteBuffer) {
+            FfiConverterString.write(value.`roomId`, buf)
+            FfiConverterOptionalString.write(value.`order`, buf)
+            FfiConverterBoolean.write(value.`suggested`, buf)
     }
 }
 
@@ -20876,6 +20904,31 @@ public object FfiConverterSequenceTypeRoomListRange: FfiConverterRustBuffer<List
         buf.putInt(value.size)
         value.forEach {
             FfiConverterTypeRoomListRange.write(it, buf)
+        }
+    }
+}
+
+
+
+
+public object FfiConverterSequenceTypeSpaceChildInfo: FfiConverterRustBuffer<List<SpaceChildInfo>> {
+    override fun read(buf: ByteBuffer): List<SpaceChildInfo> {
+        val len = buf.getInt()
+        return List<SpaceChildInfo>(len) {
+            FfiConverterTypeSpaceChildInfo.read(buf)
+        }
+    }
+
+    override fun allocationSize(value: List<SpaceChildInfo>): Int {
+        val sizeForLength = 4
+        val sizeForItems = value.map { FfiConverterTypeSpaceChildInfo.allocationSize(it) }.sum()
+        return sizeForLength + sizeForItems
+    }
+
+    override fun write(value: List<SpaceChildInfo>, buf: ByteBuffer) {
+        buf.putInt(value.size)
+        value.forEach {
+            FfiConverterTypeSpaceChildInfo.write(it, buf)
         }
     }
 }
