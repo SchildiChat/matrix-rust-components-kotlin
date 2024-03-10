@@ -94,7 +94,7 @@ args = parser.parse_args()
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 project_root = os.path.dirname(current_dir).rstrip(os.sep)
-sdk_git_url = "https://github.com/matrix-org/matrix-rust-sdk.git"
+sdk_git_url = "https://github.com/SchildiChat/matrix-rust-sdk.git"
 
 if args.path_to_sdk:
     sdk_path = args.path_to_sdk

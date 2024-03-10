@@ -155,15 +155,15 @@ def get_asset_path(root_project_dir: str, module: Module) -> str:
 
 def get_publish_task(module: Module) -> str:
     if module == Module.SDK:
-        return ":sdk:sdk-android:publishToSonatype"
+        return ":sdk:sdk-android:publish"
     elif module == Module.CRYPTO:
-        return ":crypto:crypto-android:publishToSonatype"
+        return ":crypto:crypto-android:publish"
     else:
         raise ValueError(f"Unknown module: {module}")
 
 
 def run_publish_close_and_release_tasks(root_project_dir, publish_task: str):
-    gradle_command = f"./gradlew {publish_task} closeAndReleaseStagingRepository"
+    gradle_command = f"./gradlew {publish_task}"
     result = subprocess.run(gradle_command, shell=True, cwd=root_project_dir, text=True)
     if result.returncode != 0:
         raise Exception(f"Gradle tasks failed with return code {result.returncode}")
@@ -219,13 +219,13 @@ def main(args: argparse.Namespace):
     print(f"Commit message: {commit_message}")
     commit_and_push_changes(project_root, commit_message)
 
-    release_name = f"{args.module.name.lower()}-v{args.version}"
-    release_notes = f"https://github.com/matrix-org/matrix-rust-sdk/tree/{args.linkable_ref}"
+    release_name = f"sc-{args.module.name.lower()}-v{args.version}"
+    release_notes = f"https://github.com/SchildiChat/matrix-rust-sdk/tree/{args.linkable_ref}"
     asset_path = get_asset_path(project_root, args.module)
     asset_name = get_asset_name(args.module)
     create_github_release(
         github_token,
-        "https://api.github.com/repos/matrix-org/matrix-rust-components-kotlin",
+        "https://api.github.com/repos/SchildiChat/matrix-rust-components-kotlin",
         release_name,
         release_name,
         release_notes,
