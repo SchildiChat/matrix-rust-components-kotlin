@@ -508,6 +508,8 @@ internal interface UniffiLib : Library {
     ): Unit
     fun uniffi_matrix_sdk_ffi_fn_method_client_restore_session(`ptr`: Pointer,`session`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
     ): Unit
+    fun uniffi_matrix_sdk_ffi_fn_method_client_room_account_data(`ptr`: Pointer,`roomId`: RustBuffer.ByValue,`eventType`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
+    ): RustBuffer.ByValue
     fun uniffi_matrix_sdk_ffi_fn_method_client_rooms(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
     ): RustBuffer.ByValue
     fun uniffi_matrix_sdk_ffi_fn_method_client_search_users(`ptr`: Pointer,`searchTerm`: RustBuffer.ByValue,`limit`: Long,uniffi_out_err: UniffiRustCallStatus, 
@@ -1482,6 +1484,8 @@ internal interface UniffiLib : Library {
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_client_restore_session(
     ): Short
+    fun uniffi_matrix_sdk_ffi_checksum_method_client_room_account_data(
+    ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_client_rooms(
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_client_search_users(
@@ -2260,6 +2264,9 @@ private fun uniffiCheckApiChecksums(lib: UniffiLib) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_client_restore_session() != 19641.toShort()) {
+        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    }
+    if (lib.uniffi_matrix_sdk_ffi_checksum_method_client_room_account_data() != 5691.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_client_rooms() != 29558.toShort()) {
@@ -4019,6 +4026,11 @@ public interface ClientInterface {
      */
     fun `restoreSession`(`session`: Session)
     
+    /**
+     * SC: get room account data event as JSON string
+     */
+    fun `roomAccountData`(`roomId`: String, `eventType`: String): String?
+    
     fun `rooms`(): List<Room>
     
     fun `searchUsers`(`searchTerm`: String, `limit`: ULong): SearchUsersResults
@@ -4420,6 +4432,21 @@ open class Client : FFIObject, ClientInterface {
 }
         }
     
+    
+    
+    /**
+     * SC: get room account data event as JSON string
+     */
+    @Throws(ClientException::class)override fun `roomAccountData`(`roomId`: String, `eventType`: String): String? =
+        callWithPointer {
+    uniffiRustCallWithError(ClientException) { _status ->
+    UniffiLib.INSTANCE.uniffi_matrix_sdk_ffi_fn_method_client_room_account_data(it,
+        FfiConverterString.lower(`roomId`),FfiConverterString.lower(`eventType`),
+        _status)
+}
+        }.let {
+            FfiConverterOptionalString.lift(it)
+        }
     
     override fun `rooms`(): List<Room> =
         callWithPointer {
@@ -13403,6 +13430,10 @@ data class RoomInfo (
     var `hasRoomCall`: Boolean, 
     var `activeRoomCallParticipants`: List<String>, 
     /**
+     * SC: Space-specific fields
+     */
+    var `spaceChildren`: List<SpaceChildInfo>, 
+    /**
      * Whether this room has been explicitly marked as unread
      */
     var `isMarkedUnread`: Boolean, 
@@ -13450,6 +13481,7 @@ data class RoomInfo (
         this.`userDefinedNotificationMode`, 
         this.`hasRoomCall`, 
         this.`activeRoomCallParticipants`, 
+        this.`spaceChildren`, 
         this.`isMarkedUnread`, 
         this.`numUnreadMessages`, 
         this.`numUnreadNotifications`, 
@@ -13485,6 +13517,7 @@ public object FfiConverterTypeRoomInfo: FfiConverterRustBuffer<RoomInfo> {
             FfiConverterOptionalTypeRoomNotificationMode.read(buf),
             FfiConverterBoolean.read(buf),
             FfiConverterSequenceString.read(buf),
+            FfiConverterSequenceTypeSpaceChildInfo.read(buf),
             FfiConverterBoolean.read(buf),
             FfiConverterULong.read(buf),
             FfiConverterULong.read(buf),
@@ -13516,6 +13549,7 @@ public object FfiConverterTypeRoomInfo: FfiConverterRustBuffer<RoomInfo> {
             FfiConverterOptionalTypeRoomNotificationMode.allocationSize(value.`userDefinedNotificationMode`) +
             FfiConverterBoolean.allocationSize(value.`hasRoomCall`) +
             FfiConverterSequenceString.allocationSize(value.`activeRoomCallParticipants`) +
+            FfiConverterSequenceTypeSpaceChildInfo.allocationSize(value.`spaceChildren`) +
             FfiConverterBoolean.allocationSize(value.`isMarkedUnread`) +
             FfiConverterULong.allocationSize(value.`numUnreadMessages`) +
             FfiConverterULong.allocationSize(value.`numUnreadNotifications`) +
@@ -13546,6 +13580,7 @@ public object FfiConverterTypeRoomInfo: FfiConverterRustBuffer<RoomInfo> {
             FfiConverterOptionalTypeRoomNotificationMode.write(value.`userDefinedNotificationMode`, buf)
             FfiConverterBoolean.write(value.`hasRoomCall`, buf)
             FfiConverterSequenceString.write(value.`activeRoomCallParticipants`, buf)
+            FfiConverterSequenceTypeSpaceChildInfo.write(value.`spaceChildren`, buf)
             FfiConverterBoolean.write(value.`isMarkedUnread`, buf)
             FfiConverterULong.write(value.`numUnreadMessages`, buf)
             FfiConverterULong.write(value.`numUnreadNotifications`, buf)
