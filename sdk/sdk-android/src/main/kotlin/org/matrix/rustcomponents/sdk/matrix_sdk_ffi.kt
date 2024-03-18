@@ -19391,6 +19391,7 @@ data class RoomInfo (
     var `isSpace`: Boolean, 
     var `isTombstoned`: Boolean, 
     var `isFavourite`: Boolean, 
+    var `isLowPriority`: Boolean, 
     var `canonicalAlias`: String?, 
     var `alternativeAliases`: List<String>, 
     var `membership`: Membership, 
@@ -19444,6 +19445,7 @@ data class RoomInfo (
         this.`isSpace`, 
         this.`isTombstoned`, 
         this.`isFavourite`, 
+        this.`isLowPriority`, 
         this.`canonicalAlias`, 
         this.`alternativeAliases`, 
         this.`membership`, 
@@ -19476,6 +19478,7 @@ public object FfiConverterTypeRoomInfo: FfiConverterRustBuffer<RoomInfo> {
             FfiConverterOptionalString.read(buf),
             FfiConverterOptionalString.read(buf),
             FfiConverterOptionalString.read(buf),
+            FfiConverterBoolean.read(buf),
             FfiConverterBoolean.read(buf),
             FfiConverterBoolean.read(buf),
             FfiConverterBoolean.read(buf),
@@ -19514,6 +19517,7 @@ public object FfiConverterTypeRoomInfo: FfiConverterRustBuffer<RoomInfo> {
             FfiConverterBoolean.allocationSize(value.`isSpace`) +
             FfiConverterBoolean.allocationSize(value.`isTombstoned`) +
             FfiConverterBoolean.allocationSize(value.`isFavourite`) +
+            FfiConverterBoolean.allocationSize(value.`isLowPriority`) +
             FfiConverterOptionalString.allocationSize(value.`canonicalAlias`) +
             FfiConverterSequenceString.allocationSize(value.`alternativeAliases`) +
             FfiConverterTypeMembership.allocationSize(value.`membership`) +
@@ -19546,6 +19550,7 @@ public object FfiConverterTypeRoomInfo: FfiConverterRustBuffer<RoomInfo> {
             FfiConverterBoolean.write(value.`isSpace`, buf)
             FfiConverterBoolean.write(value.`isTombstoned`, buf)
             FfiConverterBoolean.write(value.`isFavourite`, buf)
+            FfiConverterBoolean.write(value.`isLowPriority`, buf)
             FfiConverterOptionalString.write(value.`canonicalAlias`, buf)
             FfiConverterSequenceString.write(value.`alternativeAliases`, buf)
             FfiConverterTypeMembership.write(value.`membership`, buf)
