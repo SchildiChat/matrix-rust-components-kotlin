@@ -42,22 +42,22 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
 import uniffi.matrix_sdk.BackupDownloadStrategy
 import uniffi.matrix_sdk.FfiConverterTypeBackupDownloadStrategy
-import uniffi.matrix_sdk.FfiConverterTypePaginatorState
 import uniffi.matrix_sdk.FfiConverterTypeRoomMemberRole
 import uniffi.matrix_sdk.FfiConverterTypeRoomPowerLevelChanges
-import uniffi.matrix_sdk.PaginatorState
 import uniffi.matrix_sdk.RoomMemberRole
 import uniffi.matrix_sdk.RoomPowerLevelChanges
 import uniffi.matrix_sdk_crypto.FfiConverterTypeUtdCause
 import uniffi.matrix_sdk_crypto.UtdCause
 import uniffi.matrix_sdk_ui.EventItemOrigin
 import uniffi.matrix_sdk_ui.FfiConverterTypeEventItemOrigin
+import uniffi.matrix_sdk_ui.FfiConverterTypeLiveBackPaginationStatus
+import uniffi.matrix_sdk_ui.LiveBackPaginationStatus
 import uniffi.matrix_sdk.RustBuffer as RustBufferBackupDownloadStrategy
-import uniffi.matrix_sdk.RustBuffer as RustBufferPaginatorState
 import uniffi.matrix_sdk.RustBuffer as RustBufferRoomMemberRole
 import uniffi.matrix_sdk.RustBuffer as RustBufferRoomPowerLevelChanges
 import uniffi.matrix_sdk_crypto.RustBuffer as RustBufferUtdCause
 import uniffi.matrix_sdk_ui.RustBuffer as RustBufferEventItemOrigin
+import uniffi.matrix_sdk_ui.RustBuffer as RustBufferLiveBackPaginationStatus
 
 // This is a helper for safely working with byte buffers returned from the Rust code.
 // A rust-owned buffer is represented by its capacity, its current length, and a
@@ -688,10 +688,13 @@ internal interface UniffiCallbackInterfaceNotificationSettingsDelegateMethod0 : 
     fun callback(`uniffiHandle`: Long,`uniffiOutReturn`: Pointer,uniffiCallStatus: UniffiRustCallStatus,)
 }
 internal interface UniffiCallbackInterfacePaginationStatusListenerMethod0 : com.sun.jna.Callback {
-    fun callback(`uniffiHandle`: Long,`status`: RustBufferPaginatorState.ByValue,`uniffiOutReturn`: Pointer,uniffiCallStatus: UniffiRustCallStatus,)
+    fun callback(`uniffiHandle`: Long,`status`: RustBufferLiveBackPaginationStatus.ByValue,`uniffiOutReturn`: Pointer,uniffiCallStatus: UniffiRustCallStatus,)
 }
 internal interface UniffiCallbackInterfaceProgressWatcherMethod0 : com.sun.jna.Callback {
     fun callback(`uniffiHandle`: Long,`progress`: RustBuffer.ByValue,`uniffiOutReturn`: Pointer,uniffiCallStatus: UniffiRustCallStatus,)
+}
+internal interface UniffiCallbackInterfaceQrLoginProgressListenerMethod0 : com.sun.jna.Callback {
+    fun callback(`uniffiHandle`: Long,`state`: RustBuffer.ByValue,`uniffiOutReturn`: Pointer,uniffiCallStatus: UniffiRustCallStatus,)
 }
 internal interface UniffiCallbackInterfaceRecoveryStateListenerMethod0 : com.sun.jna.Callback {
     fun callback(`uniffiHandle`: Long,`status`: RustBuffer.ByValue,`uniffiOutReturn`: Pointer,uniffiCallStatus: UniffiRustCallStatus,)
@@ -896,6 +899,22 @@ internal open class UniffiVTableCallbackInterfaceProgressWatcher(
 
    internal fun uniffiSetValue(other: UniffiVTableCallbackInterfaceProgressWatcher) {
         `transmissionProgress` = other.`transmissionProgress`
+        `uniffiFree` = other.`uniffiFree`
+    }
+
+}
+@Structure.FieldOrder("onUpdate", "uniffiFree")
+internal open class UniffiVTableCallbackInterfaceQrLoginProgressListener(
+    @JvmField internal var `onUpdate`: UniffiCallbackInterfaceQrLoginProgressListenerMethod0? = null,
+    @JvmField internal var `uniffiFree`: UniffiCallbackInterfaceFree? = null,
+) : Structure() {
+    class UniffiByValue(
+        `onUpdate`: UniffiCallbackInterfaceQrLoginProgressListenerMethod0? = null,
+        `uniffiFree`: UniffiCallbackInterfaceFree? = null,
+    ): UniffiVTableCallbackInterfaceQrLoginProgressListener(`onUpdate`,`uniffiFree`,), Structure.ByValue
+
+   internal fun uniffiSetValue(other: UniffiVTableCallbackInterfaceQrLoginProgressListener) {
+        `onUpdate` = other.`onUpdate`
         `uniffiFree` = other.`uniffiFree`
     }
 
@@ -2008,6 +2027,18 @@ internal open class UniffiVTableCallbackInterfaceWidgetCapabilitiesProvider(
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
 // A JNA Library to expose the extern-C FFI definitions.
 // This is an implementation detail which will be called internally by the public API.
 
@@ -2027,6 +2058,7 @@ internal interface UniffiLib : Library {
                 uniffiCallbackInterfaceNotificationSettingsDelegate.register(lib)
                 uniffiCallbackInterfacePaginationStatusListener.register(lib)
                 uniffiCallbackInterfaceProgressWatcher.register(lib)
+                uniffiCallbackInterfaceQrLoginProgressListener.register(lib)
                 uniffiCallbackInterfaceRecoveryStateListener.register(lib)
                 uniffiCallbackInterfaceRoomDirectorySearchEntriesListener.register(lib)
                 uniffiCallbackInterfaceRoomInfoListener.register(lib)
@@ -2196,6 +2228,8 @@ internal interface UniffiLib : Library {
     ): Pointer
     fun uniffi_matrix_sdk_ffi_fn_method_clientbuilder_build(`ptr`: Pointer,
     ): Long
+    fun uniffi_matrix_sdk_ffi_fn_method_clientbuilder_build_with_qr_code(`ptr`: Pointer,`qrCodeData`: Pointer,`oidcConfiguration`: RustBuffer.ByValue,`progressListener`: Long,
+    ): Long
     fun uniffi_matrix_sdk_ffi_fn_method_clientbuilder_disable_automatic_token_refresh(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
     ): Pointer
     fun uniffi_matrix_sdk_ffi_fn_method_clientbuilder_disable_ssl_verification(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
@@ -2324,6 +2358,8 @@ internal interface UniffiLib : Library {
     ): Unit
     fun uniffi_matrix_sdk_ffi_fn_method_message_body(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
     ): RustBuffer.ByValue
+    fun uniffi_matrix_sdk_ffi_fn_method_message_content(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
+    ): Pointer
     fun uniffi_matrix_sdk_ffi_fn_method_message_in_reply_to(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
     ): RustBuffer.ByValue
     fun uniffi_matrix_sdk_ffi_fn_method_message_is_edited(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
@@ -2388,6 +2424,12 @@ internal interface UniffiLib : Library {
     ): Unit
     fun uniffi_matrix_sdk_ffi_fn_method_oidcauthenticationdata_login_url(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
     ): RustBuffer.ByValue
+    fun uniffi_matrix_sdk_ffi_fn_clone_qrcodedata(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
+    ): Pointer
+    fun uniffi_matrix_sdk_ffi_fn_free_qrcodedata(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
+    ): Unit
+    fun uniffi_matrix_sdk_ffi_fn_constructor_qrcodedata_from_bytes(`bytes`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
+    ): Pointer
     fun uniffi_matrix_sdk_ffi_fn_clone_room(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
     ): Pointer
     fun uniffi_matrix_sdk_ffi_fn_free_room(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
@@ -2491,6 +2533,10 @@ internal interface UniffiLib : Library {
     fun uniffi_matrix_sdk_ffi_fn_method_room_reset_power_levels(`ptr`: Pointer,
     ): Long
     fun uniffi_matrix_sdk_ffi_fn_method_room_room_info(`ptr`: Pointer,
+    ): Long
+    fun uniffi_matrix_sdk_ffi_fn_method_room_send_call_notification(`ptr`: Pointer,`callId`: RustBuffer.ByValue,`application`: RustBuffer.ByValue,`notifyType`: RustBuffer.ByValue,`mentions`: RustBuffer.ByValue,
+    ): Long
+    fun uniffi_matrix_sdk_ffi_fn_method_room_send_call_notification_if_needed(`ptr`: Pointer,
     ): Long
     fun uniffi_matrix_sdk_ffi_fn_method_room_set_is_favourite(`ptr`: Pointer,`isFavourite`: Byte,`tagOrder`: RustBuffer.ByValue,
     ): Long
@@ -2720,8 +2766,6 @@ internal interface UniffiLib : Library {
     ): Unit
     fun uniffi_matrix_sdk_ffi_fn_method_timeline_get_event_timeline_item_by_event_id(`ptr`: Pointer,`eventId`: RustBuffer.ByValue,
     ): Long
-    fun uniffi_matrix_sdk_ffi_fn_method_timeline_get_timeline_event_content_by_event_id(`ptr`: Pointer,`eventId`: RustBuffer.ByValue,
-    ): Long
     fun uniffi_matrix_sdk_ffi_fn_method_timeline_latest_event(`ptr`: Pointer,
     ): Long
     fun uniffi_matrix_sdk_ffi_fn_method_timeline_mark_as_read(`ptr`: Pointer,`receiptType`: RustBuffer.ByValue,
@@ -2754,8 +2798,8 @@ internal interface UniffiLib : Library {
     ): Pointer
     fun uniffi_matrix_sdk_ffi_fn_method_timeline_send_voice_message(`ptr`: Pointer,`url`: RustBuffer.ByValue,`audioInfo`: RustBuffer.ByValue,`waveform`: RustBuffer.ByValue,`caption`: RustBuffer.ByValue,`formattedCaption`: RustBuffer.ByValue,`progressWatcher`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
     ): Pointer
-    fun uniffi_matrix_sdk_ffi_fn_method_timeline_subscribe_to_back_pagination_status(`ptr`: Pointer,`listener`: Long,uniffi_out_err: UniffiRustCallStatus, 
-    ): Pointer
+    fun uniffi_matrix_sdk_ffi_fn_method_timeline_subscribe_to_back_pagination_status(`ptr`: Pointer,`listener`: Long,
+    ): Long
     fun uniffi_matrix_sdk_ffi_fn_method_timeline_toggle_reaction(`ptr`: Pointer,`eventId`: RustBuffer.ByValue,`key`: RustBuffer.ByValue,
     ): Long
     fun uniffi_matrix_sdk_ffi_fn_clone_timelinediff(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
@@ -2860,6 +2904,8 @@ internal interface UniffiLib : Library {
     ): Unit
     fun uniffi_matrix_sdk_ffi_fn_init_callback_vtable_progresswatcher(`vtable`: UniffiVTableCallbackInterfaceProgressWatcher,
     ): Unit
+    fun uniffi_matrix_sdk_ffi_fn_init_callback_vtable_qrloginprogresslistener(`vtable`: UniffiVTableCallbackInterfaceQrLoginProgressListener,
+    ): Unit
     fun uniffi_matrix_sdk_ffi_fn_init_callback_vtable_recoverystatelistener(`vtable`: UniffiVTableCallbackInterfaceRecoveryStateListener,
     ): Unit
     fun uniffi_matrix_sdk_ffi_fn_init_callback_vtable_roomdirectorysearchentrieslistener(`vtable`: UniffiVTableCallbackInterfaceRoomDirectorySearchEntriesListener,
@@ -2892,7 +2938,7 @@ internal interface UniffiLib : Library {
     ): RustBuffer.ByValue
     fun uniffi_matrix_sdk_ffi_fn_func_generate_webview_url(`widgetSettings`: RustBuffer.ByValue,`room`: Pointer,`props`: RustBuffer.ByValue,
     ): Long
-    fun uniffi_matrix_sdk_ffi_fn_func_get_element_call_required_permissions(uniffi_out_err: UniffiRustCallStatus, 
+    fun uniffi_matrix_sdk_ffi_fn_func_get_element_call_required_permissions(`ownUserId`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
     ): RustBuffer.ByValue
     fun uniffi_matrix_sdk_ffi_fn_func_log_event(`file`: RustBuffer.ByValue,`line`: RustBuffer.ByValue,`level`: RustBuffer.ByValue,`target`: RustBuffer.ByValue,`message`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
     ): Unit
@@ -3196,6 +3242,8 @@ internal interface UniffiLib : Library {
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_clientbuilder_build(
     ): Short
+    fun uniffi_matrix_sdk_ffi_checksum_method_clientbuilder_build_with_qr_code(
+    ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_clientbuilder_disable_automatic_token_refresh(
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_clientbuilder_disable_ssl_verification(
@@ -3303,6 +3351,8 @@ internal interface UniffiLib : Library {
     fun uniffi_matrix_sdk_ffi_checksum_method_mediafilehandle_persist(
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_message_body(
+    ): Short
+    fun uniffi_matrix_sdk_ffi_checksum_method_message_content(
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_message_in_reply_to(
     ): Short
@@ -3455,6 +3505,10 @@ internal interface UniffiLib : Library {
     fun uniffi_matrix_sdk_ffi_checksum_method_room_reset_power_levels(
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_room_room_info(
+    ): Short
+    fun uniffi_matrix_sdk_ffi_checksum_method_room_send_call_notification(
+    ): Short
+    fun uniffi_matrix_sdk_ffi_checksum_method_room_send_call_notification_if_needed(
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_room_set_is_favourite(
     ): Short
@@ -3624,8 +3678,6 @@ internal interface UniffiLib : Library {
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_timeline_get_event_timeline_item_by_event_id(
     ): Short
-    fun uniffi_matrix_sdk_ffi_checksum_method_timeline_get_timeline_event_content_by_event_id(
-    ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_timeline_latest_event(
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_timeline_mark_as_read(
@@ -3716,6 +3768,8 @@ internal interface UniffiLib : Library {
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_constructor_clientbuilder_new(
     ): Short
+    fun uniffi_matrix_sdk_ffi_checksum_constructor_qrcodedata_from_bytes(
+    ): Short
     fun uniffi_matrix_sdk_ffi_checksum_constructor_span_current(
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_constructor_span_new(
@@ -3745,6 +3799,8 @@ internal interface UniffiLib : Library {
     fun uniffi_matrix_sdk_ffi_checksum_method_paginationstatuslistener_on_update(
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_progresswatcher_transmission_progress(
+    ): Short
+    fun uniffi_matrix_sdk_ffi_checksum_method_qrloginprogresslistener_on_update(
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_recoverystatelistener_on_update(
     ): Short
@@ -3807,7 +3863,7 @@ private fun uniffiCheckApiChecksums(lib: UniffiLib) {
     if (lib.uniffi_matrix_sdk_ffi_checksum_func_generate_webview_url() != 6844.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
-    if (lib.uniffi_matrix_sdk_ffi_checksum_func_get_element_call_required_permissions() != 30886.toShort()) {
+    if (lib.uniffi_matrix_sdk_ffi_checksum_func_get_element_call_required_permissions() != 51419.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_matrix_sdk_ffi_checksum_func_log_event() != 62286.toShort()) {
@@ -4038,6 +4094,9 @@ private fun uniffiCheckApiChecksums(lib: UniffiLib) {
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_clientbuilder_build() != 56018.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
+    if (lib.uniffi_matrix_sdk_ffi_checksum_method_clientbuilder_build_with_qr_code() != 51905.toShort()) {
+        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    }
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_clientbuilder_disable_automatic_token_refresh() != 43839.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
@@ -4198,6 +4257,9 @@ private fun uniffiCheckApiChecksums(lib: UniffiLib) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_message_body() != 21198.toShort()) {
+        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    }
+    if (lib.uniffi_matrix_sdk_ffi_checksum_method_message_content() != 57046.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_message_in_reply_to() != 16154.toShort()) {
@@ -4426,6 +4488,12 @@ private fun uniffiCheckApiChecksums(lib: UniffiLib) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_room_room_info() != 41146.toShort()) {
+        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    }
+    if (lib.uniffi_matrix_sdk_ffi_checksum_method_room_send_call_notification() != 43366.toShort()) {
+        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    }
+    if (lib.uniffi_matrix_sdk_ffi_checksum_method_room_send_call_notification_if_needed() != 24013.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_room_set_is_favourite() != 64403.toShort()) {
@@ -4680,9 +4748,6 @@ private fun uniffiCheckApiChecksums(lib: UniffiLib) {
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_timeline_get_event_timeline_item_by_event_id() != 36555.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
-    if (lib.uniffi_matrix_sdk_ffi_checksum_method_timeline_get_timeline_event_content_by_event_id() != 31042.toShort()) {
-        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
-    }
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_timeline_latest_event() != 11115.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
@@ -4731,7 +4796,7 @@ private fun uniffiCheckApiChecksums(lib: UniffiLib) {
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_timeline_send_voice_message() != 49989.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
-    if (lib.uniffi_matrix_sdk_ffi_checksum_method_timeline_subscribe_to_back_pagination_status() != 32222.toShort()) {
+    if (lib.uniffi_matrix_sdk_ffi_checksum_method_timeline_subscribe_to_back_pagination_status() != 46161.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_timeline_toggle_reaction() != 10294.toShort()) {
@@ -4818,6 +4883,9 @@ private fun uniffiCheckApiChecksums(lib: UniffiLib) {
     if (lib.uniffi_matrix_sdk_ffi_checksum_constructor_clientbuilder_new() != 27991.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
+    if (lib.uniffi_matrix_sdk_ffi_checksum_constructor_qrcodedata_from_bytes() != 32675.toShort()) {
+        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    }
     if (lib.uniffi_matrix_sdk_ffi_checksum_constructor_span_current() != 53698.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
@@ -4857,10 +4925,13 @@ private fun uniffiCheckApiChecksums(lib: UniffiLib) {
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_notificationsettingsdelegate_settings_did_change() != 51708.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
-    if (lib.uniffi_matrix_sdk_ffi_checksum_method_paginationstatuslistener_on_update() != 58051.toShort()) {
+    if (lib.uniffi_matrix_sdk_ffi_checksum_method_paginationstatuslistener_on_update() != 29884.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_progresswatcher_transmission_progress() != 41133.toShort()) {
+        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    }
+    if (lib.uniffi_matrix_sdk_ffi_checksum_method_qrloginprogresslistener_on_update() != 9758.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_recoverystatelistener_on_update() != 64575.toShort()) {
@@ -7129,6 +7200,22 @@ public interface ClientBuilderInterface {
     
     suspend fun `build`(): Client
     
+    /**
+     * Finish the building of the client and attempt to log in using the
+     * provided [`QrCodeData`].
+     *
+     * This method will build the client and immediately attempt to log the
+     * client in using the provided [`QrCodeData`] using the login
+     * mechanism described in [MSC4108]. As such this methods requires OIDC
+     * support as well as sliding sync support.
+     *
+     * The usage of the progress_listener is required to transfer the
+     * [`CheckCode`] to the existing client.
+     *
+     * [MSC4108]: https://github.com/matrix-org/matrix-spec-proposals/pull/4108
+     */
+    suspend fun `buildWithQrCode`(`qrCodeData`: QrCodeData, `oidcConfiguration`: OidcConfiguration, `progressListener`: QrLoginProgressListener): Client
+    
     fun `disableAutomaticTokenRefresh`(): ClientBuilder
     
     fun `disableSslVerification`(): ClientBuilder
@@ -7333,6 +7420,41 @@ open class ClientBuilder: Disposable, AutoCloseable, ClientBuilderInterface {
         { FfiConverterTypeClient.lift(it) },
         // Error FFI converter
         ClientBuildException.ErrorHandler,
+    )
+    }
+
+    
+    /**
+     * Finish the building of the client and attempt to log in using the
+     * provided [`QrCodeData`].
+     *
+     * This method will build the client and immediately attempt to log the
+     * client in using the provided [`QrCodeData`] using the login
+     * mechanism described in [MSC4108]. As such this methods requires OIDC
+     * support as well as sliding sync support.
+     *
+     * The usage of the progress_listener is required to transfer the
+     * [`CheckCode`] to the existing client.
+     *
+     * [MSC4108]: https://github.com/matrix-org/matrix-spec-proposals/pull/4108
+     */
+    @Throws(HumanQrLoginException::class)
+    @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
+    override suspend fun `buildWithQrCode`(`qrCodeData`: QrCodeData, `oidcConfiguration`: OidcConfiguration, `progressListener`: QrLoginProgressListener) : Client {
+        return uniffiRustCallAsync(
+        callWithPointer { thisPtr ->
+            UniffiLib.INSTANCE.uniffi_matrix_sdk_ffi_fn_method_clientbuilder_build_with_qr_code(
+                thisPtr,
+                FfiConverterTypeQrCodeData.lower(`qrCodeData`),FfiConverterTypeOidcConfiguration.lower(`oidcConfiguration`),FfiConverterTypeQrLoginProgressListener.lower(`progressListener`),
+            )
+        },
+        { future, callback, continuation -> UniffiLib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_poll_pointer(future, callback, continuation) },
+        { future, continuation -> UniffiLib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_complete_pointer(future, continuation) },
+        { future -> UniffiLib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_free_pointer(future) },
+        // lift function
+        { FfiConverterTypeClient.lift(it) },
+        // Error FFI converter
+        HumanQrLoginException.ErrorHandler,
     )
     }
 
@@ -9516,6 +9638,8 @@ public interface MessageInterface {
     
     fun `body`(): kotlin.String
     
+    fun `content`(): RoomMessageEventContentWithoutRelation
+    
     fun `inReplyTo`(): InReplyToDetails?
     
     fun `isEdited`(): kotlin.Boolean
@@ -9613,6 +9737,18 @@ open class Message: Disposable, AutoCloseable, MessageInterface {
     callWithPointer {
     uniffiRustCall() { _status ->
     UniffiLib.INSTANCE.uniffi_matrix_sdk_ffi_fn_method_message_body(
+        it, _status)
+}
+    }
+    )
+    }
+    
+
+    override fun `content`(): RoomMessageEventContentWithoutRelation {
+            return FfiConverterTypeRoomMessageEventContentWithoutRelation.lift(
+    callWithPointer {
+    uniffiRustCall() { _status ->
+    UniffiLib.INSTANCE.uniffi_matrix_sdk_ffi_fn_method_message_content(
         it, _status)
 }
     }
@@ -11146,6 +11282,253 @@ public object FfiConverterTypeOidcAuthenticationData: FfiConverter<OidcAuthentic
 //
 
 
+/**
+ * Data for the QR code login mechanism.
+ *
+ * The [`QrCodeData`] can be serialized and encoded as a QR code or it can be
+ * decoded from a QR code.
+ */
+public interface QrCodeDataInterface {
+    
+    companion object
+}
+
+/**
+ * Data for the QR code login mechanism.
+ *
+ * The [`QrCodeData`] can be serialized and encoded as a QR code or it can be
+ * decoded from a QR code.
+ */
+open class QrCodeData: Disposable, AutoCloseable, QrCodeDataInterface {
+
+    constructor(pointer: Pointer) {
+        this.pointer = pointer
+        this.cleanable = UniffiLib.CLEANER.register(this, UniffiCleanAction(pointer))
+    }
+
+    /**
+     * This constructor can be used to instantiate a fake object. Only used for tests. Any
+     * attempt to actually use an object constructed this way will fail as there is no
+     * connected Rust object.
+     */
+    @Suppress("UNUSED_PARAMETER")
+    constructor(noPointer: NoPointer) {
+        this.pointer = null
+        this.cleanable = UniffiLib.CLEANER.register(this, UniffiCleanAction(pointer))
+    }
+
+    protected val pointer: Pointer?
+    protected val cleanable: UniffiCleaner.Cleanable
+
+    private val wasDestroyed = AtomicBoolean(false)
+    private val callCounter = AtomicLong(1)
+
+    override fun destroy() {
+        // Only allow a single call to this method.
+        // TODO: maybe we should log a warning if called more than once?
+        if (this.wasDestroyed.compareAndSet(false, true)) {
+            // This decrement always matches the initial count of 1 given at creation time.
+            if (this.callCounter.decrementAndGet() == 0L) {
+                cleanable.clean()
+            }
+        }
+    }
+
+    @Synchronized
+    override fun close() {
+        this.destroy()
+    }
+
+    internal inline fun <R> callWithPointer(block: (ptr: Pointer) -> R): R {
+        // Check and increment the call counter, to keep the object alive.
+        // This needs a compare-and-set retry loop in case of concurrent updates.
+        do {
+            val c = this.callCounter.get()
+            if (c == 0L) {
+                throw IllegalStateException("${this.javaClass.simpleName} object has already been destroyed")
+            }
+            if (c == Long.MAX_VALUE) {
+                throw IllegalStateException("${this.javaClass.simpleName} call counter would overflow")
+            }
+        } while (! this.callCounter.compareAndSet(c, c + 1L))
+        // Now we can safely do the method call without the pointer being freed concurrently.
+        try {
+            return block(this.uniffiClonePointer())
+        } finally {
+            // This decrement always matches the increment we performed above.
+            if (this.callCounter.decrementAndGet() == 0L) {
+                cleanable.clean()
+            }
+        }
+    }
+
+    // Use a static inner class instead of a closure so as not to accidentally
+    // capture `this` as part of the cleanable's action.
+    private class UniffiCleanAction(private val pointer: Pointer?) : Runnable {
+        override fun run() {
+            pointer?.let { ptr ->
+                uniffiRustCall { status ->
+                    UniffiLib.INSTANCE.uniffi_matrix_sdk_ffi_fn_free_qrcodedata(ptr, status)
+                }
+            }
+        }
+    }
+
+    fun uniffiClonePointer(): Pointer {
+        return uniffiRustCall() { status ->
+            UniffiLib.INSTANCE.uniffi_matrix_sdk_ffi_fn_clone_qrcodedata(pointer!!, status)
+        }
+    }
+
+    
+
+    
+    companion object {
+        
+    /**
+     * Attempt to decode a slice of bytes into a [`QrCodeData`] object.
+     *
+     * The slice of bytes would generally be returned by a QR code decoder.
+     */
+    @Throws(QrCodeDecodeException::class) fun `fromBytes`(`bytes`: kotlin.ByteArray): QrCodeData {
+            return FfiConverterTypeQrCodeData.lift(
+    uniffiRustCallWithError(QrCodeDecodeException) { _status ->
+    UniffiLib.INSTANCE.uniffi_matrix_sdk_ffi_fn_constructor_qrcodedata_from_bytes(
+        FfiConverterByteArray.lower(`bytes`),_status)
+}
+    )
+    }
+    
+
+        
+    }
+    
+}
+
+public object FfiConverterTypeQrCodeData: FfiConverter<QrCodeData, Pointer> {
+
+    override fun lower(value: QrCodeData): Pointer {
+        return value.uniffiClonePointer()
+    }
+
+    override fun lift(value: Pointer): QrCodeData {
+        return QrCodeData(value)
+    }
+
+    override fun read(buf: ByteBuffer): QrCodeData {
+        // The Rust code always writes pointers as 8 bytes, and will
+        // fail to compile if they don't fit.
+        return lift(Pointer(buf.getLong()))
+    }
+
+    override fun allocationSize(value: QrCodeData) = 8UL
+
+    override fun write(value: QrCodeData, buf: ByteBuffer) {
+        // The Rust code always expects pointers written as 8 bytes,
+        // and will fail to compile if they don't fit.
+        buf.putLong(Pointer.nativeValue(lower(value)))
+    }
+}
+
+
+// This template implements a class for working with a Rust struct via a Pointer/Arc<T>
+// to the live Rust struct on the other side of the FFI.
+//
+// Each instance implements core operations for working with the Rust `Arc<T>` and the
+// Kotlin Pointer to work with the live Rust struct on the other side of the FFI.
+//
+// There's some subtlety here, because we have to be careful not to operate on a Rust
+// struct after it has been dropped, and because we must expose a public API for freeing
+// theq Kotlin wrapper object in lieu of reliable finalizers. The core requirements are:
+//
+//   * Each instance holds an opaque pointer to the underlying Rust struct.
+//     Method calls need to read this pointer from the object's state and pass it in to
+//     the Rust FFI.
+//
+//   * When an instance is no longer needed, its pointer should be passed to a
+//     special destructor function provided by the Rust FFI, which will drop the
+//     underlying Rust struct.
+//
+//   * Given an instance, calling code is expected to call the special
+//     `destroy` method in order to free it after use, either by calling it explicitly
+//     or by using a higher-level helper like the `use` method. Failing to do so risks
+//     leaking the underlying Rust struct.
+//
+//   * We can't assume that calling code will do the right thing, and must be prepared
+//     to handle Kotlin method calls executing concurrently with or even after a call to
+//     `destroy`, and to handle multiple (possibly concurrent!) calls to `destroy`.
+//
+//   * We must never allow Rust code to operate on the underlying Rust struct after
+//     the destructor has been called, and must never call the destructor more than once.
+//     Doing so may trigger memory unsafety.
+//
+//   * To mitigate many of the risks of leaking memory and use-after-free unsafety, a `Cleaner`
+//     is implemented to call the destructor when the Kotlin object becomes unreachable.
+//     This is done in a background thread. This is not a panacea, and client code should be aware that
+//      1. the thread may starve if some there are objects that have poorly performing
+//     `drop` methods or do significant work in their `drop` methods.
+//      2. the thread is shared across the whole library. This can be tuned by using `android_cleaner = true`,
+//         or `android = true` in the [`kotlin` section of the `uniffi.toml` file](https://mozilla.github.io/uniffi-rs/kotlin/configuration.html).
+//
+// If we try to implement this with mutual exclusion on access to the pointer, there is the
+// possibility of a race between a method call and a concurrent call to `destroy`:
+//
+//    * Thread A starts a method call, reads the value of the pointer, but is interrupted
+//      before it can pass the pointer over the FFI to Rust.
+//    * Thread B calls `destroy` and frees the underlying Rust struct.
+//    * Thread A resumes, passing the already-read pointer value to Rust and triggering
+//      a use-after-free.
+//
+// One possible solution would be to use a `ReadWriteLock`, with each method call taking
+// a read lock (and thus allowed to run concurrently) and the special `destroy` method
+// taking a write lock (and thus blocking on live method calls). However, we aim not to
+// generate methods with any hidden blocking semantics, and a `destroy` method that might
+// block if called incorrectly seems to meet that bar.
+//
+// So, we achieve our goals by giving each instance an associated `AtomicLong` counter to track
+// the number of in-flight method calls, and an `AtomicBoolean` flag to indicate whether `destroy`
+// has been called. These are updated according to the following rules:
+//
+//    * The initial value of the counter is 1, indicating a live object with no in-flight calls.
+//      The initial value for the flag is false.
+//
+//    * At the start of each method call, we atomically check the counter.
+//      If it is 0 then the underlying Rust struct has already been destroyed and the call is aborted.
+//      If it is nonzero them we atomically increment it by 1 and proceed with the method call.
+//
+//    * At the end of each method call, we atomically decrement and check the counter.
+//      If it has reached zero then we destroy the underlying Rust struct.
+//
+//    * When `destroy` is called, we atomically flip the flag from false to true.
+//      If the flag was already true we silently fail.
+//      Otherwise we atomically decrement and check the counter.
+//      If it has reached zero then we destroy the underlying Rust struct.
+//
+// Astute readers may observe that this all sounds very similar to the way that Rust's `Arc<T>` works,
+// and indeed it is, with the addition of a flag to guard against multiple calls to `destroy`.
+//
+// The overall effect is that the underlying Rust struct is destroyed only when `destroy` has been
+// called *and* all in-flight method calls have completed, avoiding violating any of the expectations
+// of the underlying Rust code.
+//
+// This makes a cleaner a better alternative to _not_ calling `destroy()` as
+// and when the object is finished with, but the abstraction is not perfect: if the Rust object's `drop`
+// method is slow, and/or there are many objects to cleanup, and it's on a low end Android device, then the cleaner
+// thread may be starved, and the app will leak memory.
+//
+// In this case, `destroy`ing manually may be a better solution.
+//
+// The cleaner can live side by side with the manual calling of `destroy`. In the order of responsiveness, uniffi objects
+// with Rust peers are reclaimed:
+//
+// 1. By calling the `destroy` method of the object, which calls `rustObject.free()`. If that doesn't happen:
+// 2. When the object becomes unreachable, AND the Cleaner thread gets to call `rustObject.free()`. If the thread is starved then:
+// 3. The memory is reclaimed when the process terminates.
+//
+// [1] https://stackoverflow.com/questions/24376768/can-java-finalize-an-object-when-it-is-still-in-scope/24380219
+//
+
+
 public interface RoomInterface {
     
     /**
@@ -11336,6 +11719,33 @@ public interface RoomInterface {
     suspend fun `resetPowerLevels`(): RoomPowerLevels
     
     suspend fun `roomInfo`(): RoomInfo
+    
+    /**
+     * Send a call notification event in the current room.
+     *
+     * This is only supposed to be used in **custom** situations where the user
+     * explicitly chooses to send a `m.call.notify` event to invite/notify
+     * someone explicitly in unusual conditions. The default should be to
+     * use `send_call_notification_if_necessary` just before a new room call is
+     * created/joined.
+     *
+     * One example could be that the UI allows to start a call with a subset of
+     * users of the room members first. And then later on the user can
+     * invite more users to the call.
+     */
+    suspend fun `sendCallNotification`(`callId`: kotlin.String, `application`: RtcApplicationType, `notifyType`: NotifyType, `mentions`: Mentions)
+    
+    /**
+     * This will only send a call notification event if appropriate.
+     *
+     * This function is supposed to be called whenever the user creates a room
+     * call. It will send a `m.call.notify` event if:
+     * - there is not yet a running call.
+     * It will configure the notify type: ring or notify based on:
+     * - is this a DM room -> ring
+     * - is this a group with more than one other member -> notify
+     */
+    suspend fun `sendCallNotificationIfNeeded`()
     
     suspend fun `setIsFavourite`(`isFavourite`: kotlin.Boolean, `tagOrder`: kotlin.Double?)
     
@@ -12461,6 +12871,73 @@ open class Room: Disposable, AutoCloseable, RoomInterface {
         { future -> UniffiLib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_free_rust_buffer(future) },
         // lift function
         { FfiConverterTypeRoomInfo.lift(it) },
+        // Error FFI converter
+        ClientException.ErrorHandler,
+    )
+    }
+
+    
+    /**
+     * Send a call notification event in the current room.
+     *
+     * This is only supposed to be used in **custom** situations where the user
+     * explicitly chooses to send a `m.call.notify` event to invite/notify
+     * someone explicitly in unusual conditions. The default should be to
+     * use `send_call_notification_if_necessary` just before a new room call is
+     * created/joined.
+     *
+     * One example could be that the UI allows to start a call with a subset of
+     * users of the room members first. And then later on the user can
+     * invite more users to the call.
+     */
+    @Throws(ClientException::class)
+    @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
+    override suspend fun `sendCallNotification`(`callId`: kotlin.String, `application`: RtcApplicationType, `notifyType`: NotifyType, `mentions`: Mentions) {
+        return uniffiRustCallAsync(
+        callWithPointer { thisPtr ->
+            UniffiLib.INSTANCE.uniffi_matrix_sdk_ffi_fn_method_room_send_call_notification(
+                thisPtr,
+                FfiConverterString.lower(`callId`),FfiConverterTypeRtcApplicationType.lower(`application`),FfiConverterTypeNotifyType.lower(`notifyType`),FfiConverterTypeMentions.lower(`mentions`),
+            )
+        },
+        { future, callback, continuation -> UniffiLib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_poll_void(future, callback, continuation) },
+        { future, continuation -> UniffiLib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_complete_void(future, continuation) },
+        { future -> UniffiLib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_free_void(future) },
+        // lift function
+        { Unit },
+        
+        // Error FFI converter
+        ClientException.ErrorHandler,
+    )
+    }
+
+    
+    /**
+     * This will only send a call notification event if appropriate.
+     *
+     * This function is supposed to be called whenever the user creates a room
+     * call. It will send a `m.call.notify` event if:
+     * - there is not yet a running call.
+     * It will configure the notify type: ring or notify based on:
+     * - is this a DM room -> ring
+     * - is this a group with more than one other member -> notify
+     */
+    @Throws(ClientException::class)
+    @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
+    override suspend fun `sendCallNotificationIfNeeded`() {
+        return uniffiRustCallAsync(
+        callWithPointer { thisPtr ->
+            UniffiLib.INSTANCE.uniffi_matrix_sdk_ffi_fn_method_room_send_call_notification_if_needed(
+                thisPtr,
+                
+            )
+        },
+        { future, callback, continuation -> UniffiLib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_poll_void(future, callback, continuation) },
+        { future, continuation -> UniffiLib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_complete_void(future, continuation) },
+        { future -> UniffiLib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_free_void(future) },
+        // lift function
+        { Unit },
+        
         // Error FFI converter
         ClientException.ErrorHandler,
     )
@@ -17177,8 +17654,6 @@ public interface TimelineInterface {
     
     suspend fun `getEventTimelineItemByEventId`(`eventId`: kotlin.String): EventTimelineItem
     
-    suspend fun `getTimelineEventContentByEventId`(`eventId`: kotlin.String): RoomMessageEventContentWithoutRelation
-    
     suspend fun `latestEvent`(): EventTimelineItem?
     
     /**
@@ -17227,7 +17702,7 @@ public interface TimelineInterface {
     
     fun `sendVoiceMessage`(`url`: kotlin.String, `audioInfo`: AudioInfo, `waveform`: List<kotlin.UShort>, `caption`: kotlin.String?, `formattedCaption`: FormattedBody?, `progressWatcher`: ProgressWatcher?): SendAttachmentJoinHandle
     
-    fun `subscribeToBackPaginationStatus`(`listener`: PaginationStatusListener): TaskHandle
+    suspend fun `subscribeToBackPaginationStatus`(`listener`: PaginationStatusListener): TaskHandle
     
     suspend fun `toggleReaction`(`eventId`: kotlin.String, `key`: kotlin.String)
     
@@ -17520,27 +17995,6 @@ open class Timeline: Disposable, AutoCloseable, TimelineInterface {
     }
 
     
-    @Throws(ClientException::class)
-    @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
-    override suspend fun `getTimelineEventContentByEventId`(`eventId`: kotlin.String) : RoomMessageEventContentWithoutRelation {
-        return uniffiRustCallAsync(
-        callWithPointer { thisPtr ->
-            UniffiLib.INSTANCE.uniffi_matrix_sdk_ffi_fn_method_timeline_get_timeline_event_content_by_event_id(
-                thisPtr,
-                FfiConverterString.lower(`eventId`),
-            )
-        },
-        { future, callback, continuation -> UniffiLib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_poll_pointer(future, callback, continuation) },
-        { future, continuation -> UniffiLib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_complete_pointer(future, continuation) },
-        { future -> UniffiLib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_free_pointer(future) },
-        // lift function
-        { FfiConverterTypeRoomMessageEventContentWithoutRelation.lift(it) },
-        // Error FFI converter
-        ClientException.ErrorHandler,
-    )
-    }
-
-    
     @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
     override suspend fun `latestEvent`() : EventTimelineItem? {
         return uniffiRustCallAsync(
@@ -17792,17 +18246,25 @@ open class Timeline: Disposable, AutoCloseable, TimelineInterface {
     
 
     
-    @Throws(ClientException::class)override fun `subscribeToBackPaginationStatus`(`listener`: PaginationStatusListener): TaskHandle {
-            return FfiConverterTypeTaskHandle.lift(
-    callWithPointer {
-    uniffiRustCallWithError(ClientException) { _status ->
-    UniffiLib.INSTANCE.uniffi_matrix_sdk_ffi_fn_method_timeline_subscribe_to_back_pagination_status(
-        it, FfiConverterTypePaginationStatusListener.lower(`listener`),_status)
-}
-    }
+    @Throws(ClientException::class)
+    @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
+    override suspend fun `subscribeToBackPaginationStatus`(`listener`: PaginationStatusListener) : TaskHandle {
+        return uniffiRustCallAsync(
+        callWithPointer { thisPtr ->
+            UniffiLib.INSTANCE.uniffi_matrix_sdk_ffi_fn_method_timeline_subscribe_to_back_pagination_status(
+                thisPtr,
+                FfiConverterTypePaginationStatusListener.lower(`listener`),
+            )
+        },
+        { future, callback, continuation -> UniffiLib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_poll_pointer(future, callback, continuation) },
+        { future, continuation -> UniffiLib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_complete_pointer(future, continuation) },
+        { future -> UniffiLib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_free_pointer(future) },
+        // lift function
+        { FfiConverterTypeTaskHandle.lift(it) },
+        // Error FFI converter
+        ClientException.ErrorHandler,
     )
     }
-    
 
     
     @Throws(ClientException::class)
@@ -22016,7 +22478,8 @@ public object FfiConverterTypeRoomPreview: FfiConverterRustBuffer<RoomPreview> {
 
 data class RoomSubscription (
     var `requiredState`: List<RequiredState>?, 
-    var `timelineLimit`: kotlin.UInt?
+    var `timelineLimit`: kotlin.UInt?, 
+    var `includeHeroes`: kotlin.Boolean?
 ) {
     
     companion object
@@ -22027,17 +22490,20 @@ public object FfiConverterTypeRoomSubscription: FfiConverterRustBuffer<RoomSubsc
         return RoomSubscription(
             FfiConverterOptionalSequenceTypeRequiredState.read(buf),
             FfiConverterOptionalUInt.read(buf),
+            FfiConverterOptionalBoolean.read(buf),
         )
     }
 
     override fun allocationSize(value: RoomSubscription) = (
             FfiConverterOptionalSequenceTypeRequiredState.allocationSize(value.`requiredState`) +
-            FfiConverterOptionalUInt.allocationSize(value.`timelineLimit`)
+            FfiConverterOptionalUInt.allocationSize(value.`timelineLimit`) +
+            FfiConverterOptionalBoolean.allocationSize(value.`includeHeroes`)
     )
 
     override fun write(value: RoomSubscription, buf: ByteBuffer) {
             FfiConverterOptionalSequenceTypeRequiredState.write(value.`requiredState`, buf)
             FfiConverterOptionalUInt.write(value.`timelineLimit`, buf)
+            FfiConverterOptionalBoolean.write(value.`includeHeroes`, buf)
     }
 }
 
@@ -24105,6 +24571,176 @@ public object FfiConverterTypeFocusEventError : FfiConverterRustBuffer<FocusEven
 
 
 
+
+sealed class HumanQrLoginException: Exception() {
+    
+    class LinkingNotSupported(
+        ) : HumanQrLoginException() {
+        override val message
+            get() = ""
+    }
+    
+    class Cancelled(
+        ) : HumanQrLoginException() {
+        override val message
+            get() = ""
+    }
+    
+    class Expired(
+        ) : HumanQrLoginException() {
+        override val message
+            get() = ""
+    }
+    
+    class ConnectionInsecure(
+        ) : HumanQrLoginException() {
+        override val message
+            get() = ""
+    }
+    
+    class Declined(
+        ) : HumanQrLoginException() {
+        override val message
+            get() = ""
+    }
+    
+    class Unknown(
+        ) : HumanQrLoginException() {
+        override val message
+            get() = ""
+    }
+    
+    class SlidingSyncNotAvailable(
+        ) : HumanQrLoginException() {
+        override val message
+            get() = ""
+    }
+    
+    class OidcMetadataInvalid(
+        ) : HumanQrLoginException() {
+        override val message
+            get() = ""
+    }
+    
+    class OtherDeviceNotSignedIn(
+        ) : HumanQrLoginException() {
+        override val message
+            get() = ""
+    }
+    
+
+    companion object ErrorHandler : UniffiRustCallStatusErrorHandler<HumanQrLoginException> {
+        override fun lift(error_buf: RustBuffer.ByValue): HumanQrLoginException = FfiConverterTypeHumanQrLoginError.lift(error_buf)
+    }
+
+    
+}
+
+public object FfiConverterTypeHumanQrLoginError : FfiConverterRustBuffer<HumanQrLoginException> {
+    override fun read(buf: ByteBuffer): HumanQrLoginException {
+        
+
+        return when(buf.getInt()) {
+            1 -> HumanQrLoginException.LinkingNotSupported()
+            2 -> HumanQrLoginException.Cancelled()
+            3 -> HumanQrLoginException.Expired()
+            4 -> HumanQrLoginException.ConnectionInsecure()
+            5 -> HumanQrLoginException.Declined()
+            6 -> HumanQrLoginException.Unknown()
+            7 -> HumanQrLoginException.SlidingSyncNotAvailable()
+            8 -> HumanQrLoginException.OidcMetadataInvalid()
+            9 -> HumanQrLoginException.OtherDeviceNotSignedIn()
+            else -> throw RuntimeException("invalid error enum value, something is very wrong!!")
+        }
+    }
+
+    override fun allocationSize(value: HumanQrLoginException): ULong {
+        return when(value) {
+            is HumanQrLoginException.LinkingNotSupported -> (
+                // Add the size for the Int that specifies the variant plus the size needed for all fields
+                4UL
+            )
+            is HumanQrLoginException.Cancelled -> (
+                // Add the size for the Int that specifies the variant plus the size needed for all fields
+                4UL
+            )
+            is HumanQrLoginException.Expired -> (
+                // Add the size for the Int that specifies the variant plus the size needed for all fields
+                4UL
+            )
+            is HumanQrLoginException.ConnectionInsecure -> (
+                // Add the size for the Int that specifies the variant plus the size needed for all fields
+                4UL
+            )
+            is HumanQrLoginException.Declined -> (
+                // Add the size for the Int that specifies the variant plus the size needed for all fields
+                4UL
+            )
+            is HumanQrLoginException.Unknown -> (
+                // Add the size for the Int that specifies the variant plus the size needed for all fields
+                4UL
+            )
+            is HumanQrLoginException.SlidingSyncNotAvailable -> (
+                // Add the size for the Int that specifies the variant plus the size needed for all fields
+                4UL
+            )
+            is HumanQrLoginException.OidcMetadataInvalid -> (
+                // Add the size for the Int that specifies the variant plus the size needed for all fields
+                4UL
+            )
+            is HumanQrLoginException.OtherDeviceNotSignedIn -> (
+                // Add the size for the Int that specifies the variant plus the size needed for all fields
+                4UL
+            )
+        }
+    }
+
+    override fun write(value: HumanQrLoginException, buf: ByteBuffer) {
+        when(value) {
+            is HumanQrLoginException.LinkingNotSupported -> {
+                buf.putInt(1)
+                Unit
+            }
+            is HumanQrLoginException.Cancelled -> {
+                buf.putInt(2)
+                Unit
+            }
+            is HumanQrLoginException.Expired -> {
+                buf.putInt(3)
+                Unit
+            }
+            is HumanQrLoginException.ConnectionInsecure -> {
+                buf.putInt(4)
+                Unit
+            }
+            is HumanQrLoginException.Declined -> {
+                buf.putInt(5)
+                Unit
+            }
+            is HumanQrLoginException.Unknown -> {
+                buf.putInt(6)
+                Unit
+            }
+            is HumanQrLoginException.SlidingSyncNotAvailable -> {
+                buf.putInt(7)
+                Unit
+            }
+            is HumanQrLoginException.OidcMetadataInvalid -> {
+                buf.putInt(8)
+                Unit
+            }
+            is HumanQrLoginException.OtherDeviceNotSignedIn -> {
+                buf.putInt(9)
+                Unit
+            }
+        }.let { /* this makes the `when` an expression, which ensures it is exhaustive */ }
+    }
+
+}
+
+
+
+
 enum class LogLevel {
     
     ERROR,
@@ -24483,6 +25119,11 @@ sealed class MessageLikeEventContent: Disposable  {
     object CallInvite : MessageLikeEventContent()
     
     
+    data class CallNotify(
+        val `notifyType`: NotifyType) : MessageLikeEventContent() {
+        companion object
+    }
+    
     object CallHangup : MessageLikeEventContent()
     
     
@@ -24544,6 +25185,12 @@ sealed class MessageLikeEventContent: Disposable  {
             }
             is MessageLikeEventContent.CallInvite -> {// Nothing to destroy
             }
+            is MessageLikeEventContent.CallNotify -> {
+                
+    Disposable.destroy(
+        this.`notifyType`)
+                
+            }
             is MessageLikeEventContent.CallHangup -> {// Nothing to destroy
             }
             is MessageLikeEventContent.CallCandidates -> {// Nothing to destroy
@@ -24598,28 +25245,31 @@ public object FfiConverterTypeMessageLikeEventContent : FfiConverterRustBuffer<M
         return when(buf.getInt()) {
             1 -> MessageLikeEventContent.CallAnswer
             2 -> MessageLikeEventContent.CallInvite
-            3 -> MessageLikeEventContent.CallHangup
-            4 -> MessageLikeEventContent.CallCandidates
-            5 -> MessageLikeEventContent.KeyVerificationReady
-            6 -> MessageLikeEventContent.KeyVerificationStart
-            7 -> MessageLikeEventContent.KeyVerificationCancel
-            8 -> MessageLikeEventContent.KeyVerificationAccept
-            9 -> MessageLikeEventContent.KeyVerificationKey
-            10 -> MessageLikeEventContent.KeyVerificationMac
-            11 -> MessageLikeEventContent.KeyVerificationDone
-            12 -> MessageLikeEventContent.Poll(
+            3 -> MessageLikeEventContent.CallNotify(
+                FfiConverterTypeNotifyType.read(buf),
+                )
+            4 -> MessageLikeEventContent.CallHangup
+            5 -> MessageLikeEventContent.CallCandidates
+            6 -> MessageLikeEventContent.KeyVerificationReady
+            7 -> MessageLikeEventContent.KeyVerificationStart
+            8 -> MessageLikeEventContent.KeyVerificationCancel
+            9 -> MessageLikeEventContent.KeyVerificationAccept
+            10 -> MessageLikeEventContent.KeyVerificationKey
+            11 -> MessageLikeEventContent.KeyVerificationMac
+            12 -> MessageLikeEventContent.KeyVerificationDone
+            13 -> MessageLikeEventContent.Poll(
                 FfiConverterString.read(buf),
                 )
-            13 -> MessageLikeEventContent.ReactionContent(
+            14 -> MessageLikeEventContent.ReactionContent(
                 FfiConverterString.read(buf),
                 )
-            14 -> MessageLikeEventContent.RoomEncrypted
-            15 -> MessageLikeEventContent.RoomMessage(
+            15 -> MessageLikeEventContent.RoomEncrypted
+            16 -> MessageLikeEventContent.RoomMessage(
                 FfiConverterTypeMessageType.read(buf),
                 FfiConverterOptionalString.read(buf),
                 )
-            16 -> MessageLikeEventContent.RoomRedaction
-            17 -> MessageLikeEventContent.Sticker
+            17 -> MessageLikeEventContent.RoomRedaction
+            18 -> MessageLikeEventContent.Sticker
             else -> throw RuntimeException("invalid enum value, something is very wrong!!")
         }
     }
@@ -24635,6 +25285,13 @@ public object FfiConverterTypeMessageLikeEventContent : FfiConverterRustBuffer<M
             // Add the size for the Int that specifies the variant plus the size needed for all fields
             (
                 4UL
+            )
+        }
+        is MessageLikeEventContent.CallNotify -> {
+            // Add the size for the Int that specifies the variant plus the size needed for all fields
+            (
+                4UL
+                + FfiConverterTypeNotifyType.allocationSize(value.`notifyType`)
             )
         }
         is MessageLikeEventContent.CallHangup -> {
@@ -24743,68 +25400,73 @@ public object FfiConverterTypeMessageLikeEventContent : FfiConverterRustBuffer<M
                 buf.putInt(2)
                 Unit
             }
-            is MessageLikeEventContent.CallHangup -> {
+            is MessageLikeEventContent.CallNotify -> {
                 buf.putInt(3)
+                FfiConverterTypeNotifyType.write(value.`notifyType`, buf)
                 Unit
             }
-            is MessageLikeEventContent.CallCandidates -> {
+            is MessageLikeEventContent.CallHangup -> {
                 buf.putInt(4)
                 Unit
             }
-            is MessageLikeEventContent.KeyVerificationReady -> {
+            is MessageLikeEventContent.CallCandidates -> {
                 buf.putInt(5)
                 Unit
             }
-            is MessageLikeEventContent.KeyVerificationStart -> {
+            is MessageLikeEventContent.KeyVerificationReady -> {
                 buf.putInt(6)
                 Unit
             }
-            is MessageLikeEventContent.KeyVerificationCancel -> {
+            is MessageLikeEventContent.KeyVerificationStart -> {
                 buf.putInt(7)
                 Unit
             }
-            is MessageLikeEventContent.KeyVerificationAccept -> {
+            is MessageLikeEventContent.KeyVerificationCancel -> {
                 buf.putInt(8)
                 Unit
             }
-            is MessageLikeEventContent.KeyVerificationKey -> {
+            is MessageLikeEventContent.KeyVerificationAccept -> {
                 buf.putInt(9)
                 Unit
             }
-            is MessageLikeEventContent.KeyVerificationMac -> {
+            is MessageLikeEventContent.KeyVerificationKey -> {
                 buf.putInt(10)
                 Unit
             }
-            is MessageLikeEventContent.KeyVerificationDone -> {
+            is MessageLikeEventContent.KeyVerificationMac -> {
                 buf.putInt(11)
                 Unit
             }
-            is MessageLikeEventContent.Poll -> {
+            is MessageLikeEventContent.KeyVerificationDone -> {
                 buf.putInt(12)
+                Unit
+            }
+            is MessageLikeEventContent.Poll -> {
+                buf.putInt(13)
                 FfiConverterString.write(value.`question`, buf)
                 Unit
             }
             is MessageLikeEventContent.ReactionContent -> {
-                buf.putInt(13)
+                buf.putInt(14)
                 FfiConverterString.write(value.`relatedEventId`, buf)
                 Unit
             }
             is MessageLikeEventContent.RoomEncrypted -> {
-                buf.putInt(14)
+                buf.putInt(15)
                 Unit
             }
             is MessageLikeEventContent.RoomMessage -> {
-                buf.putInt(15)
+                buf.putInt(16)
                 FfiConverterTypeMessageType.write(value.`messageType`, buf)
                 FfiConverterOptionalString.write(value.`inReplyToEventId`, buf)
                 Unit
             }
             is MessageLikeEventContent.RoomRedaction -> {
-                buf.putInt(16)
+                buf.putInt(17)
                 Unit
             }
             is MessageLikeEventContent.Sticker -> {
-                buf.putInt(17)
+                buf.putInt(18)
                 Unit
             }
         }.let { /* this makes the `when` an expression, which ensures it is exhaustive */ }
@@ -24822,6 +25484,7 @@ enum class MessageLikeEventType {
     CALL_CANDIDATES,
     CALL_HANGUP,
     CALL_INVITE,
+    CALL_NOTIFY,
     KEY_VERIFICATION_ACCEPT,
     KEY_VERIFICATION_CANCEL,
     KEY_VERIFICATION_DONE,
@@ -25491,6 +26154,33 @@ public object FfiConverterTypeNotificationSettingsError : FfiConverterRustBuffer
     }
 
 }
+
+
+
+
+enum class NotifyType {
+    
+    RING,
+    NOTIFY;
+    companion object
+}
+
+
+public object FfiConverterTypeNotifyType: FfiConverterRustBuffer<NotifyType> {
+    override fun read(buf: ByteBuffer) = try {
+        NotifyType.values()[buf.getInt() - 1]
+    } catch (e: IndexOutOfBoundsException) {
+        throw RuntimeException("invalid enum value, something is very wrong!!", e)
+    }
+
+    override fun allocationSize(value: NotifyType) = 4UL
+
+    override fun write(value: NotifyType, buf: ByteBuffer) {
+        buf.putInt(value.ordinal + 1)
+    }
+}
+
+
 
 
 
@@ -26198,6 +26888,172 @@ public object FfiConverterTypePusherKind : FfiConverterRustBuffer<PusherKind>{
             }
             is PusherKind.Email -> {
                 buf.putInt(2)
+                Unit
+            }
+        }.let { /* this makes the `when` an expression, which ensures it is exhaustive */ }
+    }
+}
+
+
+
+
+
+
+
+/**
+ * Error type for the decoding of the [`QrCodeData`].
+ */
+sealed class QrCodeDecodeException(message: String): Exception(message) {
+        
+        class Crypto(message: String) : QrCodeDecodeException(message)
+        
+
+    companion object ErrorHandler : UniffiRustCallStatusErrorHandler<QrCodeDecodeException> {
+        override fun lift(error_buf: RustBuffer.ByValue): QrCodeDecodeException = FfiConverterTypeQrCodeDecodeError.lift(error_buf)
+    }
+}
+
+public object FfiConverterTypeQrCodeDecodeError : FfiConverterRustBuffer<QrCodeDecodeException> {
+    override fun read(buf: ByteBuffer): QrCodeDecodeException {
+        
+            return when(buf.getInt()) {
+            1 -> QrCodeDecodeException.Crypto(FfiConverterString.read(buf))
+            else -> throw RuntimeException("invalid error enum value, something is very wrong!!")
+        }
+        
+    }
+
+    override fun allocationSize(value: QrCodeDecodeException): ULong {
+        return 4UL
+    }
+
+    override fun write(value: QrCodeDecodeException, buf: ByteBuffer) {
+        when(value) {
+            is QrCodeDecodeException.Crypto -> {
+                buf.putInt(1)
+                Unit
+            }
+        }.let { /* this makes the `when` an expression, which ensures it is exhaustive */ }
+    }
+
+}
+
+
+
+/**
+ * Enum describing the progress of the QR-code login.
+ */
+sealed class QrLoginProgress {
+    
+    /**
+     * The login process is starting.
+     */
+    object Starting : QrLoginProgress()
+    
+    
+    /**
+     * We established a secure channel with the other device.
+     */
+    data class EstablishingSecureChannel(
+        /**
+         * The check code that the device should display so the other device
+         * can confirm that the channel is secure as well.
+         */
+        val `checkCode`: kotlin.UByte, 
+        /**
+         * The string representation of the check code, will be guaranteed to
+         * be 2 characters long, preserving the leading zero if the
+         * first digit is a zero.
+         */
+        val `checkCodeString`: kotlin.String) : QrLoginProgress() {
+        companion object
+    }
+    
+    /**
+     * We are waiting for the login and for the OIDC provider to give us an
+     * access token.
+     */
+    data class WaitingForToken(
+        val `userCode`: kotlin.String) : QrLoginProgress() {
+        companion object
+    }
+    
+    /**
+     * The login has successfully finished.
+     */
+    object Done : QrLoginProgress()
+    
+    
+
+    
+    companion object
+}
+
+public object FfiConverterTypeQrLoginProgress : FfiConverterRustBuffer<QrLoginProgress>{
+    override fun read(buf: ByteBuffer): QrLoginProgress {
+        return when(buf.getInt()) {
+            1 -> QrLoginProgress.Starting
+            2 -> QrLoginProgress.EstablishingSecureChannel(
+                FfiConverterUByte.read(buf),
+                FfiConverterString.read(buf),
+                )
+            3 -> QrLoginProgress.WaitingForToken(
+                FfiConverterString.read(buf),
+                )
+            4 -> QrLoginProgress.Done
+            else -> throw RuntimeException("invalid enum value, something is very wrong!!")
+        }
+    }
+
+    override fun allocationSize(value: QrLoginProgress) = when(value) {
+        is QrLoginProgress.Starting -> {
+            // Add the size for the Int that specifies the variant plus the size needed for all fields
+            (
+                4UL
+            )
+        }
+        is QrLoginProgress.EstablishingSecureChannel -> {
+            // Add the size for the Int that specifies the variant plus the size needed for all fields
+            (
+                4UL
+                + FfiConverterUByte.allocationSize(value.`checkCode`)
+                + FfiConverterString.allocationSize(value.`checkCodeString`)
+            )
+        }
+        is QrLoginProgress.WaitingForToken -> {
+            // Add the size for the Int that specifies the variant plus the size needed for all fields
+            (
+                4UL
+                + FfiConverterString.allocationSize(value.`userCode`)
+            )
+        }
+        is QrLoginProgress.Done -> {
+            // Add the size for the Int that specifies the variant plus the size needed for all fields
+            (
+                4UL
+            )
+        }
+    }
+
+    override fun write(value: QrLoginProgress, buf: ByteBuffer) {
+        when(value) {
+            is QrLoginProgress.Starting -> {
+                buf.putInt(1)
+                Unit
+            }
+            is QrLoginProgress.EstablishingSecureChannel -> {
+                buf.putInt(2)
+                FfiConverterUByte.write(value.`checkCode`, buf)
+                FfiConverterString.write(value.`checkCodeString`, buf)
+                Unit
+            }
+            is QrLoginProgress.WaitingForToken -> {
+                buf.putInt(3)
+                FfiConverterString.write(value.`userCode`, buf)
+                Unit
+            }
+            is QrLoginProgress.Done -> {
+                buf.putInt(4)
                 Unit
             }
         }.let { /* this makes the `when` an expression, which ensures it is exhaustive */ }
@@ -27861,6 +28717,32 @@ public object FfiConverterTypeRoomVisibility: FfiConverterRustBuffer<RoomVisibil
 
 
 
+
+enum class RtcApplicationType {
+    
+    CALL;
+    companion object
+}
+
+
+public object FfiConverterTypeRtcApplicationType: FfiConverterRustBuffer<RtcApplicationType> {
+    override fun read(buf: ByteBuffer) = try {
+        RtcApplicationType.values()[buf.getInt() - 1]
+    } catch (e: IndexOutOfBoundsException) {
+        throw RuntimeException("invalid enum value, something is very wrong!!", e)
+    }
+
+    override fun allocationSize(value: RtcApplicationType) = 4UL
+
+    override fun write(value: RtcApplicationType, buf: ByteBuffer) {
+        buf.putInt(value.ordinal + 1)
+    }
+}
+
+
+
+
+
 sealed class SessionVerificationData: Disposable  {
     
     data class Emojis(
@@ -28543,7 +29425,7 @@ sealed class TimelineItemContentKind: Disposable  {
     data class Sticker(
         val `body`: kotlin.String, 
         val `info`: ImageInfo, 
-        val `url`: kotlin.String) : TimelineItemContentKind() {
+        val `source`: MediaSource) : TimelineItemContentKind() {
         companion object
     }
     
@@ -28559,6 +29441,9 @@ sealed class TimelineItemContentKind: Disposable  {
     }
     
     object CallInvite : TimelineItemContentKind()
+    
+    
+    object CallNotify : TimelineItemContentKind()
     
     
     data class UnableToDecrypt(
@@ -28614,7 +29499,7 @@ sealed class TimelineItemContentKind: Disposable  {
     Disposable.destroy(
         this.`body`, 
         this.`info`, 
-        this.`url`)
+        this.`source`)
                 
             }
             is TimelineItemContentKind.Poll -> {
@@ -28630,6 +29515,8 @@ sealed class TimelineItemContentKind: Disposable  {
                 
             }
             is TimelineItemContentKind.CallInvite -> {// Nothing to destroy
+            }
+            is TimelineItemContentKind.CallNotify -> {// Nothing to destroy
             }
             is TimelineItemContentKind.UnableToDecrypt -> {
                 
@@ -28690,7 +29577,7 @@ public object FfiConverterTypeTimelineItemContentKind : FfiConverterRustBuffer<T
             3 -> TimelineItemContentKind.Sticker(
                 FfiConverterString.read(buf),
                 FfiConverterTypeImageInfo.read(buf),
-                FfiConverterString.read(buf),
+                FfiConverterTypeMediaSource.read(buf),
                 )
             4 -> TimelineItemContentKind.Poll(
                 FfiConverterString.read(buf),
@@ -28702,29 +29589,30 @@ public object FfiConverterTypeTimelineItemContentKind : FfiConverterRustBuffer<T
                 FfiConverterBoolean.read(buf),
                 )
             5 -> TimelineItemContentKind.CallInvite
-            6 -> TimelineItemContentKind.UnableToDecrypt(
+            6 -> TimelineItemContentKind.CallNotify
+            7 -> TimelineItemContentKind.UnableToDecrypt(
                 FfiConverterTypeEncryptedMessage.read(buf),
                 )
-            7 -> TimelineItemContentKind.RoomMembership(
+            8 -> TimelineItemContentKind.RoomMembership(
                 FfiConverterString.read(buf),
                 FfiConverterOptionalString.read(buf),
                 FfiConverterOptionalTypeMembershipChange.read(buf),
                 )
-            8 -> TimelineItemContentKind.ProfileChange(
+            9 -> TimelineItemContentKind.ProfileChange(
                 FfiConverterOptionalString.read(buf),
                 FfiConverterOptionalString.read(buf),
                 FfiConverterOptionalString.read(buf),
                 FfiConverterOptionalString.read(buf),
                 )
-            9 -> TimelineItemContentKind.State(
+            10 -> TimelineItemContentKind.State(
                 FfiConverterString.read(buf),
                 FfiConverterTypeOtherState.read(buf),
                 )
-            10 -> TimelineItemContentKind.FailedToParseMessageLike(
+            11 -> TimelineItemContentKind.FailedToParseMessageLike(
                 FfiConverterString.read(buf),
                 FfiConverterString.read(buf),
                 )
-            11 -> TimelineItemContentKind.FailedToParseState(
+            12 -> TimelineItemContentKind.FailedToParseState(
                 FfiConverterString.read(buf),
                 FfiConverterString.read(buf),
                 FfiConverterString.read(buf),
@@ -28752,7 +29640,7 @@ public object FfiConverterTypeTimelineItemContentKind : FfiConverterRustBuffer<T
                 4UL
                 + FfiConverterString.allocationSize(value.`body`)
                 + FfiConverterTypeImageInfo.allocationSize(value.`info`)
-                + FfiConverterString.allocationSize(value.`url`)
+                + FfiConverterTypeMediaSource.allocationSize(value.`source`)
             )
         }
         is TimelineItemContentKind.Poll -> {
@@ -28769,6 +29657,12 @@ public object FfiConverterTypeTimelineItemContentKind : FfiConverterRustBuffer<T
             )
         }
         is TimelineItemContentKind.CallInvite -> {
+            // Add the size for the Int that specifies the variant plus the size needed for all fields
+            (
+                4UL
+            )
+        }
+        is TimelineItemContentKind.CallNotify -> {
             // Add the size for the Int that specifies the variant plus the size needed for all fields
             (
                 4UL
@@ -28841,7 +29735,7 @@ public object FfiConverterTypeTimelineItemContentKind : FfiConverterRustBuffer<T
                 buf.putInt(3)
                 FfiConverterString.write(value.`body`, buf)
                 FfiConverterTypeImageInfo.write(value.`info`, buf)
-                FfiConverterString.write(value.`url`, buf)
+                FfiConverterTypeMediaSource.write(value.`source`, buf)
                 Unit
             }
             is TimelineItemContentKind.Poll -> {
@@ -28859,20 +29753,24 @@ public object FfiConverterTypeTimelineItemContentKind : FfiConverterRustBuffer<T
                 buf.putInt(5)
                 Unit
             }
-            is TimelineItemContentKind.UnableToDecrypt -> {
+            is TimelineItemContentKind.CallNotify -> {
                 buf.putInt(6)
+                Unit
+            }
+            is TimelineItemContentKind.UnableToDecrypt -> {
+                buf.putInt(7)
                 FfiConverterTypeEncryptedMessage.write(value.`msg`, buf)
                 Unit
             }
             is TimelineItemContentKind.RoomMembership -> {
-                buf.putInt(7)
+                buf.putInt(8)
                 FfiConverterString.write(value.`userId`, buf)
                 FfiConverterOptionalString.write(value.`userDisplayName`, buf)
                 FfiConverterOptionalTypeMembershipChange.write(value.`change`, buf)
                 Unit
             }
             is TimelineItemContentKind.ProfileChange -> {
-                buf.putInt(8)
+                buf.putInt(9)
                 FfiConverterOptionalString.write(value.`displayName`, buf)
                 FfiConverterOptionalString.write(value.`prevDisplayName`, buf)
                 FfiConverterOptionalString.write(value.`avatarUrl`, buf)
@@ -28880,19 +29778,19 @@ public object FfiConverterTypeTimelineItemContentKind : FfiConverterRustBuffer<T
                 Unit
             }
             is TimelineItemContentKind.State -> {
-                buf.putInt(9)
+                buf.putInt(10)
                 FfiConverterString.write(value.`stateKey`, buf)
                 FfiConverterTypeOtherState.write(value.`content`, buf)
                 Unit
             }
             is TimelineItemContentKind.FailedToParseMessageLike -> {
-                buf.putInt(10)
+                buf.putInt(11)
                 FfiConverterString.write(value.`eventType`, buf)
                 FfiConverterString.write(value.`error`, buf)
                 Unit
             }
             is TimelineItemContentKind.FailedToParseState -> {
-                buf.putInt(11)
+                buf.putInt(12)
                 FfiConverterString.write(value.`eventType`, buf)
                 FfiConverterString.write(value.`stateKey`, buf)
                 FfiConverterString.write(value.`error`, buf)
@@ -29545,7 +30443,7 @@ public object FfiConverterTypeNotificationSettingsDelegate: FfiConverterCallback
 
 public interface PaginationStatusListener {
     
-    fun `onUpdate`(`status`: PaginatorState)
+    fun `onUpdate`(`status`: LiveBackPaginationStatus)
     
     companion object
 }
@@ -29555,11 +30453,11 @@ public interface PaginationStatusListener {
 // Put the implementation in an object so we don't pollute the top-level namespace
 internal object uniffiCallbackInterfacePaginationStatusListener {
     internal object `onUpdate`: UniffiCallbackInterfacePaginationStatusListenerMethod0 {
-        override fun callback(`uniffiHandle`: Long,`status`: RustBufferPaginatorState.ByValue,`uniffiOutReturn`: Pointer,uniffiCallStatus: UniffiRustCallStatus,) {
+        override fun callback(`uniffiHandle`: Long,`status`: RustBufferLiveBackPaginationStatus.ByValue,`uniffiOutReturn`: Pointer,uniffiCallStatus: UniffiRustCallStatus,) {
             val uniffiObj = FfiConverterTypePaginationStatusListener.handleMap.get(uniffiHandle)
             val makeCall = { ->
                 uniffiObj.`onUpdate`(
-                    FfiConverterTypePaginatorState.lift(`status`),
+                    FfiConverterTypeLiveBackPaginationStatus.lift(`status`),
                 )
             }
             val writeReturn = { _: Unit -> Unit }
@@ -29636,6 +30534,55 @@ internal object uniffiCallbackInterfaceProgressWatcher {
 
 // The ffiConverter which transforms the Callbacks in to handles to pass to Rust.
 public object FfiConverterTypeProgressWatcher: FfiConverterCallbackInterface<ProgressWatcher>()
+
+
+
+
+
+public interface QrLoginProgressListener {
+    
+    fun `onUpdate`(`state`: QrLoginProgress)
+    
+    companion object
+}
+
+
+
+// Put the implementation in an object so we don't pollute the top-level namespace
+internal object uniffiCallbackInterfaceQrLoginProgressListener {
+    internal object `onUpdate`: UniffiCallbackInterfaceQrLoginProgressListenerMethod0 {
+        override fun callback(`uniffiHandle`: Long,`state`: RustBuffer.ByValue,`uniffiOutReturn`: Pointer,uniffiCallStatus: UniffiRustCallStatus,) {
+            val uniffiObj = FfiConverterTypeQrLoginProgressListener.handleMap.get(uniffiHandle)
+            val makeCall = { ->
+                uniffiObj.`onUpdate`(
+                    FfiConverterTypeQrLoginProgress.lift(`state`),
+                )
+            }
+            val writeReturn = { _: Unit -> Unit }
+            uniffiTraitInterfaceCall(uniffiCallStatus, makeCall, writeReturn)
+        }
+    }
+
+    internal object uniffiFree: UniffiCallbackInterfaceFree {
+        override fun callback(handle: Long) {
+            FfiConverterTypeQrLoginProgressListener.handleMap.remove(handle)
+        }
+    }
+
+    internal var vtable = UniffiVTableCallbackInterfaceQrLoginProgressListener.UniffiByValue(
+        `onUpdate`,
+        uniffiFree,
+    )
+
+    // Registers the foreign callback with the Rust side.
+    // This method is generated for each callback interface.
+    internal fun register(lib: UniffiLib) {
+        lib.uniffi_matrix_sdk_ffi_fn_init_callback_vtable_qrloginprogresslistener(vtable)
+    }
+}
+
+// The ffiConverter which transforms the Callbacks in to handles to pass to Rust.
+public object FfiConverterTypeQrLoginProgressListener: FfiConverterCallbackInterface<QrLoginProgressListener>()
 
 
 
@@ -32816,11 +33763,11 @@ public object FfiConverterMapStringSequenceString: FfiConverterRustBuffer<Map<ko
          * Editing and extending the capabilities from this function is also possible,
          * but should only be done as temporal workarounds until this function is
          * adjusted
-         */ fun `getElementCallRequiredPermissions`(): WidgetCapabilities {
+         */ fun `getElementCallRequiredPermissions`(`ownUserId`: kotlin.String): WidgetCapabilities {
             return FfiConverterTypeWidgetCapabilities.lift(
     uniffiRustCall() { _status ->
     UniffiLib.INSTANCE.uniffi_matrix_sdk_ffi_fn_func_get_element_call_required_permissions(
-        _status)
+        FfiConverterString.lower(`ownUserId`),_status)
 }
     )
     }
