@@ -2764,6 +2764,8 @@ internal interface UniffiLib : Library {
     ): Long
     fun uniffi_matrix_sdk_ffi_fn_method_timeline_force_send_read_receipt(`ptr`: Pointer,`receiptType`: RustBuffer.ByValue,`eventId`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
     ): Unit
+    fun uniffi_matrix_sdk_ffi_fn_method_timeline_fully_read_event_id(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
+    ): RustBuffer.ByValue
     fun uniffi_matrix_sdk_ffi_fn_method_timeline_get_event_timeline_item_by_event_id(`ptr`: Pointer,`eventId`: RustBuffer.ByValue,
     ): Long
     fun uniffi_matrix_sdk_ffi_fn_method_timeline_latest_event(`ptr`: Pointer,
@@ -2776,8 +2778,6 @@ internal interface UniffiLib : Library {
     ): Unit
     fun uniffi_matrix_sdk_ffi_fn_method_timeline_retry_send(`ptr`: Pointer,`txnId`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
     ): Unit
-    fun uniffi_matrix_sdk_ffi_fn_method_timeline_sc_dbg_fully_read_event_id(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
-    ): RustBuffer.ByValue
     fun uniffi_matrix_sdk_ffi_fn_method_timeline_send(`ptr`: Pointer,`msg`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
     ): Unit
     fun uniffi_matrix_sdk_ffi_fn_method_timeline_send_audio(`ptr`: Pointer,`url`: RustBuffer.ByValue,`audioInfo`: RustBuffer.ByValue,`caption`: RustBuffer.ByValue,`formattedCaption`: RustBuffer.ByValue,`progressWatcher`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
@@ -3676,6 +3676,8 @@ internal interface UniffiLib : Library {
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_timeline_force_send_read_receipt(
     ): Short
+    fun uniffi_matrix_sdk_ffi_checksum_method_timeline_fully_read_event_id(
+    ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_timeline_get_event_timeline_item_by_event_id(
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_timeline_latest_event(
@@ -3687,8 +3689,6 @@ internal interface UniffiLib : Library {
     fun uniffi_matrix_sdk_ffi_checksum_method_timeline_retry_decryption(
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_timeline_retry_send(
-    ): Short
-    fun uniffi_matrix_sdk_ffi_checksum_method_timeline_sc_dbg_fully_read_event_id(
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_timeline_send(
     ): Short
@@ -4745,6 +4745,9 @@ private fun uniffiCheckApiChecksums(lib: UniffiLib) {
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_timeline_force_send_read_receipt() != 1373.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
+    if (lib.uniffi_matrix_sdk_ffi_checksum_method_timeline_fully_read_event_id() != 40361.toShort()) {
+        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    }
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_timeline_get_event_timeline_item_by_event_id() != 36555.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
@@ -4761,9 +4764,6 @@ private fun uniffiCheckApiChecksums(lib: UniffiLib) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_timeline_retry_send() != 47520.toShort()) {
-        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
-    }
-    if (lib.uniffi_matrix_sdk_ffi_checksum_method_timeline_sc_dbg_fully_read_event_id() != 18797.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_timeline_send() != 27762.toShort()) {
@@ -17652,6 +17652,11 @@ public interface TimelineInterface {
      */
     fun `forceSendReadReceipt`(`receiptType`: ReceiptType, `eventId`: kotlin.String)
     
+    /**
+     * SC: get fully_read marker event ID
+     */
+    fun `fullyReadEventId`(): kotlin.String?
+    
     suspend fun `getEventTimelineItemByEventId`(`eventId`: kotlin.String): EventTimelineItem
     
     suspend fun `latestEvent`(): EventTimelineItem?
@@ -17676,11 +17681,6 @@ public interface TimelineInterface {
     fun `retryDecryption`(`sessionIds`: List<kotlin.String>)
     
     fun `retrySend`(`txnId`: kotlin.String)
-    
-    /**
-     * SC: get fully_read marker ID for debugging
-     */
-    fun `scDbgFullyReadEventId`(): kotlin.String?
     
     fun `send`(`msg`: RoomMessageEventContentWithoutRelation)
     
@@ -17974,6 +17974,21 @@ open class Timeline: Disposable, AutoCloseable, TimelineInterface {
     
 
     
+    /**
+     * SC: get fully_read marker event ID
+     */override fun `fullyReadEventId`(): kotlin.String? {
+            return FfiConverterOptionalString.lift(
+    callWithPointer {
+    uniffiRustCall() { _status ->
+    UniffiLib.INSTANCE.uniffi_matrix_sdk_ffi_fn_method_timeline_fully_read_event_id(
+        it, _status)
+}
+    }
+    )
+    }
+    
+
+    
     @Throws(ClientException::class)
     @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
     override suspend fun `getEventTimelineItemByEventId`(`eventId`: kotlin.String) : EventTimelineItem {
@@ -18090,21 +18105,6 @@ open class Timeline: Disposable, AutoCloseable, TimelineInterface {
 }
     }
     
-    
-
-    
-    /**
-     * SC: get fully_read marker ID for debugging
-     */override fun `scDbgFullyReadEventId`(): kotlin.String? {
-            return FfiConverterOptionalString.lift(
-    callWithPointer {
-    uniffiRustCall() { _status ->
-    UniffiLib.INSTANCE.uniffi_matrix_sdk_ffi_fn_method_timeline_sc_dbg_fully_read_event_id(
-        it, _status)
-}
-    }
-    )
-    }
     
 
     override fun `send`(`msg`: RoomMessageEventContentWithoutRelation)
