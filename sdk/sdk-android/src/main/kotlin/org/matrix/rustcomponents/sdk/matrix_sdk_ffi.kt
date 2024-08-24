@@ -48,19 +48,25 @@ import uniffi.matrix_sdk.FfiConverterTypeRoomPowerLevelChanges
 import uniffi.matrix_sdk.OidcAuthorizationData
 import uniffi.matrix_sdk.RoomMemberRole
 import uniffi.matrix_sdk.RoomPowerLevelChanges
+import uniffi.matrix_sdk_common.FfiConverterTypeShieldStateCode
+import uniffi.matrix_sdk_common.ShieldStateCode
 import uniffi.matrix_sdk_crypto.FfiConverterTypeUtdCause
 import uniffi.matrix_sdk_crypto.UtdCause
 import uniffi.matrix_sdk_ui.EventItemOrigin
 import uniffi.matrix_sdk_ui.FfiConverterTypeEventItemOrigin
 import uniffi.matrix_sdk_ui.FfiConverterTypeLiveBackPaginationStatus
+import uniffi.matrix_sdk_ui.FfiConverterTypeRoomPinnedEventsChange
 import uniffi.matrix_sdk_ui.LiveBackPaginationStatus
+import uniffi.matrix_sdk_ui.RoomPinnedEventsChange
 import uniffi.matrix_sdk.RustBuffer as RustBufferBackupDownloadStrategy
 import uniffi.matrix_sdk.RustBuffer as RustBufferOidcAuthorizationData
 import uniffi.matrix_sdk.RustBuffer as RustBufferRoomMemberRole
 import uniffi.matrix_sdk.RustBuffer as RustBufferRoomPowerLevelChanges
+import uniffi.matrix_sdk_common.RustBuffer as RustBufferShieldStateCode
 import uniffi.matrix_sdk_crypto.RustBuffer as RustBufferUtdCause
 import uniffi.matrix_sdk_ui.RustBuffer as RustBufferEventItemOrigin
 import uniffi.matrix_sdk_ui.RustBuffer as RustBufferLiveBackPaginationStatus
+import uniffi.matrix_sdk_ui.RustBuffer as RustBufferRoomPinnedEventsChange
 
 // This is a helper for safely working with byte buffers returned from the Rust code.
 // A rust-owned buffer is represented by its capacity, its current length, and a
@@ -2097,6 +2103,26 @@ internal open class UniffiVTableCallbackInterfaceWidgetCapabilitiesProvider(
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // A JNA Library to expose the extern-C FFI definitions.
 // This is an implementation detail which will be called internally by the public API.
 
@@ -2305,6 +2331,8 @@ internal interface UniffiLib : Library {
     ): Pointer
     fun uniffi_matrix_sdk_ffi_fn_method_clientbuilder_proxy(`ptr`: Pointer,`url`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
     ): Pointer
+    fun uniffi_matrix_sdk_ffi_fn_method_clientbuilder_request_config(`ptr`: Pointer,`config`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
+    ): Pointer
     fun uniffi_matrix_sdk_ffi_fn_method_clientbuilder_requires_sliding_sync(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
     ): Pointer
     fun uniffi_matrix_sdk_ffi_fn_method_clientbuilder_server_name(`ptr`: Pointer,`serverName`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
@@ -2353,6 +2381,8 @@ internal interface UniffiLib : Library {
     ): RustBuffer.ByValue
     fun uniffi_matrix_sdk_ffi_fn_method_encryption_recovery_state_listener(`ptr`: Pointer,`listener`: Long,uniffi_out_err: UniffiRustCallStatus, 
     ): Pointer
+    fun uniffi_matrix_sdk_ffi_fn_method_encryption_reset_identity(`ptr`: Pointer,
+    ): Long
     fun uniffi_matrix_sdk_ffi_fn_method_encryption_reset_recovery_key(`ptr`: Pointer,
     ): Long
     fun uniffi_matrix_sdk_ffi_fn_method_encryption_verification_state(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
@@ -2413,6 +2443,16 @@ internal interface UniffiLib : Library {
     ): Byte
     fun uniffi_matrix_sdk_ffi_fn_method_homeserverlogindetails_url(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
     ): RustBuffer.ByValue
+    fun uniffi_matrix_sdk_ffi_fn_clone_identityresethandle(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
+    ): Pointer
+    fun uniffi_matrix_sdk_ffi_fn_free_identityresethandle(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
+    ): Unit
+    fun uniffi_matrix_sdk_ffi_fn_method_identityresethandle_auth_type(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
+    ): RustBuffer.ByValue
+    fun uniffi_matrix_sdk_ffi_fn_method_identityresethandle_cancel(`ptr`: Pointer,
+    ): Long
+    fun uniffi_matrix_sdk_ffi_fn_method_identityresethandle_reset(`ptr`: Pointer,`auth`: RustBuffer.ByValue,
+    ): Long
     fun uniffi_matrix_sdk_ffi_fn_clone_mediafilehandle(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
     ): Pointer
     fun uniffi_matrix_sdk_ffi_fn_free_mediafilehandle(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
@@ -2517,6 +2557,8 @@ internal interface UniffiLib : Library {
     ): Long
     fun uniffi_matrix_sdk_ffi_fn_method_room_can_user_kick(`ptr`: Pointer,`userId`: RustBuffer.ByValue,
     ): Long
+    fun uniffi_matrix_sdk_ffi_fn_method_room_can_user_pin_unpin(`ptr`: Pointer,`userId`: RustBuffer.ByValue,
+    ): Long
     fun uniffi_matrix_sdk_ffi_fn_method_room_can_user_redact_other(`ptr`: Pointer,`userId`: RustBuffer.ByValue,
     ): Long
     fun uniffi_matrix_sdk_ffi_fn_method_room_can_user_redact_own(`ptr`: Pointer,`userId`: RustBuffer.ByValue,
@@ -2597,6 +2639,8 @@ internal interface UniffiLib : Library {
     ): RustBuffer.ByValue
     fun uniffi_matrix_sdk_ffi_fn_method_room_own_user_id(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
     ): RustBuffer.ByValue
+    fun uniffi_matrix_sdk_ffi_fn_method_room_pinned_events_timeline(`ptr`: Pointer,`internalIdPrefix`: RustBuffer.ByValue,`maxEventsToLoad`: Short,
+    ): Long
     fun uniffi_matrix_sdk_ffi_fn_method_room_raw_name(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
     ): RustBuffer.ByValue
     fun uniffi_matrix_sdk_ffi_fn_method_room_redact(`ptr`: Pointer,`eventId`: RustBuffer.ByValue,`reason`: RustBuffer.ByValue,
@@ -2717,8 +2761,6 @@ internal interface UniffiLib : Library {
     ): Long
     fun uniffi_matrix_sdk_ffi_fn_method_roomlistitem_room_info(`ptr`: Pointer,
     ): Long
-    fun uniffi_matrix_sdk_ffi_fn_method_roomlistitem_subscribe(`ptr`: Pointer,`settings`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
-    ): Unit
     fun uniffi_matrix_sdk_ffi_fn_clone_roomlistservice(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
     ): Pointer
     fun uniffi_matrix_sdk_ffi_fn_free_roomlistservice(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
@@ -2731,6 +2773,8 @@ internal interface UniffiLib : Library {
     ): Pointer
     fun uniffi_matrix_sdk_ffi_fn_method_roomlistservice_state(`ptr`: Pointer,`listener`: Long,uniffi_out_err: UniffiRustCallStatus, 
     ): Pointer
+    fun uniffi_matrix_sdk_ffi_fn_method_roomlistservice_subscribe_to_rooms(`ptr`: Pointer,`roomIds`: RustBuffer.ByValue,`settings`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
+    ): Unit
     fun uniffi_matrix_sdk_ffi_fn_method_roomlistservice_sync_indicator(`ptr`: Pointer,`delayBeforeShowingInMs`: Int,`delayBeforeHidingInMs`: Int,`listener`: Long,uniffi_out_err: UniffiRustCallStatus, 
     ): Pointer
     fun uniffi_matrix_sdk_ffi_fn_clone_roommembersiterator(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
@@ -2867,6 +2911,8 @@ internal interface UniffiLib : Library {
     ): Long
     fun uniffi_matrix_sdk_ffi_fn_method_timeline_paginate_backwards(`ptr`: Pointer,`numEvents`: Short,
     ): Long
+    fun uniffi_matrix_sdk_ffi_fn_method_timeline_pin_event(`ptr`: Pointer,`eventId`: RustBuffer.ByValue,
+    ): Long
     fun uniffi_matrix_sdk_ffi_fn_method_timeline_redact_event(`ptr`: Pointer,`item`: Pointer,`reason`: RustBuffer.ByValue,
     ): Long
     fun uniffi_matrix_sdk_ffi_fn_method_timeline_retry_decryption(`ptr`: Pointer,`sessionIds`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
@@ -2894,6 +2940,8 @@ internal interface UniffiLib : Library {
     fun uniffi_matrix_sdk_ffi_fn_method_timeline_subscribe_to_back_pagination_status(`ptr`: Pointer,`listener`: Long,
     ): Long
     fun uniffi_matrix_sdk_ffi_fn_method_timeline_toggle_reaction(`ptr`: Pointer,`eventId`: RustBuffer.ByValue,`key`: RustBuffer.ByValue,
+    ): Long
+    fun uniffi_matrix_sdk_ffi_fn_method_timeline_unpin_event(`ptr`: Pointer,`eventId`: RustBuffer.ByValue,
     ): Long
     fun uniffi_matrix_sdk_ffi_fn_clone_timelinediff(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
     ): Pointer
@@ -3365,6 +3413,8 @@ internal interface UniffiLib : Library {
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_clientbuilder_proxy(
     ): Short
+    fun uniffi_matrix_sdk_ffi_checksum_method_clientbuilder_request_config(
+    ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_clientbuilder_requires_sliding_sync(
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_clientbuilder_server_name(
@@ -3408,6 +3458,8 @@ internal interface UniffiLib : Library {
     fun uniffi_matrix_sdk_ffi_checksum_method_encryption_recovery_state(
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_encryption_recovery_state_listener(
+    ): Short
+    fun uniffi_matrix_sdk_ffi_checksum_method_encryption_reset_identity(
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_encryption_reset_recovery_key(
     ): Short
@@ -3460,6 +3512,12 @@ internal interface UniffiLib : Library {
     fun uniffi_matrix_sdk_ffi_checksum_method_homeserverlogindetails_supports_password_login(
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_homeserverlogindetails_url(
+    ): Short
+    fun uniffi_matrix_sdk_ffi_checksum_method_identityresethandle_auth_type(
+    ): Short
+    fun uniffi_matrix_sdk_ffi_checksum_method_identityresethandle_cancel(
+    ): Short
+    fun uniffi_matrix_sdk_ffi_checksum_method_identityresethandle_reset(
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_mediafilehandle_path(
     ): Short
@@ -3538,6 +3596,8 @@ internal interface UniffiLib : Library {
     fun uniffi_matrix_sdk_ffi_checksum_method_room_can_user_invite(
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_room_can_user_kick(
+    ): Short
+    fun uniffi_matrix_sdk_ffi_checksum_method_room_can_user_pin_unpin(
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_room_can_user_redact_other(
     ): Short
@@ -3618,6 +3678,8 @@ internal interface UniffiLib : Library {
     fun uniffi_matrix_sdk_ffi_checksum_method_room_membership(
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_room_own_user_id(
+    ): Short
+    fun uniffi_matrix_sdk_ffi_checksum_method_room_pinned_events_timeline(
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_room_raw_name(
     ): Short
@@ -3719,8 +3781,6 @@ internal interface UniffiLib : Library {
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_roomlistitem_room_info(
     ): Short
-    fun uniffi_matrix_sdk_ffi_checksum_method_roomlistitem_subscribe(
-    ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_roomlistservice_all_rooms(
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_roomlistservice_all_spaces(
@@ -3728,6 +3788,8 @@ internal interface UniffiLib : Library {
     fun uniffi_matrix_sdk_ffi_checksum_method_roomlistservice_room(
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_roomlistservice_state(
+    ): Short
+    fun uniffi_matrix_sdk_ffi_checksum_method_roomlistservice_subscribe_to_rooms(
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_roomlistservice_sync_indicator(
     ): Short
@@ -3817,6 +3879,8 @@ internal interface UniffiLib : Library {
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_timeline_paginate_backwards(
     ): Short
+    fun uniffi_matrix_sdk_ffi_checksum_method_timeline_pin_event(
+    ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_timeline_redact_event(
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_timeline_retry_decryption(
@@ -3844,6 +3908,8 @@ internal interface UniffiLib : Library {
     fun uniffi_matrix_sdk_ffi_checksum_method_timeline_subscribe_to_back_pagination_status(
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_timeline_toggle_reaction(
+    ): Short
+    fun uniffi_matrix_sdk_ffi_checksum_method_timeline_unpin_event(
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_timelinediff_append(
     ): Short
@@ -4264,6 +4330,9 @@ private fun uniffiCheckApiChecksums(lib: UniffiLib) {
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_clientbuilder_proxy() != 5659.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
+    if (lib.uniffi_matrix_sdk_ffi_checksum_method_clientbuilder_request_config() != 58783.toShort()) {
+        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    }
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_clientbuilder_requires_sliding_sync() != 18165.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
@@ -4328,6 +4397,9 @@ private fun uniffiCheckApiChecksums(lib: UniffiLib) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_encryption_recovery_state_listener() != 36612.toShort()) {
+        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    }
+    if (lib.uniffi_matrix_sdk_ffi_checksum_method_encryption_reset_identity() != 13780.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_encryption_reset_recovery_key() != 20380.toShort()) {
@@ -4406,6 +4478,15 @@ private fun uniffiCheckApiChecksums(lib: UniffiLib) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_homeserverlogindetails_url() != 61326.toShort()) {
+        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    }
+    if (lib.uniffi_matrix_sdk_ffi_checksum_method_identityresethandle_auth_type() != 43501.toShort()) {
+        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    }
+    if (lib.uniffi_matrix_sdk_ffi_checksum_method_identityresethandle_cancel() != 57622.toShort()) {
+        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    }
+    if (lib.uniffi_matrix_sdk_ffi_checksum_method_identityresethandle_reset() != 11997.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_mediafilehandle_path() != 16357.toShort()) {
@@ -4523,6 +4604,9 @@ private fun uniffiCheckApiChecksums(lib: UniffiLib) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_room_can_user_kick() != 12773.toShort()) {
+        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    }
+    if (lib.uniffi_matrix_sdk_ffi_checksum_method_room_can_user_pin_unpin() != 8341.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_room_can_user_redact_other() != 13274.toShort()) {
@@ -4643,6 +4727,9 @@ private fun uniffiCheckApiChecksums(lib: UniffiLib) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_room_own_user_id() != 39510.toShort()) {
+        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    }
+    if (lib.uniffi_matrix_sdk_ffi_checksum_method_room_pinned_events_timeline() != 4133.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_room_raw_name() != 15453.toShort()) {
@@ -4795,9 +4882,6 @@ private fun uniffiCheckApiChecksums(lib: UniffiLib) {
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_roomlistitem_room_info() != 32985.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
-    if (lib.uniffi_matrix_sdk_ffi_checksum_method_roomlistitem_subscribe() != 60003.toShort()) {
-        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
-    }
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_roomlistservice_all_rooms() != 49704.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
@@ -4808,6 +4892,9 @@ private fun uniffiCheckApiChecksums(lib: UniffiLib) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_roomlistservice_state() != 64650.toShort()) {
+        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    }
+    if (lib.uniffi_matrix_sdk_ffi_checksum_method_roomlistservice_subscribe_to_rooms() != 21360.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_roomlistservice_sync_indicator() != 16821.toShort()) {
@@ -4942,6 +5029,9 @@ private fun uniffiCheckApiChecksums(lib: UniffiLib) {
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_timeline_paginate_backwards() != 65175.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
+    if (lib.uniffi_matrix_sdk_ffi_checksum_method_timeline_pin_event() != 41687.toShort()) {
+        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    }
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_timeline_redact_event() != 8574.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
@@ -4982,6 +5072,9 @@ private fun uniffiCheckApiChecksums(lib: UniffiLib) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_timeline_toggle_reaction() != 10294.toShort()) {
+        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    }
+    if (lib.uniffi_matrix_sdk_ffi_checksum_method_timeline_unpin_event() != 52414.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_timelinediff_append() != 8453.toShort()) {
@@ -7354,6 +7447,11 @@ public interface ClientBuilderInterface {
     
     fun `proxy`(`url`: kotlin.String): ClientBuilder
     
+    /**
+     * Add a default request config to this client.
+     */
+    fun `requestConfig`(`config`: RequestConfig): ClientBuilder
+    
     fun `requiresSlidingSync`(): ClientBuilder
     
     fun `serverName`(`serverName`: kotlin.String): ClientBuilder
@@ -7672,6 +7770,21 @@ open class ClientBuilder: Disposable, AutoCloseable, ClientBuilderInterface {
     }
     
 
+    
+    /**
+     * Add a default request config to this client.
+     */override fun `requestConfig`(`config`: RequestConfig): ClientBuilder {
+            return FfiConverterTypeClientBuilder.lift(
+    callWithPointer {
+    uniffiRustCall() { _status ->
+    UniffiLib.INSTANCE.uniffi_matrix_sdk_ffi_fn_method_clientbuilder_request_config(
+        it, FfiConverterTypeRequestConfig.lower(`config`),_status)
+}
+    }
+    )
+    }
+    
+
     override fun `requiresSlidingSync`(): ClientBuilder {
             return FfiConverterTypeClientBuilder.lift(
     callWithPointer {
@@ -7965,6 +8078,12 @@ public interface EncryptionInterface {
     fun `recoveryState`(): RecoveryState
     
     fun `recoveryStateListener`(`listener`: RecoveryStateListener): TaskHandle
+    
+    /**
+     * Completely reset the current user's crypto identity: reset the cross
+     * signing keys, delete the existing backup and recovery key.
+     */
+    suspend fun `resetIdentity`(): IdentityResetHandle?
     
     suspend fun `resetRecoveryKey`(): kotlin.String
     
@@ -8320,6 +8439,31 @@ open class Encryption: Disposable, AutoCloseable, EncryptionInterface {
     )
     }
     
+
+    
+    /**
+     * Completely reset the current user's crypto identity: reset the cross
+     * signing keys, delete the existing backup and recovery key.
+     */
+    @Throws(ClientException::class)
+    @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
+    override suspend fun `resetIdentity`() : IdentityResetHandle? {
+        return uniffiRustCallAsync(
+        callWithPointer { thisPtr ->
+            UniffiLib.INSTANCE.uniffi_matrix_sdk_ffi_fn_method_encryption_reset_identity(
+                thisPtr,
+                
+            )
+        },
+        { future, callback, continuation -> UniffiLib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_poll_rust_buffer(future, callback, continuation) },
+        { future, continuation -> UniffiLib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_complete_rust_buffer(future, continuation) },
+        { future -> UniffiLib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_free_rust_buffer(future) },
+        // lift function
+        { FfiConverterOptionalTypeIdentityResetHandle.lift(it) },
+        // Error FFI converter
+        ClientException.ErrorHandler,
+    )
+    }
 
     
     @Throws(RecoveryException::class)
@@ -9204,6 +9348,311 @@ public object FfiConverterTypeHomeserverLoginDetails: FfiConverter<HomeserverLog
     override fun allocationSize(value: HomeserverLoginDetails) = 8UL
 
     override fun write(value: HomeserverLoginDetails, buf: ByteBuffer) {
+        // The Rust code always expects pointers written as 8 bytes,
+        // and will fail to compile if they don't fit.
+        buf.putLong(Pointer.nativeValue(lower(value)))
+    }
+}
+
+
+// This template implements a class for working with a Rust struct via a Pointer/Arc<T>
+// to the live Rust struct on the other side of the FFI.
+//
+// Each instance implements core operations for working with the Rust `Arc<T>` and the
+// Kotlin Pointer to work with the live Rust struct on the other side of the FFI.
+//
+// There's some subtlety here, because we have to be careful not to operate on a Rust
+// struct after it has been dropped, and because we must expose a public API for freeing
+// theq Kotlin wrapper object in lieu of reliable finalizers. The core requirements are:
+//
+//   * Each instance holds an opaque pointer to the underlying Rust struct.
+//     Method calls need to read this pointer from the object's state and pass it in to
+//     the Rust FFI.
+//
+//   * When an instance is no longer needed, its pointer should be passed to a
+//     special destructor function provided by the Rust FFI, which will drop the
+//     underlying Rust struct.
+//
+//   * Given an instance, calling code is expected to call the special
+//     `destroy` method in order to free it after use, either by calling it explicitly
+//     or by using a higher-level helper like the `use` method. Failing to do so risks
+//     leaking the underlying Rust struct.
+//
+//   * We can't assume that calling code will do the right thing, and must be prepared
+//     to handle Kotlin method calls executing concurrently with or even after a call to
+//     `destroy`, and to handle multiple (possibly concurrent!) calls to `destroy`.
+//
+//   * We must never allow Rust code to operate on the underlying Rust struct after
+//     the destructor has been called, and must never call the destructor more than once.
+//     Doing so may trigger memory unsafety.
+//
+//   * To mitigate many of the risks of leaking memory and use-after-free unsafety, a `Cleaner`
+//     is implemented to call the destructor when the Kotlin object becomes unreachable.
+//     This is done in a background thread. This is not a panacea, and client code should be aware that
+//      1. the thread may starve if some there are objects that have poorly performing
+//     `drop` methods or do significant work in their `drop` methods.
+//      2. the thread is shared across the whole library. This can be tuned by using `android_cleaner = true`,
+//         or `android = true` in the [`kotlin` section of the `uniffi.toml` file](https://mozilla.github.io/uniffi-rs/kotlin/configuration.html).
+//
+// If we try to implement this with mutual exclusion on access to the pointer, there is the
+// possibility of a race between a method call and a concurrent call to `destroy`:
+//
+//    * Thread A starts a method call, reads the value of the pointer, but is interrupted
+//      before it can pass the pointer over the FFI to Rust.
+//    * Thread B calls `destroy` and frees the underlying Rust struct.
+//    * Thread A resumes, passing the already-read pointer value to Rust and triggering
+//      a use-after-free.
+//
+// One possible solution would be to use a `ReadWriteLock`, with each method call taking
+// a read lock (and thus allowed to run concurrently) and the special `destroy` method
+// taking a write lock (and thus blocking on live method calls). However, we aim not to
+// generate methods with any hidden blocking semantics, and a `destroy` method that might
+// block if called incorrectly seems to meet that bar.
+//
+// So, we achieve our goals by giving each instance an associated `AtomicLong` counter to track
+// the number of in-flight method calls, and an `AtomicBoolean` flag to indicate whether `destroy`
+// has been called. These are updated according to the following rules:
+//
+//    * The initial value of the counter is 1, indicating a live object with no in-flight calls.
+//      The initial value for the flag is false.
+//
+//    * At the start of each method call, we atomically check the counter.
+//      If it is 0 then the underlying Rust struct has already been destroyed and the call is aborted.
+//      If it is nonzero them we atomically increment it by 1 and proceed with the method call.
+//
+//    * At the end of each method call, we atomically decrement and check the counter.
+//      If it has reached zero then we destroy the underlying Rust struct.
+//
+//    * When `destroy` is called, we atomically flip the flag from false to true.
+//      If the flag was already true we silently fail.
+//      Otherwise we atomically decrement and check the counter.
+//      If it has reached zero then we destroy the underlying Rust struct.
+//
+// Astute readers may observe that this all sounds very similar to the way that Rust's `Arc<T>` works,
+// and indeed it is, with the addition of a flag to guard against multiple calls to `destroy`.
+//
+// The overall effect is that the underlying Rust struct is destroyed only when `destroy` has been
+// called *and* all in-flight method calls have completed, avoiding violating any of the expectations
+// of the underlying Rust code.
+//
+// This makes a cleaner a better alternative to _not_ calling `destroy()` as
+// and when the object is finished with, but the abstraction is not perfect: if the Rust object's `drop`
+// method is slow, and/or there are many objects to cleanup, and it's on a low end Android device, then the cleaner
+// thread may be starved, and the app will leak memory.
+//
+// In this case, `destroy`ing manually may be a better solution.
+//
+// The cleaner can live side by side with the manual calling of `destroy`. In the order of responsiveness, uniffi objects
+// with Rust peers are reclaimed:
+//
+// 1. By calling the `destroy` method of the object, which calls `rustObject.free()`. If that doesn't happen:
+// 2. When the object becomes unreachable, AND the Cleaner thread gets to call `rustObject.free()`. If the thread is starved then:
+// 3. The memory is reclaimed when the process terminates.
+//
+// [1] https://stackoverflow.com/questions/24376768/can-java-finalize-an-object-when-it-is-still-in-scope/24380219
+//
+
+
+public interface IdentityResetHandleInterface {
+    
+    /**
+     * Get the underlying [`CrossSigningResetAuthType`] this identity reset
+     * process is using.
+     */
+    fun `authType`(): CrossSigningResetAuthType
+    
+    suspend fun `cancel`()
+    
+    /**
+     * This method starts the identity reset process and
+     * will go through the following steps:
+     *
+     * 1. Disable backing up room keys and delete the active backup
+     * 2. Disable recovery and delete secret storage
+     * 3. Go through the cross-signing key reset flow
+     * 4. Finally, re-enable key backups only if they were enabled before
+     */
+    suspend fun `reset`(`auth`: AuthData?)
+    
+    companion object
+}
+
+open class IdentityResetHandle: Disposable, AutoCloseable, IdentityResetHandleInterface {
+
+    constructor(pointer: Pointer) {
+        this.pointer = pointer
+        this.cleanable = UniffiLib.CLEANER.register(this, UniffiCleanAction(pointer))
+    }
+
+    /**
+     * This constructor can be used to instantiate a fake object. Only used for tests. Any
+     * attempt to actually use an object constructed this way will fail as there is no
+     * connected Rust object.
+     */
+    @Suppress("UNUSED_PARAMETER")
+    constructor(noPointer: NoPointer) {
+        this.pointer = null
+        this.cleanable = UniffiLib.CLEANER.register(this, UniffiCleanAction(pointer))
+    }
+
+    protected val pointer: Pointer?
+    protected val cleanable: UniffiCleaner.Cleanable
+
+    private val wasDestroyed = AtomicBoolean(false)
+    private val callCounter = AtomicLong(1)
+
+    override fun destroy() {
+        // Only allow a single call to this method.
+        // TODO: maybe we should log a warning if called more than once?
+        if (this.wasDestroyed.compareAndSet(false, true)) {
+            // This decrement always matches the initial count of 1 given at creation time.
+            if (this.callCounter.decrementAndGet() == 0L) {
+                cleanable.clean()
+            }
+        }
+    }
+
+    @Synchronized
+    override fun close() {
+        this.destroy()
+    }
+
+    internal inline fun <R> callWithPointer(block: (ptr: Pointer) -> R): R {
+        // Check and increment the call counter, to keep the object alive.
+        // This needs a compare-and-set retry loop in case of concurrent updates.
+        do {
+            val c = this.callCounter.get()
+            if (c == 0L) {
+                throw IllegalStateException("${this.javaClass.simpleName} object has already been destroyed")
+            }
+            if (c == Long.MAX_VALUE) {
+                throw IllegalStateException("${this.javaClass.simpleName} call counter would overflow")
+            }
+        } while (! this.callCounter.compareAndSet(c, c + 1L))
+        // Now we can safely do the method call without the pointer being freed concurrently.
+        try {
+            return block(this.uniffiClonePointer())
+        } finally {
+            // This decrement always matches the increment we performed above.
+            if (this.callCounter.decrementAndGet() == 0L) {
+                cleanable.clean()
+            }
+        }
+    }
+
+    // Use a static inner class instead of a closure so as not to accidentally
+    // capture `this` as part of the cleanable's action.
+    private class UniffiCleanAction(private val pointer: Pointer?) : Runnable {
+        override fun run() {
+            pointer?.let { ptr ->
+                uniffiRustCall { status ->
+                    UniffiLib.INSTANCE.uniffi_matrix_sdk_ffi_fn_free_identityresethandle(ptr, status)
+                }
+            }
+        }
+    }
+
+    fun uniffiClonePointer(): Pointer {
+        return uniffiRustCall() { status ->
+            UniffiLib.INSTANCE.uniffi_matrix_sdk_ffi_fn_clone_identityresethandle(pointer!!, status)
+        }
+    }
+
+    
+    /**
+     * Get the underlying [`CrossSigningResetAuthType`] this identity reset
+     * process is using.
+     */override fun `authType`(): CrossSigningResetAuthType {
+            return FfiConverterTypeCrossSigningResetAuthType.lift(
+    callWithPointer {
+    uniffiRustCall() { _status ->
+    UniffiLib.INSTANCE.uniffi_matrix_sdk_ffi_fn_method_identityresethandle_auth_type(
+        it, _status)
+}
+    }
+    )
+    }
+    
+
+    
+    @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
+    override suspend fun `cancel`() {
+        return uniffiRustCallAsync(
+        callWithPointer { thisPtr ->
+            UniffiLib.INSTANCE.uniffi_matrix_sdk_ffi_fn_method_identityresethandle_cancel(
+                thisPtr,
+                
+            )
+        },
+        { future, callback, continuation -> UniffiLib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_poll_void(future, callback, continuation) },
+        { future, continuation -> UniffiLib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_complete_void(future, continuation) },
+        { future -> UniffiLib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_free_void(future) },
+        // lift function
+        { Unit },
+        
+        // Error FFI converter
+        UniffiNullRustCallStatusErrorHandler,
+    )
+    }
+
+    
+    /**
+     * This method starts the identity reset process and
+     * will go through the following steps:
+     *
+     * 1. Disable backing up room keys and delete the active backup
+     * 2. Disable recovery and delete secret storage
+     * 3. Go through the cross-signing key reset flow
+     * 4. Finally, re-enable key backups only if they were enabled before
+     */
+    @Throws(ClientException::class)
+    @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
+    override suspend fun `reset`(`auth`: AuthData?) {
+        return uniffiRustCallAsync(
+        callWithPointer { thisPtr ->
+            UniffiLib.INSTANCE.uniffi_matrix_sdk_ffi_fn_method_identityresethandle_reset(
+                thisPtr,
+                FfiConverterOptionalTypeAuthData.lower(`auth`),
+            )
+        },
+        { future, callback, continuation -> UniffiLib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_poll_void(future, callback, continuation) },
+        { future, continuation -> UniffiLib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_complete_void(future, continuation) },
+        { future -> UniffiLib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_free_void(future) },
+        // lift function
+        { Unit },
+        
+        // Error FFI converter
+        ClientException.ErrorHandler,
+    )
+    }
+
+    
+
+    
+    
+    companion object
+    
+}
+
+public object FfiConverterTypeIdentityResetHandle: FfiConverter<IdentityResetHandle, Pointer> {
+
+    override fun lower(value: IdentityResetHandle): Pointer {
+        return value.uniffiClonePointer()
+    }
+
+    override fun lift(value: Pointer): IdentityResetHandle {
+        return IdentityResetHandle(value)
+    }
+
+    override fun read(buf: ByteBuffer): IdentityResetHandle {
+        // The Rust code always writes pointers as 8 bytes, and will
+        // fail to compile if they don't fit.
+        return lift(Pointer(buf.getLong()))
+    }
+
+    override fun allocationSize(value: IdentityResetHandle) = 8UL
+
+    override fun write(value: IdentityResetHandle, buf: ByteBuffer) {
         // The Rust code always expects pointers written as 8 bytes,
         // and will fail to compile if they don't fit.
         buf.putLong(Pointer.nativeValue(lower(value)))
@@ -11518,6 +11967,8 @@ public interface RoomInterface {
     
     suspend fun `canUserKick`(`userId`: kotlin.String): kotlin.Boolean
     
+    suspend fun `canUserPinUnpin`(`userId`: kotlin.String): kotlin.Boolean
+    
     suspend fun `canUserRedactOther`(`userId`: kotlin.String): kotlin.Boolean
     
     suspend fun `canUserRedactOwn`(`userId`: kotlin.String): kotlin.Boolean
@@ -11664,6 +12115,8 @@ public interface RoomInterface {
     fun `membership`(): Membership
     
     fun `ownUserId`(): kotlin.String
+    
+    suspend fun `pinnedEventsTimeline`(`internalIdPrefix`: kotlin.String?, `maxEventsToLoad`: kotlin.UShort): Timeline
     
     /**
      * The raw name as present in the room state event.
@@ -12056,6 +12509,27 @@ open class Room: Disposable, AutoCloseable, RoomInterface {
         return uniffiRustCallAsync(
         callWithPointer { thisPtr ->
             UniffiLib.INSTANCE.uniffi_matrix_sdk_ffi_fn_method_room_can_user_kick(
+                thisPtr,
+                FfiConverterString.lower(`userId`),
+            )
+        },
+        { future, callback, continuation -> UniffiLib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_poll_i8(future, callback, continuation) },
+        { future, continuation -> UniffiLib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_complete_i8(future, continuation) },
+        { future -> UniffiLib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_free_i8(future) },
+        // lift function
+        { FfiConverterBoolean.lift(it) },
+        // Error FFI converter
+        ClientException.ErrorHandler,
+    )
+    }
+
+    
+    @Throws(ClientException::class)
+    @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
+    override suspend fun `canUserPinUnpin`(`userId`: kotlin.String) : kotlin.Boolean {
+        return uniffiRustCallAsync(
+        callWithPointer { thisPtr ->
+            UniffiLib.INSTANCE.uniffi_matrix_sdk_ffi_fn_method_room_can_user_pin_unpin(
                 thisPtr,
                 FfiConverterString.lower(`userId`),
             )
@@ -12840,6 +13314,27 @@ open class Room: Disposable, AutoCloseable, RoomInterface {
     )
     }
     
+
+    
+    @Throws(ClientException::class)
+    @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
+    override suspend fun `pinnedEventsTimeline`(`internalIdPrefix`: kotlin.String?, `maxEventsToLoad`: kotlin.UShort) : Timeline {
+        return uniffiRustCallAsync(
+        callWithPointer { thisPtr ->
+            UniffiLib.INSTANCE.uniffi_matrix_sdk_ffi_fn_method_room_pinned_events_timeline(
+                thisPtr,
+                FfiConverterOptionalString.lower(`internalIdPrefix`),FfiConverterUShort.lower(`maxEventsToLoad`),
+            )
+        },
+        { future, callback, continuation -> UniffiLib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_poll_pointer(future, callback, continuation) },
+        { future, continuation -> UniffiLib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_complete_pointer(future, continuation) },
+        { future -> UniffiLib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_free_pointer(future) },
+        // lift function
+        { FfiConverterTypeTimeline.lift(it) },
+        // Error FFI converter
+        ClientException.ErrorHandler,
+    )
+    }
 
     
     /**
@@ -14722,8 +15217,6 @@ public interface RoomListItemInterface {
     
     suspend fun `roomInfo`(): RoomInfo
     
-    fun `subscribe`(`settings`: RoomSubscription?)
-    
     companion object
 }
 
@@ -15005,17 +15498,6 @@ open class RoomListItem: Disposable, AutoCloseable, RoomListItemInterface {
     )
     }
 
-    override fun `subscribe`(`settings`: RoomSubscription?)
-        = 
-    callWithPointer {
-    uniffiRustCall() { _status ->
-    UniffiLib.INSTANCE.uniffi_matrix_sdk_ffi_fn_method_roomlistitem_subscribe(
-        it, FfiConverterOptionalTypeRoomSubscription.lower(`settings`),_status)
-}
-    }
-    
-    
-
     
 
     
@@ -15157,6 +15639,8 @@ public interface RoomListServiceInterface {
     fun `room`(`roomId`: kotlin.String): RoomListItem
     
     fun `state`(`listener`: RoomListServiceStateListener): TaskHandle
+    
+    fun `subscribeToRooms`(`roomIds`: List<kotlin.String>, `settings`: RoomSubscription?)
     
     fun `syncIndicator`(`delayBeforeShowingInMs`: kotlin.UInt, `delayBeforeHidingInMs`: kotlin.UInt, `listener`: RoomListServiceSyncIndicatorListener): TaskHandle
     
@@ -15309,6 +15793,18 @@ open class RoomListService: Disposable, AutoCloseable, RoomListServiceInterface 
     }
     )
     }
+    
+
+    
+    @Throws(RoomListException::class)override fun `subscribeToRooms`(`roomIds`: List<kotlin.String>, `settings`: RoomSubscription?)
+        = 
+    callWithPointer {
+    uniffiRustCallWithError(RoomListException) { _status ->
+    UniffiLib.INSTANCE.uniffi_matrix_sdk_ffi_fn_method_roomlistservice_subscribe_to_rooms(
+        it, FfiConverterSequenceString.lower(`roomIds`),FfiConverterOptionalTypeRoomSubscription.lower(`settings`),_status)
+}
+    }
+    
     
 
     override fun `syncIndicator`(`delayBeforeShowingInMs`: kotlin.UInt, `delayBeforeHidingInMs`: kotlin.UInt, `listener`: RoomListServiceSyncIndicatorListener): TaskHandle {
@@ -18574,6 +19070,15 @@ public interface TimelineInterface {
     suspend fun `paginateBackwards`(`numEvents`: kotlin.UShort): kotlin.Boolean
     
     /**
+     * Adds a new pinned event by sending an updated `m.room.pinned_events`
+     * event containing the new event id.
+     *
+     * Returns `true` if we sent the request, `false` if the event was already
+     * pinned.
+     */
+    suspend fun `pinEvent`(`eventId`: kotlin.String): kotlin.Boolean
+    
+    /**
      * Redacts an event from the timeline.
      *
      * Only works for events that exist as timeline items.
@@ -18619,6 +19124,15 @@ public interface TimelineInterface {
     suspend fun `subscribeToBackPaginationStatus`(`listener`: PaginationStatusListener): TaskHandle
     
     suspend fun `toggleReaction`(`eventId`: kotlin.String, `key`: kotlin.String)
+    
+    /**
+     * Adds a new pinned event by sending an updated `m.room.pinned_events`
+     * event without the event id we want to remove.
+     *
+     * Returns `true` if we sent the request, `false` if the event wasn't
+     * pinned
+     */
+    suspend fun `unpinEvent`(`eventId`: kotlin.String): kotlin.Boolean
     
     companion object
 }
@@ -19056,6 +19570,34 @@ open class Timeline: Disposable, AutoCloseable, TimelineInterface {
 
     
     /**
+     * Adds a new pinned event by sending an updated `m.room.pinned_events`
+     * event containing the new event id.
+     *
+     * Returns `true` if we sent the request, `false` if the event was already
+     * pinned.
+     */
+    @Throws(ClientException::class)
+    @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
+    override suspend fun `pinEvent`(`eventId`: kotlin.String) : kotlin.Boolean {
+        return uniffiRustCallAsync(
+        callWithPointer { thisPtr ->
+            UniffiLib.INSTANCE.uniffi_matrix_sdk_ffi_fn_method_timeline_pin_event(
+                thisPtr,
+                FfiConverterString.lower(`eventId`),
+            )
+        },
+        { future, callback, continuation -> UniffiLib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_poll_i8(future, callback, continuation) },
+        { future, continuation -> UniffiLib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_complete_i8(future, continuation) },
+        { future -> UniffiLib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_free_i8(future) },
+        // lift function
+        { FfiConverterBoolean.lift(it) },
+        // Error FFI converter
+        ClientException.ErrorHandler,
+    )
+    }
+
+    
+    /**
      * Redacts an event from the timeline.
      *
      * Only works for events that exist as timeline items.
@@ -19311,6 +19853,34 @@ open class Timeline: Disposable, AutoCloseable, TimelineInterface {
         // lift function
         { Unit },
         
+        // Error FFI converter
+        ClientException.ErrorHandler,
+    )
+    }
+
+    
+    /**
+     * Adds a new pinned event by sending an updated `m.room.pinned_events`
+     * event without the event id we want to remove.
+     *
+     * Returns `true` if we sent the request, `false` if the event wasn't
+     * pinned
+     */
+    @Throws(ClientException::class)
+    @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
+    override suspend fun `unpinEvent`(`eventId`: kotlin.String) : kotlin.Boolean {
+        return uniffiRustCallAsync(
+        callWithPointer { thisPtr ->
+            UniffiLib.INSTANCE.uniffi_matrix_sdk_ffi_fn_method_timeline_unpin_event(
+                thisPtr,
+                FfiConverterString.lower(`eventId`),
+            )
+        },
+        { future, callback, continuation -> UniffiLib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_poll_i8(future, callback, continuation) },
+        { future, continuation -> UniffiLib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_complete_i8(future, continuation) },
+        { future -> UniffiLib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_free_i8(future) },
+        // lift function
+        { FfiConverterBoolean.lift(it) },
         // Error FFI converter
         ClientException.ErrorHandler,
     )
@@ -21617,6 +22187,41 @@ public object FfiConverterTypeAudioMessageContent: FfiConverterRustBuffer<AudioM
 
 
 
+data class AuthDataPasswordDetails (
+    /**
+     * One of the user's identifiers.
+     */
+    var `identifier`: kotlin.String, 
+    /**
+     * The plaintext password.
+     */
+    var `password`: kotlin.String
+) {
+    
+    companion object
+}
+
+public object FfiConverterTypeAuthDataPasswordDetails: FfiConverterRustBuffer<AuthDataPasswordDetails> {
+    override fun read(buf: ByteBuffer): AuthDataPasswordDetails {
+        return AuthDataPasswordDetails(
+            FfiConverterString.read(buf),
+            FfiConverterString.read(buf),
+        )
+    }
+
+    override fun allocationSize(value: AuthDataPasswordDetails) = (
+            FfiConverterString.allocationSize(value.`identifier`) +
+            FfiConverterString.allocationSize(value.`password`)
+    )
+
+    override fun write(value: AuthDataPasswordDetails, buf: ByteBuffer) {
+            FfiConverterString.write(value.`identifier`, buf)
+            FfiConverterString.write(value.`password`, buf)
+    }
+}
+
+
+
 data class ClientProperties (
     /**
      * The client_id provides the widget with the option to behave differently
@@ -22638,6 +23243,42 @@ public object FfiConverterTypeOidcConfiguration: FfiConverterRustBuffer<OidcConf
 
 
 
+data class OidcCrossSigningResetInfo (
+    /**
+     * The error message we received from the homeserver after we attempted to
+     * reset the cross-signing keys.
+     */
+    var `error`: kotlin.String, 
+    /**
+     * The URL where the user can approve the reset of the cross-signing keys.
+     */
+    var `approvalUrl`: kotlin.String
+) {
+    
+    companion object
+}
+
+public object FfiConverterTypeOidcCrossSigningResetInfo: FfiConverterRustBuffer<OidcCrossSigningResetInfo> {
+    override fun read(buf: ByteBuffer): OidcCrossSigningResetInfo {
+        return OidcCrossSigningResetInfo(
+            FfiConverterString.read(buf),
+            FfiConverterString.read(buf),
+        )
+    }
+
+    override fun allocationSize(value: OidcCrossSigningResetInfo) = (
+            FfiConverterString.allocationSize(value.`error`) +
+            FfiConverterString.allocationSize(value.`approvalUrl`)
+    )
+
+    override fun write(value: OidcCrossSigningResetInfo, buf: ByteBuffer) {
+            FfiConverterString.write(value.`error`, buf)
+            FfiConverterString.write(value.`approvalUrl`, buf)
+    }
+}
+
+
+
 data class PollAnswer (
     var `id`: kotlin.String, 
     var `text`: kotlin.String
@@ -22759,7 +23400,6 @@ public object FfiConverterTypePusherIdentifiers: FfiConverterRustBuffer<PusherId
 
 data class Reaction (
     var `key`: kotlin.String, 
-    var `count`: kotlin.ULong, 
     var `senders`: List<ReactionSenderData>
 ) {
     
@@ -22770,20 +23410,17 @@ public object FfiConverterTypeReaction: FfiConverterRustBuffer<Reaction> {
     override fun read(buf: ByteBuffer): Reaction {
         return Reaction(
             FfiConverterString.read(buf),
-            FfiConverterULong.read(buf),
             FfiConverterSequenceTypeReactionSenderData.read(buf),
         )
     }
 
     override fun allocationSize(value: Reaction) = (
             FfiConverterString.allocationSize(value.`key`) +
-            FfiConverterULong.allocationSize(value.`count`) +
             FfiConverterSequenceTypeReactionSenderData.allocationSize(value.`senders`)
     )
 
     override fun write(value: Reaction, buf: ByteBuffer) {
             FfiConverterString.write(value.`key`, buf)
-            FfiConverterULong.write(value.`count`, buf)
             FfiConverterSequenceTypeReactionSenderData.write(value.`senders`, buf)
     }
 }
@@ -22839,6 +23476,58 @@ public object FfiConverterTypeReceipt: FfiConverterRustBuffer<Receipt> {
 
     override fun write(value: Receipt, buf: ByteBuffer) {
             FfiConverterOptionalULong.write(value.`timestamp`, buf)
+    }
+}
+
+
+
+/**
+ * The config to use for HTTP requests by default in this client.
+ */
+data class RequestConfig (
+    /**
+     * Max number of retries.
+     */
+    var `retryLimit`: kotlin.ULong?, 
+    /**
+     * Timeout for a request in milliseconds.
+     */
+    var `timeout`: kotlin.ULong?, 
+    /**
+     * Max number of concurrent requests. No value means no limits.
+     */
+    var `maxConcurrentRequests`: kotlin.ULong?, 
+    /**
+     * Base delay between retries.
+     */
+    var `retryTimeout`: kotlin.ULong?
+) {
+    
+    companion object
+}
+
+public object FfiConverterTypeRequestConfig: FfiConverterRustBuffer<RequestConfig> {
+    override fun read(buf: ByteBuffer): RequestConfig {
+        return RequestConfig(
+            FfiConverterOptionalULong.read(buf),
+            FfiConverterOptionalULong.read(buf),
+            FfiConverterOptionalULong.read(buf),
+            FfiConverterOptionalULong.read(buf),
+        )
+    }
+
+    override fun allocationSize(value: RequestConfig) = (
+            FfiConverterOptionalULong.allocationSize(value.`retryLimit`) +
+            FfiConverterOptionalULong.allocationSize(value.`timeout`) +
+            FfiConverterOptionalULong.allocationSize(value.`maxConcurrentRequests`) +
+            FfiConverterOptionalULong.allocationSize(value.`retryTimeout`)
+    )
+
+    override fun write(value: RequestConfig, buf: ByteBuffer) {
+            FfiConverterOptionalULong.write(value.`retryLimit`, buf)
+            FfiConverterOptionalULong.write(value.`timeout`, buf)
+            FfiConverterOptionalULong.write(value.`maxConcurrentRequests`, buf)
+            FfiConverterOptionalULong.write(value.`retryTimeout`, buf)
     }
 }
 
@@ -23079,7 +23768,7 @@ data class RoomInfo (
     var `highlightCount`: kotlin.ULong, 
     var `notificationCount`: kotlin.ULong, 
     var `unreadCount`: kotlin.ULong, 
-    var `userDefinedNotificationMode`: RoomNotificationMode?, 
+    var `cachedUserDefinedNotificationMode`: RoomNotificationMode?, 
     var `hasRoomCall`: kotlin.Boolean, 
     var `activeRoomCallParticipants`: List<kotlin.String>, 
     /**
@@ -23104,7 +23793,11 @@ data class RoomInfo (
      * Events causing mentions/highlights for the user, according to their
      * notification settings.
      */
-    var `numUnreadMentions`: kotlin.ULong
+    var `numUnreadMentions`: kotlin.ULong, 
+    /**
+     * The currently pinned event ids
+     */
+    var `pinnedEventIds`: List<kotlin.String>
 ) {
     
     companion object
@@ -23144,6 +23837,7 @@ public object FfiConverterTypeRoomInfo: FfiConverterRustBuffer<RoomInfo> {
             FfiConverterULong.read(buf),
             FfiConverterULong.read(buf),
             FfiConverterULong.read(buf),
+            FfiConverterSequenceString.read(buf),
         )
     }
 
@@ -23171,14 +23865,15 @@ public object FfiConverterTypeRoomInfo: FfiConverterRustBuffer<RoomInfo> {
             FfiConverterULong.allocationSize(value.`highlightCount`) +
             FfiConverterULong.allocationSize(value.`notificationCount`) +
             FfiConverterULong.allocationSize(value.`unreadCount`) +
-            FfiConverterOptionalTypeRoomNotificationMode.allocationSize(value.`userDefinedNotificationMode`) +
+            FfiConverterOptionalTypeRoomNotificationMode.allocationSize(value.`cachedUserDefinedNotificationMode`) +
             FfiConverterBoolean.allocationSize(value.`hasRoomCall`) +
             FfiConverterSequenceString.allocationSize(value.`activeRoomCallParticipants`) +
             FfiConverterSequenceTypeSpaceChildInfo.allocationSize(value.`spaceChildren`) +
             FfiConverterBoolean.allocationSize(value.`isMarkedUnread`) +
             FfiConverterULong.allocationSize(value.`numUnreadMessages`) +
             FfiConverterULong.allocationSize(value.`numUnreadNotifications`) +
-            FfiConverterULong.allocationSize(value.`numUnreadMentions`)
+            FfiConverterULong.allocationSize(value.`numUnreadMentions`) +
+            FfiConverterSequenceString.allocationSize(value.`pinnedEventIds`)
     )
 
     override fun write(value: RoomInfo, buf: ByteBuffer) {
@@ -23205,7 +23900,7 @@ public object FfiConverterTypeRoomInfo: FfiConverterRustBuffer<RoomInfo> {
             FfiConverterULong.write(value.`highlightCount`, buf)
             FfiConverterULong.write(value.`notificationCount`, buf)
             FfiConverterULong.write(value.`unreadCount`, buf)
-            FfiConverterOptionalTypeRoomNotificationMode.write(value.`userDefinedNotificationMode`, buf)
+            FfiConverterOptionalTypeRoomNotificationMode.write(value.`cachedUserDefinedNotificationMode`, buf)
             FfiConverterBoolean.write(value.`hasRoomCall`, buf)
             FfiConverterSequenceString.write(value.`activeRoomCallParticipants`, buf)
             FfiConverterSequenceTypeSpaceChildInfo.write(value.`spaceChildren`, buf)
@@ -23213,6 +23908,7 @@ public object FfiConverterTypeRoomInfo: FfiConverterRustBuffer<RoomInfo> {
             FfiConverterULong.write(value.`numUnreadMessages`, buf)
             FfiConverterULong.write(value.`numUnreadNotifications`, buf)
             FfiConverterULong.write(value.`numUnreadMentions`, buf)
+            FfiConverterSequenceString.write(value.`pinnedEventIds`, buf)
     }
 }
 
@@ -24410,7 +25106,15 @@ data class WidgetCapabilities (
      * This means clients should not offer to open the widget in a separate
      * browser/tab/webview that is not connected to the postmessage widget-api.
      */
-    var `requiresClient`: kotlin.Boolean
+    var `requiresClient`: kotlin.Boolean, 
+    /**
+     * This allows the widget to ask the client to update delayed events.
+     */
+    var `updateDelayedEvent`: kotlin.Boolean, 
+    /**
+     * This allows the widget to send events with a delay.
+     */
+    var `sendDelayedEvent`: kotlin.Boolean
 ) {
     
     companion object
@@ -24422,19 +25126,25 @@ public object FfiConverterTypeWidgetCapabilities: FfiConverterRustBuffer<WidgetC
             FfiConverterSequenceTypeWidgetEventFilter.read(buf),
             FfiConverterSequenceTypeWidgetEventFilter.read(buf),
             FfiConverterBoolean.read(buf),
+            FfiConverterBoolean.read(buf),
+            FfiConverterBoolean.read(buf),
         )
     }
 
     override fun allocationSize(value: WidgetCapabilities) = (
             FfiConverterSequenceTypeWidgetEventFilter.allocationSize(value.`read`) +
             FfiConverterSequenceTypeWidgetEventFilter.allocationSize(value.`send`) +
-            FfiConverterBoolean.allocationSize(value.`requiresClient`)
+            FfiConverterBoolean.allocationSize(value.`requiresClient`) +
+            FfiConverterBoolean.allocationSize(value.`updateDelayedEvent`) +
+            FfiConverterBoolean.allocationSize(value.`sendDelayedEvent`)
     )
 
     override fun write(value: WidgetCapabilities, buf: ByteBuffer) {
             FfiConverterSequenceTypeWidgetEventFilter.write(value.`read`, buf)
             FfiConverterSequenceTypeWidgetEventFilter.write(value.`send`, buf)
             FfiConverterBoolean.write(value.`requiresClient`, buf)
+            FfiConverterBoolean.write(value.`updateDelayedEvent`, buf)
+            FfiConverterBoolean.write(value.`sendDelayedEvent`, buf)
     }
 }
 
@@ -24676,6 +25386,56 @@ public object FfiConverterTypeAssetType: FfiConverterRustBuffer<AssetType> {
 
     override fun write(value: AssetType, buf: ByteBuffer) {
         buf.putInt(value.ordinal + 1)
+    }
+}
+
+
+
+
+
+sealed class AuthData {
+    
+    /**
+     * Password-based authentication (`m.login.password`).
+     */
+    data class Password(
+        val `passwordDetails`: AuthDataPasswordDetails) : AuthData() {
+        companion object
+    }
+    
+
+    
+    companion object
+}
+
+public object FfiConverterTypeAuthData : FfiConverterRustBuffer<AuthData>{
+    override fun read(buf: ByteBuffer): AuthData {
+        return when(buf.getInt()) {
+            1 -> AuthData.Password(
+                FfiConverterTypeAuthDataPasswordDetails.read(buf),
+                )
+            else -> throw RuntimeException("invalid enum value, something is very wrong!!")
+        }
+    }
+
+    override fun allocationSize(value: AuthData) = when(value) {
+        is AuthData.Password -> {
+            // Add the size for the Int that specifies the variant plus the size needed for all fields
+            (
+                4UL
+                + FfiConverterTypeAuthDataPasswordDetails.allocationSize(value.`passwordDetails`)
+            )
+        }
+    }
+
+    override fun write(value: AuthData, buf: ByteBuffer) {
+        when(value) {
+            is AuthData.Password -> {
+                buf.putInt(1)
+                FfiConverterTypeAuthDataPasswordDetails.write(value.`passwordDetails`, buf)
+                Unit
+            }
+        }.let { /* this makes the `when` an expression, which ensures it is exhaustive */ }
     }
 }
 
@@ -25034,6 +25794,70 @@ public object FfiConverterTypeComposerDraftType : FfiConverterRustBuffer<Compose
             is ComposerDraftType.Edit -> {
                 buf.putInt(3)
                 FfiConverterString.write(value.`eventId`, buf)
+                Unit
+            }
+        }.let { /* this makes the `when` an expression, which ensures it is exhaustive */ }
+    }
+}
+
+
+
+
+
+sealed class CrossSigningResetAuthType {
+    
+    /**
+     * The homeserver requires user-interactive authentication.
+     */
+    object Uiaa : CrossSigningResetAuthType()
+    
+    
+    data class Oidc(
+        val `info`: OidcCrossSigningResetInfo) : CrossSigningResetAuthType() {
+        companion object
+    }
+    
+
+    
+    companion object
+}
+
+public object FfiConverterTypeCrossSigningResetAuthType : FfiConverterRustBuffer<CrossSigningResetAuthType>{
+    override fun read(buf: ByteBuffer): CrossSigningResetAuthType {
+        return when(buf.getInt()) {
+            1 -> CrossSigningResetAuthType.Uiaa
+            2 -> CrossSigningResetAuthType.Oidc(
+                FfiConverterTypeOidcCrossSigningResetInfo.read(buf),
+                )
+            else -> throw RuntimeException("invalid enum value, something is very wrong!!")
+        }
+    }
+
+    override fun allocationSize(value: CrossSigningResetAuthType) = when(value) {
+        is CrossSigningResetAuthType.Uiaa -> {
+            // Add the size for the Int that specifies the variant plus the size needed for all fields
+            (
+                4UL
+            )
+        }
+        is CrossSigningResetAuthType.Oidc -> {
+            // Add the size for the Int that specifies the variant plus the size needed for all fields
+            (
+                4UL
+                + FfiConverterTypeOidcCrossSigningResetInfo.allocationSize(value.`info`)
+            )
+        }
+    }
+
+    override fun write(value: CrossSigningResetAuthType, buf: ByteBuffer) {
+        when(value) {
+            is CrossSigningResetAuthType.Uiaa -> {
+                buf.putInt(1)
+                Unit
+            }
+            is CrossSigningResetAuthType.Oidc -> {
+                buf.putInt(2)
+                FfiConverterTypeOidcCrossSigningResetInfo.write(value.`info`, buf)
                 Unit
             }
         }.let { /* this makes the `when` an expression, which ensures it is exhaustive */ }
@@ -27389,8 +28213,10 @@ sealed class OtherState {
         companion object
     }
     
-    object RoomPinnedEvents : OtherState()
-    
+    data class RoomPinnedEvents(
+        val `change`: RoomPinnedEventsChange) : OtherState() {
+        companion object
+    }
     
     data class RoomPowerLevels(
         val `users`: Map<kotlin.String, kotlin.Long>, 
@@ -27449,7 +28275,9 @@ public object FfiConverterTypeOtherState : FfiConverterRustBuffer<OtherState>{
             12 -> OtherState.RoomName(
                 FfiConverterOptionalString.read(buf),
                 )
-            13 -> OtherState.RoomPinnedEvents
+            13 -> OtherState.RoomPinnedEvents(
+                FfiConverterTypeRoomPinnedEventsChange.read(buf),
+                )
             14 -> OtherState.RoomPowerLevels(
                 FfiConverterMapStringLong.read(buf),
                 FfiConverterOptionalMapStringLong.read(buf),
@@ -27550,6 +28378,7 @@ public object FfiConverterTypeOtherState : FfiConverterRustBuffer<OtherState>{
             // Add the size for the Int that specifies the variant plus the size needed for all fields
             (
                 4UL
+                + FfiConverterTypeRoomPinnedEventsChange.allocationSize(value.`change`)
             )
         }
         is OtherState.RoomPowerLevels -> {
@@ -27661,6 +28490,7 @@ public object FfiConverterTypeOtherState : FfiConverterRustBuffer<OtherState>{
             }
             is OtherState.RoomPinnedEvents -> {
                 buf.putInt(13)
+                FfiConverterTypeRoomPinnedEventsChange.write(value.`change`, buf)
                 Unit
             }
             is OtherState.RoomPowerLevels -> {
@@ -29946,6 +30776,7 @@ sealed class ShieldState {
      * presented.
      */
     data class Red(
+        val `code`: ShieldStateCode, 
         val `message`: kotlin.String) : ShieldState() {
         companion object
     }
@@ -29955,6 +30786,7 @@ sealed class ShieldState {
      * presented.
      */
     data class Grey(
+        val `code`: ShieldStateCode, 
         val `message`: kotlin.String) : ShieldState() {
         companion object
     }
@@ -29974,9 +30806,11 @@ public object FfiConverterTypeShieldState : FfiConverterRustBuffer<ShieldState>{
     override fun read(buf: ByteBuffer): ShieldState {
         return when(buf.getInt()) {
             1 -> ShieldState.Red(
+                FfiConverterTypeShieldStateCode.read(buf),
                 FfiConverterString.read(buf),
                 )
             2 -> ShieldState.Grey(
+                FfiConverterTypeShieldStateCode.read(buf),
                 FfiConverterString.read(buf),
                 )
             3 -> ShieldState.None
@@ -29989,6 +30823,7 @@ public object FfiConverterTypeShieldState : FfiConverterRustBuffer<ShieldState>{
             // Add the size for the Int that specifies the variant plus the size needed for all fields
             (
                 4UL
+                + FfiConverterTypeShieldStateCode.allocationSize(value.`code`)
                 + FfiConverterString.allocationSize(value.`message`)
             )
         }
@@ -29996,6 +30831,7 @@ public object FfiConverterTypeShieldState : FfiConverterRustBuffer<ShieldState>{
             // Add the size for the Int that specifies the variant plus the size needed for all fields
             (
                 4UL
+                + FfiConverterTypeShieldStateCode.allocationSize(value.`code`)
                 + FfiConverterString.allocationSize(value.`message`)
             )
         }
@@ -30011,11 +30847,13 @@ public object FfiConverterTypeShieldState : FfiConverterRustBuffer<ShieldState>{
         when(value) {
             is ShieldState.Red -> {
                 buf.putInt(1)
+                FfiConverterTypeShieldStateCode.write(value.`code`, buf)
                 FfiConverterString.write(value.`message`, buf)
                 Unit
             }
             is ShieldState.Grey -> {
                 buf.putInt(2)
+                FfiConverterTypeShieldStateCode.write(value.`code`, buf)
                 FfiConverterString.write(value.`message`, buf)
                 Unit
             }
@@ -32929,6 +33767,35 @@ public object FfiConverterOptionalTypeEventTimelineItem: FfiConverterRustBuffer<
 
 
 
+public object FfiConverterOptionalTypeIdentityResetHandle: FfiConverterRustBuffer<IdentityResetHandle?> {
+    override fun read(buf: ByteBuffer): IdentityResetHandle? {
+        if (buf.get().toInt() == 0) {
+            return null
+        }
+        return FfiConverterTypeIdentityResetHandle.read(buf)
+    }
+
+    override fun allocationSize(value: IdentityResetHandle?): ULong {
+        if (value == null) {
+            return 1UL
+        } else {
+            return 1UL + FfiConverterTypeIdentityResetHandle.allocationSize(value)
+        }
+    }
+
+    override fun write(value: IdentityResetHandle?, buf: ByteBuffer) {
+        if (value == null) {
+            buf.put(0)
+        } else {
+            buf.put(1)
+            FfiConverterTypeIdentityResetHandle.write(value, buf)
+        }
+    }
+}
+
+
+
+
 public object FfiConverterOptionalTypeMediaSource: FfiConverterRustBuffer<MediaSource?> {
     override fun read(buf: ByteBuffer): MediaSource? {
         if (buf.get().toInt() == 0) {
@@ -33705,6 +34572,35 @@ public object FfiConverterOptionalTypeAssetType: FfiConverterRustBuffer<AssetTyp
         } else {
             buf.put(1)
             FfiConverterTypeAssetType.write(value, buf)
+        }
+    }
+}
+
+
+
+
+public object FfiConverterOptionalTypeAuthData: FfiConverterRustBuffer<AuthData?> {
+    override fun read(buf: ByteBuffer): AuthData? {
+        if (buf.get().toInt() == 0) {
+            return null
+        }
+        return FfiConverterTypeAuthData.read(buf)
+    }
+
+    override fun allocationSize(value: AuthData?): ULong {
+        if (value == null) {
+            return 1UL
+        } else {
+            return 1UL + FfiConverterTypeAuthData.allocationSize(value)
+        }
+    }
+
+    override fun write(value: AuthData?, buf: ByteBuffer) {
+        if (value == null) {
+            buf.put(0)
+        } else {
+            buf.put(1)
+            FfiConverterTypeAuthData.write(value, buf)
         }
     }
 }
@@ -34980,6 +35876,14 @@ public object FfiConverterMapStringSequenceString: FfiConverterRustBuffer<Map<ko
         }
     }
 }
+
+
+
+
+
+
+
+
 
 
 
