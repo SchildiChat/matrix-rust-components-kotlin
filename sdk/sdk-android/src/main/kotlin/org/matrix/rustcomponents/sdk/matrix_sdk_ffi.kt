@@ -58,8 +58,10 @@ import uniffi.matrix_sdk_ui.EventItemOrigin
 import uniffi.matrix_sdk_ui.FfiConverterTypeEventItemOrigin
 import uniffi.matrix_sdk_ui.FfiConverterTypeLiveBackPaginationStatus
 import uniffi.matrix_sdk_ui.FfiConverterTypeRoomPinnedEventsChange
+import uniffi.matrix_sdk_ui.FfiConverterTypeScSortOrder
 import uniffi.matrix_sdk_ui.LiveBackPaginationStatus
 import uniffi.matrix_sdk_ui.RoomPinnedEventsChange
+import uniffi.matrix_sdk_ui.ScSortOrder
 import uniffi.matrix_sdk.RustBuffer as RustBufferBackupDownloadStrategy
 import uniffi.matrix_sdk.RustBuffer as RustBufferOidcAuthorizationData
 import uniffi.matrix_sdk.RustBuffer as RustBufferRoomMemberRole
@@ -70,6 +72,7 @@ import uniffi.matrix_sdk_crypto.RustBuffer as RustBufferUtdCause
 import uniffi.matrix_sdk_ui.RustBuffer as RustBufferEventItemOrigin
 import uniffi.matrix_sdk_ui.RustBuffer as RustBufferLiveBackPaginationStatus
 import uniffi.matrix_sdk_ui.RustBuffer as RustBufferRoomPinnedEventsChange
+import uniffi.matrix_sdk_ui.RustBuffer as RustBufferScSortOrder
 
 // This is a helper for safely working with byte buffers returned from the Rust code.
 // A rust-owned buffer is represented by its capacity, its current length, and a
@@ -2132,6 +2135,8 @@ internal open class UniffiVTableCallbackInterfaceWidgetCapabilitiesProvider(
 
 
 
+
+
 // A JNA Library to expose the extern-C FFI definitions.
 // This is an implementation detail which will be called internally by the public API.
 
@@ -2737,6 +2742,8 @@ internal interface UniffiLib : Library {
     fun uniffi_matrix_sdk_ffi_fn_method_roomlistdynamicentriescontroller_reset_to_one_page(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
     ): Unit
     fun uniffi_matrix_sdk_ffi_fn_method_roomlistdynamicentriescontroller_set_filter(`ptr`: Pointer,`kind`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
+    ): Byte
+    fun uniffi_matrix_sdk_ffi_fn_method_roomlistdynamicentriescontroller_set_sort_order(`ptr`: Pointer,`sortOrder`: RustBufferScSortOrder.ByValue,uniffi_out_err: UniffiRustCallStatus, 
     ): Byte
     fun uniffi_matrix_sdk_ffi_fn_clone_roomlistentrieswithdynamicadaptersresult(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
     ): Pointer
@@ -3771,6 +3778,8 @@ internal interface UniffiLib : Library {
     fun uniffi_matrix_sdk_ffi_checksum_method_roomlistdynamicentriescontroller_reset_to_one_page(
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_roomlistdynamicentriescontroller_set_filter(
+    ): Short
+    fun uniffi_matrix_sdk_ffi_checksum_method_roomlistdynamicentriescontroller_set_sort_order(
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_roomlistentrieswithdynamicadaptersresult_controller(
     ): Short
@@ -4865,6 +4874,9 @@ private fun uniffiCheckApiChecksums(lib: UniffiLib) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_roomlistdynamicentriescontroller_set_filter() != 61202.toShort()) {
+        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    }
+    if (lib.uniffi_matrix_sdk_ffi_checksum_method_roomlistdynamicentriescontroller_set_sort_order() != 25192.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_roomlistentrieswithdynamicadaptersresult_controller() != 36258.toShort()) {
@@ -14722,6 +14734,8 @@ public interface RoomListDynamicEntriesControllerInterface {
     
     fun `setFilter`(`kind`: RoomListEntriesDynamicFilterKind): kotlin.Boolean
     
+    fun `setSortOrder`(`sortOrder`: ScSortOrder): kotlin.Boolean
+    
     companion object
 }
 
@@ -14834,6 +14848,18 @@ open class RoomListDynamicEntriesController: Disposable, AutoCloseable, RoomList
     uniffiRustCall() { _status ->
     UniffiLib.INSTANCE.uniffi_matrix_sdk_ffi_fn_method_roomlistdynamicentriescontroller_set_filter(
         it, FfiConverterTypeRoomListEntriesDynamicFilterKind.lower(`kind`),_status)
+}
+    }
+    )
+    }
+    
+
+    override fun `setSortOrder`(`sortOrder`: ScSortOrder): kotlin.Boolean {
+            return FfiConverterBoolean.lift(
+    callWithPointer {
+    uniffiRustCall() { _status ->
+    UniffiLib.INSTANCE.uniffi_matrix_sdk_ffi_fn_method_roomlistdynamicentriescontroller_set_sort_order(
+        it, FfiConverterTypeScSortOrder.lower(`sortOrder`),_status)
 }
     }
     )
@@ -36089,6 +36115,10 @@ public object FfiConverterMapStringSequenceString: FfiConverterRustBuffer<Map<ko
         }
     }
 }
+
+
+
+
 
 
 
