@@ -2145,6 +2145,14 @@ internal open class UniffiVTableCallbackInterfaceWidgetCapabilitiesProvider(
 
 
 
+
+
+
+
+
+
+
+
 // A JNA Library to expose the extern-C FFI definitions.
 // This is an implementation detail which will be called internally by the public API.
 
@@ -2219,9 +2227,15 @@ internal interface UniffiLib : Library {
     ): Long
     fun uniffi_matrix_sdk_ffi_fn_method_client_avatar_url(`ptr`: Pointer,
     ): Long
+    fun uniffi_matrix_sdk_ffi_fn_method_client_await_room_remote_echo(`ptr`: Pointer,`roomId`: RustBuffer.ByValue,
+    ): Long
     fun uniffi_matrix_sdk_ffi_fn_method_client_cached_avatar_url(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
     ): RustBuffer.ByValue
+    fun uniffi_matrix_sdk_ffi_fn_method_client_can_deactivate_account(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
+    ): Byte
     fun uniffi_matrix_sdk_ffi_fn_method_client_create_room(`ptr`: Pointer,`request`: RustBuffer.ByValue,
+    ): Long
+    fun uniffi_matrix_sdk_ffi_fn_method_client_deactivate_account(`ptr`: Pointer,`authData`: RustBuffer.ByValue,`eraseData`: Byte,
     ): Long
     fun uniffi_matrix_sdk_ffi_fn_method_client_delete_pusher(`ptr`: Pointer,`identifiers`: RustBuffer.ByValue,
     ): Long
@@ -2293,6 +2307,8 @@ internal interface UniffiLib : Library {
     ): RustBuffer.ByValue
     fun uniffi_matrix_sdk_ffi_fn_method_client_search_users(`ptr`: Pointer,`searchTerm`: RustBuffer.ByValue,`limit`: Long,
     ): Long
+    fun uniffi_matrix_sdk_ffi_fn_method_client_server(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
+    ): RustBuffer.ByValue
     fun uniffi_matrix_sdk_ffi_fn_method_client_session(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
     ): RustBuffer.ByValue
     fun uniffi_matrix_sdk_ffi_fn_method_client_set_account_data(`ptr`: Pointer,`eventType`: RustBuffer.ByValue,`content`: RustBuffer.ByValue,
@@ -3323,9 +3339,15 @@ internal interface UniffiLib : Library {
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_client_avatar_url(
     ): Short
+    fun uniffi_matrix_sdk_ffi_checksum_method_client_await_room_remote_echo(
+    ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_client_cached_avatar_url(
     ): Short
+    fun uniffi_matrix_sdk_ffi_checksum_method_client_can_deactivate_account(
+    ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_client_create_room(
+    ): Short
+    fun uniffi_matrix_sdk_ffi_checksum_method_client_deactivate_account(
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_client_delete_pusher(
     ): Short
@@ -3396,6 +3418,8 @@ internal interface UniffiLib : Library {
     fun uniffi_matrix_sdk_ffi_checksum_method_client_rooms(
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_client_search_users(
+    ): Short
+    fun uniffi_matrix_sdk_ffi_checksum_method_client_server(
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_client_session(
     ): Short
@@ -4192,10 +4216,19 @@ private fun uniffiCheckApiChecksums(lib: UniffiLib) {
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_client_avatar_url() != 27867.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
+    if (lib.uniffi_matrix_sdk_ffi_checksum_method_client_await_room_remote_echo() != 18126.toShort()) {
+        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    }
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_client_cached_avatar_url() != 58990.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
+    if (lib.uniffi_matrix_sdk_ffi_checksum_method_client_can_deactivate_account() != 39890.toShort()) {
+        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    }
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_client_create_room() != 52700.toShort()) {
+        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    }
+    if (lib.uniffi_matrix_sdk_ffi_checksum_method_client_deactivate_account() != 20658.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_client_delete_pusher() != 45990.toShort()) {
@@ -4301,6 +4334,9 @@ private fun uniffiCheckApiChecksums(lib: UniffiLib) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_client_search_users() != 42927.toShort()) {
+        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    }
+    if (lib.uniffi_matrix_sdk_ffi_checksum_method_client_server() != 63276.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_client_session() != 8085.toShort()) {
@@ -5886,11 +5922,40 @@ public interface ClientInterface {
     suspend fun `avatarUrl`(): kotlin.String?
     
     /**
+     * Waits until an at least partially synced room is received, and returns
+     * it.
+     *
+     * **Note: this function will loop endlessly until either it finds the room
+     * or an externally set timeout happens.**
+     */
+    suspend fun `awaitRoomRemoteEcho`(`roomId`: kotlin.String): Room
+    
+    /**
      * Retrieves an avatar cached from a previous call to [`Self::avatar_url`].
      */
     fun `cachedAvatarUrl`(): kotlin.String?
     
+    /**
+     * Lets the user know whether this is an `m.login.password` based
+     * auth and if the account can actually be deactivated
+     */
+    fun `canDeactivateAccount`(): kotlin.Boolean
+    
     suspend fun `createRoom`(`request`: CreateRoomParameters): kotlin.String
+    
+    /**
+     * Deactivate this account definitively.
+     * Similarly to `encryption::reset_identity` this
+     * will only work with password-based authentication (`m.login.password`)
+     *
+     * # Arguments
+     *
+     * * `auth_data` - This request uses the [User-Interactive Authentication
+     * API][uiaa]. The first request needs to set this to `None` and will
+     * always fail and the same request needs to be made but this time with
+     * some `auth_data` provided.
+     */
+    suspend fun `deactivateAccount`(`authData`: AuthData?, `eraseData`: kotlin.Boolean)
     
     /**
      * Deletes a pusher of given pusher ids
@@ -6039,6 +6104,21 @@ public interface ClientInterface {
     fun `rooms`(): List<Room>
     
     suspend fun `searchUsers`(`searchTerm`: kotlin.String, `limit`: kotlin.ULong): SearchUsersResults
+    
+    /**
+     * The URL of the server.
+     *
+     * Not to be confused with the `Self::homeserver`. `server` is usually
+     * the server part in a user ID, e.g. with `@mnt_io:matrix.org`, here
+     * `matrix.org` is the server, whilst `matrix-client.matrix.org` is the
+     * homeserver (at the time of writing — 2024-08-28).
+     *
+     * This value is optional depending on how the `Client` has been built.
+     * If it's been built from a homeserver URL directly, we don't know the
+     * server. However, if the `Client` has been built from a server URL or
+     * name, then the homeserver has been discovered, and we know both.
+     */
+    fun `server`(): kotlin.String?
     
     fun `session`(): Session
     
@@ -6317,6 +6397,34 @@ open class Client: Disposable, AutoCloseable, ClientInterface {
 
     
     /**
+     * Waits until an at least partially synced room is received, and returns
+     * it.
+     *
+     * **Note: this function will loop endlessly until either it finds the room
+     * or an externally set timeout happens.**
+     */
+    @Throws(ClientException::class)
+    @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
+    override suspend fun `awaitRoomRemoteEcho`(`roomId`: kotlin.String) : Room {
+        return uniffiRustCallAsync(
+        callWithPointer { thisPtr ->
+            UniffiLib.INSTANCE.uniffi_matrix_sdk_ffi_fn_method_client_await_room_remote_echo(
+                thisPtr,
+                FfiConverterString.lower(`roomId`),
+            )
+        },
+        { future, callback, continuation -> UniffiLib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_poll_pointer(future, callback, continuation) },
+        { future, continuation -> UniffiLib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_complete_pointer(future, continuation) },
+        { future -> UniffiLib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_free_pointer(future) },
+        // lift function
+        { FfiConverterTypeRoom.lift(it) },
+        // Error FFI converter
+        ClientException.ErrorHandler,
+    )
+    }
+
+    
+    /**
      * Retrieves an avatar cached from a previous call to [`Self::avatar_url`].
      */
     @Throws(ClientException::class)override fun `cachedAvatarUrl`(): kotlin.String? {
@@ -6324,6 +6432,22 @@ open class Client: Disposable, AutoCloseable, ClientInterface {
     callWithPointer {
     uniffiRustCallWithError(ClientException) { _status ->
     UniffiLib.INSTANCE.uniffi_matrix_sdk_ffi_fn_method_client_cached_avatar_url(
+        it, _status)
+}
+    }
+    )
+    }
+    
+
+    
+    /**
+     * Lets the user know whether this is an `m.login.password` based
+     * auth and if the account can actually be deactivated
+     */override fun `canDeactivateAccount`(): kotlin.Boolean {
+            return FfiConverterBoolean.lift(
+    callWithPointer {
+    uniffiRustCall() { _status ->
+    UniffiLib.INSTANCE.uniffi_matrix_sdk_ffi_fn_method_client_can_deactivate_account(
         it, _status)
 }
     }
@@ -6347,6 +6471,40 @@ open class Client: Disposable, AutoCloseable, ClientInterface {
         { future -> UniffiLib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_free_rust_buffer(future) },
         // lift function
         { FfiConverterString.lift(it) },
+        // Error FFI converter
+        ClientException.ErrorHandler,
+    )
+    }
+
+    
+    /**
+     * Deactivate this account definitively.
+     * Similarly to `encryption::reset_identity` this
+     * will only work with password-based authentication (`m.login.password`)
+     *
+     * # Arguments
+     *
+     * * `auth_data` - This request uses the [User-Interactive Authentication
+     * API][uiaa]. The first request needs to set this to `None` and will
+     * always fail and the same request needs to be made but this time with
+     * some `auth_data` provided.
+     */
+    @Throws(ClientException::class)
+    @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
+    override suspend fun `deactivateAccount`(`authData`: AuthData?, `eraseData`: kotlin.Boolean) {
+        return uniffiRustCallAsync(
+        callWithPointer { thisPtr ->
+            UniffiLib.INSTANCE.uniffi_matrix_sdk_ffi_fn_method_client_deactivate_account(
+                thisPtr,
+                FfiConverterOptionalTypeAuthData.lower(`authData`),FfiConverterBoolean.lower(`eraseData`),
+            )
+        },
+        { future, callback, continuation -> UniffiLib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_poll_void(future, callback, continuation) },
+        { future, continuation -> UniffiLib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_complete_void(future, continuation) },
+        { future -> UniffiLib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_free_void(future) },
+        // lift function
+        { Unit },
+        
         // Error FFI converter
         ClientException.ErrorHandler,
     )
@@ -7102,6 +7260,31 @@ open class Client: Disposable, AutoCloseable, ClientInterface {
         ClientException.ErrorHandler,
     )
     }
+
+    
+    /**
+     * The URL of the server.
+     *
+     * Not to be confused with the `Self::homeserver`. `server` is usually
+     * the server part in a user ID, e.g. with `@mnt_io:matrix.org`, here
+     * `matrix.org` is the server, whilst `matrix-client.matrix.org` is the
+     * homeserver (at the time of writing — 2024-08-28).
+     *
+     * This value is optional depending on how the `Client` has been built.
+     * If it's been built from a homeserver URL directly, we don't know the
+     * server. However, if the `Client` has been built from a server URL or
+     * name, then the homeserver has been discovered, and we know both.
+     */override fun `server`(): kotlin.String? {
+            return FfiConverterOptionalString.lift(
+    callWithPointer {
+    uniffiRustCall() { _status ->
+    UniffiLib.INSTANCE.uniffi_matrix_sdk_ffi_fn_method_client_server(
+        it, _status)
+}
+    }
+    )
+    }
+    
 
     
     @Throws(ClientException::class)override fun `session`(): Session {
@@ -22801,7 +22984,8 @@ public object FfiConverterTypeElementCallWellKnown: FfiConverterRustBuffer<Eleme
  * Element specific well-known settings
  */
 data class ElementWellKnown (
-    var `call`: ElementCallWellKnown
+    var `call`: ElementCallWellKnown?, 
+    var `registrationHelperUrl`: kotlin.String?
 ) {
     
     companion object
@@ -22810,16 +22994,19 @@ data class ElementWellKnown (
 public object FfiConverterTypeElementWellKnown: FfiConverterRustBuffer<ElementWellKnown> {
     override fun read(buf: ByteBuffer): ElementWellKnown {
         return ElementWellKnown(
-            FfiConverterTypeElementCallWellKnown.read(buf),
+            FfiConverterOptionalTypeElementCallWellKnown.read(buf),
+            FfiConverterOptionalString.read(buf),
         )
     }
 
     override fun allocationSize(value: ElementWellKnown) = (
-            FfiConverterTypeElementCallWellKnown.allocationSize(value.`call`)
+            FfiConverterOptionalTypeElementCallWellKnown.allocationSize(value.`call`) +
+            FfiConverterOptionalString.allocationSize(value.`registrationHelperUrl`)
     )
 
     override fun write(value: ElementWellKnown, buf: ByteBuffer) {
-            FfiConverterTypeElementCallWellKnown.write(value.`call`, buf)
+            FfiConverterOptionalTypeElementCallWellKnown.write(value.`call`, buf)
+            FfiConverterOptionalString.write(value.`registrationHelperUrl`, buf)
     }
 }
 
@@ -24160,6 +24347,7 @@ public object FfiConverterTypeRoomHero: FfiConverterRustBuffer<RoomHero> {
 
 data class RoomInfo (
     var `id`: kotlin.String, 
+    var `creator`: kotlin.String?, 
     /**
      * The room's name from the room state event if received from sync, or one
      * that's been computed otherwise.
@@ -24239,6 +24427,7 @@ public object FfiConverterTypeRoomInfo: FfiConverterRustBuffer<RoomInfo> {
             FfiConverterOptionalString.read(buf),
             FfiConverterOptionalString.read(buf),
             FfiConverterOptionalString.read(buf),
+            FfiConverterOptionalString.read(buf),
             FfiConverterBoolean.read(buf),
             FfiConverterBoolean.read(buf),
             FfiConverterBoolean.read(buf),
@@ -24271,6 +24460,7 @@ public object FfiConverterTypeRoomInfo: FfiConverterRustBuffer<RoomInfo> {
 
     override fun allocationSize(value: RoomInfo) = (
             FfiConverterString.allocationSize(value.`id`) +
+            FfiConverterOptionalString.allocationSize(value.`creator`) +
             FfiConverterOptionalString.allocationSize(value.`displayName`) +
             FfiConverterOptionalString.allocationSize(value.`rawName`) +
             FfiConverterOptionalString.allocationSize(value.`topic`) +
@@ -24306,6 +24496,7 @@ public object FfiConverterTypeRoomInfo: FfiConverterRustBuffer<RoomInfo> {
 
     override fun write(value: RoomInfo, buf: ByteBuffer) {
             FfiConverterString.write(value.`id`, buf)
+            FfiConverterOptionalString.write(value.`creator`, buf)
             FfiConverterOptionalString.write(value.`displayName`, buf)
             FfiConverterOptionalString.write(value.`rawName`, buf)
             FfiConverterOptionalString.write(value.`topic`, buf)
@@ -34860,6 +35051,35 @@ public object FfiConverterOptionalTypeComposerDraft: FfiConverterRustBuffer<Comp
         } else {
             buf.put(1)
             FfiConverterTypeComposerDraft.write(value, buf)
+        }
+    }
+}
+
+
+
+
+public object FfiConverterOptionalTypeElementCallWellKnown: FfiConverterRustBuffer<ElementCallWellKnown?> {
+    override fun read(buf: ByteBuffer): ElementCallWellKnown? {
+        if (buf.get().toInt() == 0) {
+            return null
+        }
+        return FfiConverterTypeElementCallWellKnown.read(buf)
+    }
+
+    override fun allocationSize(value: ElementCallWellKnown?): ULong {
+        if (value == null) {
+            return 1UL
+        } else {
+            return 1UL + FfiConverterTypeElementCallWellKnown.allocationSize(value)
+        }
+    }
+
+    override fun write(value: ElementCallWellKnown?, buf: ByteBuffer) {
+        if (value == null) {
+            buf.put(0)
+        } else {
+            buf.put(1)
+            FfiConverterTypeElementCallWellKnown.write(value, buf)
         }
     }
 }
