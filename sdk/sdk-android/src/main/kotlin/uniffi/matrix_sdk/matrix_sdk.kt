@@ -914,6 +914,26 @@ public object FfiConverterLong: FfiConverter<Long, Long> {
     }
 }
 
+public object FfiConverterBoolean: FfiConverter<Boolean, Byte> {
+    override fun lift(value: Byte): Boolean {
+        return value.toInt() != 0
+    }
+
+    override fun read(buf: ByteBuffer): Boolean {
+        return lift(buf.get())
+    }
+
+    override fun lower(value: Boolean): Byte {
+        return if (value) 1.toByte() else 0.toByte()
+    }
+
+    override fun allocationSize(value: Boolean) = 1UL
+
+    override fun write(value: Boolean, buf: ByteBuffer) {
+        buf.put(lower(value))
+    }
+}
+
 public object FfiConverterString: FfiConverter<String, RustBuffer.ByValue> {
     // Note: we don't inherit from FfiConverterRustBuffer, because we use a
     // special encoding when lowering/lifting.  We can use `RustBuffer.len` to
@@ -1364,6 +1384,97 @@ public object FfiConverterTypeRoomPowerLevelChanges: FfiConverterRustBuffer<Room
             FfiConverterOptionalLong.write(value.`roomName`, buf)
             FfiConverterOptionalLong.write(value.`roomAvatar`, buf)
             FfiConverterOptionalLong.write(value.`roomTopic`, buf)
+    }
+}
+
+
+
+/**
+ * SchildiChat's user-controlled settings for inbox sorting and filtering.
+ */
+data class ScInboxSettings (
+    /**
+     * The sort order to apply to the inbox.
+     */
+    var `sortOrder`: ScSortOrder
+) {
+    
+    companion object
+}
+
+public object FfiConverterTypeScInboxSettings: FfiConverterRustBuffer<ScInboxSettings> {
+    override fun read(buf: ByteBuffer): ScInboxSettings {
+        return ScInboxSettings(
+            FfiConverterTypeScSortOrder.read(buf),
+        )
+    }
+
+    override fun allocationSize(value: ScInboxSettings) = (
+            FfiConverterTypeScSortOrder.allocationSize(value.`sortOrder`)
+    )
+
+    override fun write(value: ScInboxSettings, buf: ByteBuffer) {
+            FfiConverterTypeScSortOrder.write(value.`sortOrder`, buf)
+    }
+}
+
+
+
+/**
+ * SchildiChat's user-controlled inbox sort-order settings.
+ */
+data class ScSortOrder (
+    /**
+     * Whether to sort unread chats above read chats.
+     */
+    var `byUnread`: kotlin.Boolean, 
+    /**
+     * Whether to sort favorite chat above anything else.
+     */
+    var `pinFavorites`: kotlin.Boolean, 
+    /**
+     * Whether to sort low-priority chats at the bottom.
+     */
+    var `buryLowPriority`: kotlin.Boolean, 
+    /**
+     * Whether to sort by client-generated or server-reported unread counts,
+     * when sorting by unread.
+     */
+    var `clientGeneratedUnread`: kotlin.Boolean, 
+    /**
+     * Whether to include non-notification/mention unread counts when sorting by unread.
+     */
+    var `withSilentUnread`: kotlin.Boolean
+) {
+    
+    companion object
+}
+
+public object FfiConverterTypeScSortOrder: FfiConverterRustBuffer<ScSortOrder> {
+    override fun read(buf: ByteBuffer): ScSortOrder {
+        return ScSortOrder(
+            FfiConverterBoolean.read(buf),
+            FfiConverterBoolean.read(buf),
+            FfiConverterBoolean.read(buf),
+            FfiConverterBoolean.read(buf),
+            FfiConverterBoolean.read(buf),
+        )
+    }
+
+    override fun allocationSize(value: ScSortOrder) = (
+            FfiConverterBoolean.allocationSize(value.`byUnread`) +
+            FfiConverterBoolean.allocationSize(value.`pinFavorites`) +
+            FfiConverterBoolean.allocationSize(value.`buryLowPriority`) +
+            FfiConverterBoolean.allocationSize(value.`clientGeneratedUnread`) +
+            FfiConverterBoolean.allocationSize(value.`withSilentUnread`)
+    )
+
+    override fun write(value: ScSortOrder, buf: ByteBuffer) {
+            FfiConverterBoolean.write(value.`byUnread`, buf)
+            FfiConverterBoolean.write(value.`pinFavorites`, buf)
+            FfiConverterBoolean.write(value.`buryLowPriority`, buf)
+            FfiConverterBoolean.write(value.`clientGeneratedUnread`, buf)
+            FfiConverterBoolean.write(value.`withSilentUnread`, buf)
     }
 }
 

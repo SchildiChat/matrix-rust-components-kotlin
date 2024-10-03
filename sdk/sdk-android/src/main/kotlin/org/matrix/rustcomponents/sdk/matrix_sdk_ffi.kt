@@ -45,9 +45,11 @@ import uniffi.matrix_sdk.FfiConverterTypeBackupDownloadStrategy
 import uniffi.matrix_sdk.FfiConverterTypeOidcAuthorizationData
 import uniffi.matrix_sdk.FfiConverterTypeRoomMemberRole
 import uniffi.matrix_sdk.FfiConverterTypeRoomPowerLevelChanges
+import uniffi.matrix_sdk.FfiConverterTypeScInboxSettings
 import uniffi.matrix_sdk.OidcAuthorizationData
 import uniffi.matrix_sdk.RoomMemberRole
 import uniffi.matrix_sdk.RoomPowerLevelChanges
+import uniffi.matrix_sdk.ScInboxSettings
 import uniffi.matrix_sdk_common.FfiConverterTypeShieldStateCode
 import uniffi.matrix_sdk_common.ShieldStateCode
 import uniffi.matrix_sdk_crypto.CollectStrategy
@@ -58,21 +60,19 @@ import uniffi.matrix_sdk_ui.EventItemOrigin
 import uniffi.matrix_sdk_ui.FfiConverterTypeEventItemOrigin
 import uniffi.matrix_sdk_ui.FfiConverterTypeLiveBackPaginationStatus
 import uniffi.matrix_sdk_ui.FfiConverterTypeRoomPinnedEventsChange
-import uniffi.matrix_sdk_ui.FfiConverterTypeScSortOrder
 import uniffi.matrix_sdk_ui.LiveBackPaginationStatus
 import uniffi.matrix_sdk_ui.RoomPinnedEventsChange
-import uniffi.matrix_sdk_ui.ScSortOrder
 import uniffi.matrix_sdk.RustBuffer as RustBufferBackupDownloadStrategy
 import uniffi.matrix_sdk.RustBuffer as RustBufferOidcAuthorizationData
 import uniffi.matrix_sdk.RustBuffer as RustBufferRoomMemberRole
 import uniffi.matrix_sdk.RustBuffer as RustBufferRoomPowerLevelChanges
+import uniffi.matrix_sdk.RustBuffer as RustBufferScInboxSettings
 import uniffi.matrix_sdk_common.RustBuffer as RustBufferShieldStateCode
 import uniffi.matrix_sdk_crypto.RustBuffer as RustBufferCollectStrategy
 import uniffi.matrix_sdk_crypto.RustBuffer as RustBufferUtdCause
 import uniffi.matrix_sdk_ui.RustBuffer as RustBufferEventItemOrigin
 import uniffi.matrix_sdk_ui.RustBuffer as RustBufferLiveBackPaginationStatus
 import uniffi.matrix_sdk_ui.RustBuffer as RustBufferRoomPinnedEventsChange
-import uniffi.matrix_sdk_ui.RustBuffer as RustBufferScSortOrder
 
 // This is a helper for safely working with byte buffers returned from the Rust code.
 // A rust-owned buffer is represented by its capacity, its current length, and a
@@ -2775,8 +2775,8 @@ internal interface UniffiLib : Library {
     ): Unit
     fun uniffi_matrix_sdk_ffi_fn_method_roomlistdynamicentriescontroller_set_filter(`ptr`: Pointer,`kind`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
     ): Byte
-    fun uniffi_matrix_sdk_ffi_fn_method_roomlistdynamicentriescontroller_set_sort_order(`ptr`: Pointer,`sortOrder`: RustBufferScSortOrder.ByValue,uniffi_out_err: UniffiRustCallStatus, 
-    ): Byte
+    fun uniffi_matrix_sdk_ffi_fn_method_roomlistdynamicentriescontroller_set_sc_inbox_settings(`ptr`: Pointer,`filter`: RustBuffer.ByValue,`settings`: RustBufferScInboxSettings.ByValue,uniffi_out_err: UniffiRustCallStatus, 
+    ): Unit
     fun uniffi_matrix_sdk_ffi_fn_clone_roomlistentrieswithdynamicadaptersresult(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
     ): Pointer
     fun uniffi_matrix_sdk_ffi_fn_free_roomlistentrieswithdynamicadaptersresult(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
@@ -3827,7 +3827,7 @@ internal interface UniffiLib : Library {
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_roomlistdynamicentriescontroller_set_filter(
     ): Short
-    fun uniffi_matrix_sdk_ffi_checksum_method_roomlistdynamicentriescontroller_set_sort_order(
+    fun uniffi_matrix_sdk_ffi_checksum_method_roomlistdynamicentriescontroller_set_sc_inbox_settings(
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_roomlistentrieswithdynamicadaptersresult_controller(
     ): Short
@@ -4948,7 +4948,7 @@ private fun uniffiCheckApiChecksums(lib: UniffiLib) {
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_roomlistdynamicentriescontroller_set_filter() != 61202.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
-    if (lib.uniffi_matrix_sdk_ffi_checksum_method_roomlistdynamicentriescontroller_set_sort_order() != 25192.toShort()) {
+    if (lib.uniffi_matrix_sdk_ffi_checksum_method_roomlistdynamicentriescontroller_set_sc_inbox_settings() != 38826.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_roomlistentrieswithdynamicadaptersresult_controller() != 36258.toShort()) {
@@ -15161,7 +15161,7 @@ public interface RoomListDynamicEntriesControllerInterface {
     
     fun `setFilter`(`kind`: RoomListEntriesDynamicFilterKind): kotlin.Boolean
     
-    fun `setSortOrder`(`sortOrder`: ScSortOrder): kotlin.Boolean
+    fun `setScInboxSettings`(`filter`: RoomListEntriesDynamicFilterKind, `settings`: ScInboxSettings)
     
     companion object
 }
@@ -15281,16 +15281,15 @@ open class RoomListDynamicEntriesController: Disposable, AutoCloseable, RoomList
     }
     
 
-    override fun `setSortOrder`(`sortOrder`: ScSortOrder): kotlin.Boolean {
-            return FfiConverterBoolean.lift(
+    override fun `setScInboxSettings`(`filter`: RoomListEntriesDynamicFilterKind, `settings`: ScInboxSettings)
+        = 
     callWithPointer {
     uniffiRustCall() { _status ->
-    UniffiLib.INSTANCE.uniffi_matrix_sdk_ffi_fn_method_roomlistdynamicentriescontroller_set_sort_order(
-        it, FfiConverterTypeScSortOrder.lower(`sortOrder`),_status)
+    UniffiLib.INSTANCE.uniffi_matrix_sdk_ffi_fn_method_roomlistdynamicentriescontroller_set_sc_inbox_settings(
+        it, FfiConverterTypeRoomListEntriesDynamicFilterKind.lower(`filter`),FfiConverterTypeScInboxSettings.lower(`settings`),_status)
 }
     }
-    )
-    }
+    
     
 
     
@@ -30530,6 +30529,11 @@ sealed class RoomListEntriesDynamicFilterKind {
         companion object
     }
     
+    data class ScRooms(
+        val `rooms`: List<kotlin.String>) : RoomListEntriesDynamicFilterKind() {
+        companion object
+    }
+    
 
     
     companion object
@@ -30558,6 +30562,9 @@ public object FfiConverterTypeRoomListEntriesDynamicFilterKind : FfiConverterRus
                 )
             11 -> RoomListEntriesDynamicFilterKind.FuzzyMatchRoomName(
                 FfiConverterString.read(buf),
+                )
+            12 -> RoomListEntriesDynamicFilterKind.ScRooms(
+                FfiConverterSequenceString.read(buf),
                 )
             else -> throw RuntimeException("invalid enum value, something is very wrong!!")
         }
@@ -30635,6 +30642,13 @@ public object FfiConverterTypeRoomListEntriesDynamicFilterKind : FfiConverterRus
                 + FfiConverterString.allocationSize(value.`pattern`)
             )
         }
+        is RoomListEntriesDynamicFilterKind.ScRooms -> {
+            // Add the size for the Int that specifies the variant plus the size needed for all fields
+            (
+                4UL
+                + FfiConverterSequenceString.allocationSize(value.`rooms`)
+            )
+        }
     }
 
     override fun write(value: RoomListEntriesDynamicFilterKind, buf: ByteBuffer) {
@@ -30686,6 +30700,11 @@ public object FfiConverterTypeRoomListEntriesDynamicFilterKind : FfiConverterRus
             is RoomListEntriesDynamicFilterKind.FuzzyMatchRoomName -> {
                 buf.putInt(11)
                 FfiConverterString.write(value.`pattern`, buf)
+                Unit
+            }
+            is RoomListEntriesDynamicFilterKind.ScRooms -> {
+                buf.putInt(12)
+                FfiConverterSequenceString.write(value.`rooms`, buf)
                 Unit
             }
         }.let { /* this makes the `when` an expression, which ensures it is exhaustive */ }

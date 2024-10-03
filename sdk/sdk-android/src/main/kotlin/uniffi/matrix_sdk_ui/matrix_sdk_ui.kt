@@ -950,47 +950,6 @@ public object FfiConverterString: FfiConverter<String, RustBuffer.ByValue> {
 
 
 
-data class ScSortOrder (
-    var `byUnread`: kotlin.Boolean, 
-    var `pinFavorites`: kotlin.Boolean, 
-    var `buryLowPriority`: kotlin.Boolean, 
-    var `clientGeneratedUnread`: kotlin.Boolean, 
-    var `withSilentUnread`: kotlin.Boolean
-) {
-    
-    companion object
-}
-
-public object FfiConverterTypeScSortOrder: FfiConverterRustBuffer<ScSortOrder> {
-    override fun read(buf: ByteBuffer): ScSortOrder {
-        return ScSortOrder(
-            FfiConverterBoolean.read(buf),
-            FfiConverterBoolean.read(buf),
-            FfiConverterBoolean.read(buf),
-            FfiConverterBoolean.read(buf),
-            FfiConverterBoolean.read(buf),
-        )
-    }
-
-    override fun allocationSize(value: ScSortOrder) = (
-            FfiConverterBoolean.allocationSize(value.`byUnread`) +
-            FfiConverterBoolean.allocationSize(value.`pinFavorites`) +
-            FfiConverterBoolean.allocationSize(value.`buryLowPriority`) +
-            FfiConverterBoolean.allocationSize(value.`clientGeneratedUnread`) +
-            FfiConverterBoolean.allocationSize(value.`withSilentUnread`)
-    )
-
-    override fun write(value: ScSortOrder, buf: ByteBuffer) {
-            FfiConverterBoolean.write(value.`byUnread`, buf)
-            FfiConverterBoolean.write(value.`pinFavorites`, buf)
-            FfiConverterBoolean.write(value.`buryLowPriority`, buf)
-            FfiConverterBoolean.write(value.`clientGeneratedUnread`, buf)
-            FfiConverterBoolean.write(value.`withSilentUnread`, buf)
-    }
-}
-
-
-
 /**
  * Where this event came.
  */
