@@ -2173,6 +2173,14 @@ internal open class UniffiVTableCallbackInterfaceWidgetCapabilitiesProvider(
 
 
 
+
+
+
+
+
+
+
+
 // A JNA Library to expose the extern-C FFI definitions.
 // This is an implementation detail which will be called internally by the public API.
 
@@ -2300,6 +2308,8 @@ internal interface UniffiLib : Library {
     ): Long
     fun uniffi_matrix_sdk_ffi_fn_method_client_ignored_users(`ptr`: Pointer,
     ): Long
+    fun uniffi_matrix_sdk_ffi_fn_method_client_is_room_alias_available(`ptr`: Pointer,`alias`: RustBuffer.ByValue,
+    ): Long
     fun uniffi_matrix_sdk_ffi_fn_method_client_join_room_by_id(`ptr`: Pointer,`roomId`: RustBuffer.ByValue,
     ): Long
     fun uniffi_matrix_sdk_ffi_fn_method_client_join_room_by_id_or_alias(`ptr`: Pointer,`roomIdOrAlias`: RustBuffer.ByValue,`serverNames`: RustBuffer.ByValue,
@@ -2326,6 +2336,8 @@ internal interface UniffiLib : Library {
     ): Long
     fun uniffi_matrix_sdk_ffi_fn_method_client_room_account_data(`ptr`: Pointer,`roomId`: RustBuffer.ByValue,`eventType`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
     ): RustBuffer.ByValue
+    fun uniffi_matrix_sdk_ffi_fn_method_client_room_alias_exists(`ptr`: Pointer,`roomAlias`: RustBuffer.ByValue,
+    ): Long
     fun uniffi_matrix_sdk_ffi_fn_method_client_room_directory_search(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
     ): Pointer
     fun uniffi_matrix_sdk_ffi_fn_method_client_rooms(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
@@ -2746,7 +2758,7 @@ internal interface UniffiLib : Library {
     ): Long
     fun uniffi_matrix_sdk_ffi_fn_method_roomdirectorysearch_results(`ptr`: Pointer,`listener`: Long,
     ): Long
-    fun uniffi_matrix_sdk_ffi_fn_method_roomdirectorysearch_search(`ptr`: Pointer,`filter`: RustBuffer.ByValue,`batchSize`: Int,
+    fun uniffi_matrix_sdk_ffi_fn_method_roomdirectorysearch_search(`ptr`: Pointer,`filter`: RustBuffer.ByValue,`batchSize`: Int,`viaServerName`: RustBuffer.ByValue,
     ): Long
     fun uniffi_matrix_sdk_ffi_fn_clone_roomlist(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
     ): Pointer
@@ -2976,11 +2988,11 @@ internal interface UniffiLib : Library {
     ): Unit
     fun uniffi_matrix_sdk_ffi_fn_method_timeline_send(`ptr`: Pointer,`msg`: Pointer,
     ): Long
-    fun uniffi_matrix_sdk_ffi_fn_method_timeline_send_audio(`ptr`: Pointer,`url`: RustBuffer.ByValue,`audioInfo`: RustBuffer.ByValue,`caption`: RustBuffer.ByValue,`formattedCaption`: RustBuffer.ByValue,`storeInCache`: Byte,`progressWatcher`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
+    fun uniffi_matrix_sdk_ffi_fn_method_timeline_send_audio(`ptr`: Pointer,`url`: RustBuffer.ByValue,`audioInfo`: RustBuffer.ByValue,`caption`: RustBuffer.ByValue,`formattedCaption`: RustBuffer.ByValue,`progressWatcher`: RustBuffer.ByValue,`useSendQueue`: Byte,uniffi_out_err: UniffiRustCallStatus, 
     ): Pointer
-    fun uniffi_matrix_sdk_ffi_fn_method_timeline_send_file(`ptr`: Pointer,`url`: RustBuffer.ByValue,`fileInfo`: RustBuffer.ByValue,`storeInCache`: Byte,`progressWatcher`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
+    fun uniffi_matrix_sdk_ffi_fn_method_timeline_send_file(`ptr`: Pointer,`url`: RustBuffer.ByValue,`fileInfo`: RustBuffer.ByValue,`progressWatcher`: RustBuffer.ByValue,`useSendQueue`: Byte,uniffi_out_err: UniffiRustCallStatus, 
     ): Pointer
-    fun uniffi_matrix_sdk_ffi_fn_method_timeline_send_image(`ptr`: Pointer,`url`: RustBuffer.ByValue,`thumbnailUrl`: RustBuffer.ByValue,`imageInfo`: RustBuffer.ByValue,`caption`: RustBuffer.ByValue,`formattedCaption`: RustBuffer.ByValue,`storeInCache`: Byte,`progressWatcher`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
+    fun uniffi_matrix_sdk_ffi_fn_method_timeline_send_image(`ptr`: Pointer,`url`: RustBuffer.ByValue,`thumbnailUrl`: RustBuffer.ByValue,`imageInfo`: RustBuffer.ByValue,`caption`: RustBuffer.ByValue,`formattedCaption`: RustBuffer.ByValue,`progressWatcher`: RustBuffer.ByValue,`useSendQueue`: Byte,uniffi_out_err: UniffiRustCallStatus, 
     ): Pointer
     fun uniffi_matrix_sdk_ffi_fn_method_timeline_send_location(`ptr`: Pointer,`body`: RustBuffer.ByValue,`geoUri`: RustBuffer.ByValue,`description`: RustBuffer.ByValue,`zoomLevel`: RustBuffer.ByValue,`assetType`: RustBuffer.ByValue,
     ): Long
@@ -2990,9 +3002,9 @@ internal interface UniffiLib : Library {
     ): Long
     fun uniffi_matrix_sdk_ffi_fn_method_timeline_send_reply(`ptr`: Pointer,`msg`: Pointer,`eventId`: RustBuffer.ByValue,
     ): Long
-    fun uniffi_matrix_sdk_ffi_fn_method_timeline_send_video(`ptr`: Pointer,`url`: RustBuffer.ByValue,`thumbnailUrl`: RustBuffer.ByValue,`videoInfo`: RustBuffer.ByValue,`caption`: RustBuffer.ByValue,`formattedCaption`: RustBuffer.ByValue,`storeInCache`: Byte,`progressWatcher`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
+    fun uniffi_matrix_sdk_ffi_fn_method_timeline_send_video(`ptr`: Pointer,`url`: RustBuffer.ByValue,`thumbnailUrl`: RustBuffer.ByValue,`videoInfo`: RustBuffer.ByValue,`caption`: RustBuffer.ByValue,`formattedCaption`: RustBuffer.ByValue,`progressWatcher`: RustBuffer.ByValue,`useSendQueue`: Byte,uniffi_out_err: UniffiRustCallStatus, 
     ): Pointer
-    fun uniffi_matrix_sdk_ffi_fn_method_timeline_send_voice_message(`ptr`: Pointer,`url`: RustBuffer.ByValue,`audioInfo`: RustBuffer.ByValue,`waveform`: RustBuffer.ByValue,`caption`: RustBuffer.ByValue,`formattedCaption`: RustBuffer.ByValue,`storeInCache`: Byte,`progressWatcher`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
+    fun uniffi_matrix_sdk_ffi_fn_method_timeline_send_voice_message(`ptr`: Pointer,`url`: RustBuffer.ByValue,`audioInfo`: RustBuffer.ByValue,`waveform`: RustBuffer.ByValue,`caption`: RustBuffer.ByValue,`formattedCaption`: RustBuffer.ByValue,`progressWatcher`: RustBuffer.ByValue,`useSendQueue`: Byte,uniffi_out_err: UniffiRustCallStatus, 
     ): Pointer
     fun uniffi_matrix_sdk_ffi_fn_method_timeline_subscribe_to_back_pagination_status(`ptr`: Pointer,`listener`: Long,
     ): Long
@@ -3148,6 +3160,8 @@ internal interface UniffiLib : Library {
     ): Long
     fun uniffi_matrix_sdk_ffi_fn_func_get_element_call_required_permissions(`ownUserId`: RustBuffer.ByValue,`ownDeviceId`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
     ): RustBuffer.ByValue
+    fun uniffi_matrix_sdk_ffi_fn_func_is_room_alias_format_valid(`alias`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
+    ): Byte
     fun uniffi_matrix_sdk_ffi_fn_func_log_event(`file`: RustBuffer.ByValue,`line`: RustBuffer.ByValue,`level`: RustBuffer.ByValue,`target`: RustBuffer.ByValue,`message`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
     ): Unit
     fun uniffi_matrix_sdk_ffi_fn_func_make_element_well_known(`string`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
@@ -3173,6 +3187,8 @@ internal interface UniffiLib : Library {
     fun uniffi_matrix_sdk_ffi_fn_func_new_virtual_element_call_widget(`props`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
     ): RustBuffer.ByValue
     fun uniffi_matrix_sdk_ffi_fn_func_parse_matrix_entity_from(`uri`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
+    ): RustBuffer.ByValue
+    fun uniffi_matrix_sdk_ffi_fn_func_room_alias_name_from_room_display_name(`roomName`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
     ): RustBuffer.ByValue
     fun uniffi_matrix_sdk_ffi_fn_func_sdk_git_sha(uniffi_out_err: UniffiRustCallStatus, 
     ): RustBuffer.ByValue
@@ -3302,6 +3318,8 @@ internal interface UniffiLib : Library {
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_func_get_element_call_required_permissions(
     ): Short
+    fun uniffi_matrix_sdk_ffi_checksum_func_is_room_alias_format_valid(
+    ): Short
     fun uniffi_matrix_sdk_ffi_checksum_func_log_event(
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_func_make_element_well_known(
@@ -3327,6 +3345,8 @@ internal interface UniffiLib : Library {
     fun uniffi_matrix_sdk_ffi_checksum_func_new_virtual_element_call_widget(
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_func_parse_matrix_entity_from(
+    ): Short
+    fun uniffi_matrix_sdk_ffi_checksum_func_room_alias_name_from_room_display_name(
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_func_sdk_git_sha(
     ): Short
@@ -3404,6 +3424,8 @@ internal interface UniffiLib : Library {
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_client_ignored_users(
     ): Short
+    fun uniffi_matrix_sdk_ffi_checksum_method_client_is_room_alias_available(
+    ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_client_join_room_by_id(
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_client_join_room_by_id_or_alias(
@@ -3429,6 +3451,8 @@ internal interface UniffiLib : Library {
     fun uniffi_matrix_sdk_ffi_checksum_method_client_restore_session(
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_client_room_account_data(
+    ): Short
+    fun uniffi_matrix_sdk_ffi_checksum_method_client_room_alias_exists(
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_client_room_directory_search(
     ): Short
@@ -4143,6 +4167,9 @@ private fun uniffiCheckApiChecksums(lib: UniffiLib) {
     if (lib.uniffi_matrix_sdk_ffi_checksum_func_get_element_call_required_permissions() != 30181.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
+    if (lib.uniffi_matrix_sdk_ffi_checksum_func_is_room_alias_format_valid() != 23063.toShort()) {
+        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    }
     if (lib.uniffi_matrix_sdk_ffi_checksum_func_log_event() != 62286.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
@@ -4180,6 +4207,9 @@ private fun uniffiCheckApiChecksums(lib: UniffiLib) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_matrix_sdk_ffi_checksum_func_parse_matrix_entity_from() != 49710.toShort()) {
+        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    }
+    if (lib.uniffi_matrix_sdk_ffi_checksum_func_room_alias_name_from_room_display_name() != 65010.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_matrix_sdk_ffi_checksum_func_sdk_git_sha() != 4038.toShort()) {
@@ -4296,6 +4326,9 @@ private fun uniffiCheckApiChecksums(lib: UniffiLib) {
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_client_ignored_users() != 49620.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
+    if (lib.uniffi_matrix_sdk_ffi_checksum_method_client_is_room_alias_available() != 25471.toShort()) {
+        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    }
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_client_join_room_by_id() != 64032.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
@@ -4326,13 +4359,16 @@ private fun uniffiCheckApiChecksums(lib: UniffiLib) {
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_client_reset_server_capabilities() != 39651.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
-    if (lib.uniffi_matrix_sdk_ffi_checksum_method_client_resolve_room_alias() != 14306.toShort()) {
+    if (lib.uniffi_matrix_sdk_ffi_checksum_method_client_resolve_room_alias() != 3551.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_client_restore_session() != 40455.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_client_room_account_data() != 21439.toShort()) {
+        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    }
+    if (lib.uniffi_matrix_sdk_ffi_checksum_method_client_room_alias_exists() != 20359.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_client_room_directory_search() != 39855.toShort()) {
@@ -4875,19 +4911,19 @@ private fun uniffiCheckApiChecksums(lib: UniffiLib) {
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_room_withdraw_verification_and_resend() != 48968.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
-    if (lib.uniffi_matrix_sdk_ffi_checksum_method_roomdirectorysearch_is_at_last_page() != 22509.toShort()) {
+    if (lib.uniffi_matrix_sdk_ffi_checksum_method_roomdirectorysearch_is_at_last_page() != 34221.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
-    if (lib.uniffi_matrix_sdk_ffi_checksum_method_roomdirectorysearch_loaded_pages() != 7109.toShort()) {
+    if (lib.uniffi_matrix_sdk_ffi_checksum_method_roomdirectorysearch_loaded_pages() != 2923.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
-    if (lib.uniffi_matrix_sdk_ffi_checksum_method_roomdirectorysearch_next_page() != 14603.toShort()) {
+    if (lib.uniffi_matrix_sdk_ffi_checksum_method_roomdirectorysearch_next_page() != 29305.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
-    if (lib.uniffi_matrix_sdk_ffi_checksum_method_roomdirectorysearch_results() != 40665.toShort()) {
+    if (lib.uniffi_matrix_sdk_ffi_checksum_method_roomdirectorysearch_results() != 30207.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
-    if (lib.uniffi_matrix_sdk_ffi_checksum_method_roomdirectorysearch_search() != 26558.toShort()) {
+    if (lib.uniffi_matrix_sdk_ffi_checksum_method_roomdirectorysearch_search() != 24438.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_roomlist_entries_with_dynamic_adapters() != 36097.toShort()) {
@@ -5124,13 +5160,13 @@ private fun uniffiCheckApiChecksums(lib: UniffiLib) {
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_timeline_send() != 9553.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
-    if (lib.uniffi_matrix_sdk_ffi_checksum_method_timeline_send_audio() != 57949.toShort()) {
+    if (lib.uniffi_matrix_sdk_ffi_checksum_method_timeline_send_audio() != 43163.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
-    if (lib.uniffi_matrix_sdk_ffi_checksum_method_timeline_send_file() != 37971.toShort()) {
+    if (lib.uniffi_matrix_sdk_ffi_checksum_method_timeline_send_file() != 35408.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
-    if (lib.uniffi_matrix_sdk_ffi_checksum_method_timeline_send_image() != 27985.toShort()) {
+    if (lib.uniffi_matrix_sdk_ffi_checksum_method_timeline_send_image() != 45681.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_timeline_send_location() != 47400.toShort()) {
@@ -5145,10 +5181,10 @@ private fun uniffiCheckApiChecksums(lib: UniffiLib) {
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_timeline_send_reply() != 64747.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
-    if (lib.uniffi_matrix_sdk_ffi_checksum_method_timeline_send_video() != 59961.toShort()) {
+    if (lib.uniffi_matrix_sdk_ffi_checksum_method_timeline_send_video() != 22670.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
-    if (lib.uniffi_matrix_sdk_ffi_checksum_method_timeline_send_voice_message() != 1195.toShort()) {
+    if (lib.uniffi_matrix_sdk_ffi_checksum_method_timeline_send_voice_message() != 58509.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_timeline_subscribe_to_back_pagination_status() != 46161.toShort()) {
@@ -6018,6 +6054,11 @@ public interface ClientInterface {
     suspend fun `ignoredUsers`(): List<kotlin.String>
     
     /**
+     * Checks if a room alias is available in the current homeserver.
+     */
+    suspend fun `isRoomAliasAvailable`(`alias`: kotlin.String): kotlin.Boolean
+    
+    /**
      * Join a room by its ID.
      *
      * Use this method when the homeserver already knows of the given room ID.
@@ -6080,7 +6121,7 @@ public interface ClientInterface {
      * Resolves the given room alias to a room ID (and a list of servers), if
      * possible.
      */
-    suspend fun `resolveRoomAlias`(`roomAlias`: kotlin.String): ResolvedRoomAlias
+    suspend fun `resolveRoomAlias`(`roomAlias`: kotlin.String): ResolvedRoomAlias?
     
     /**
      * Restores the client from a `Session`.
@@ -6091,6 +6132,11 @@ public interface ClientInterface {
      * SC: get room account data event as JSON string
      */
     fun `roomAccountData`(`roomId`: kotlin.String, `eventType`: kotlin.String): kotlin.String?
+    
+    /**
+     * Checks if a room alias exists in the current homeserver.
+     */
+    suspend fun `roomAliasExists`(`roomAlias`: kotlin.String): kotlin.Boolean
     
     fun `roomDirectorySearch`(): RoomDirectorySearch
     
@@ -6942,6 +6988,30 @@ open class Client: Disposable, AutoCloseable, ClientInterface {
 
     
     /**
+     * Checks if a room alias is available in the current homeserver.
+     */
+    @Throws(ClientException::class)
+    @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
+    override suspend fun `isRoomAliasAvailable`(`alias`: kotlin.String) : kotlin.Boolean {
+        return uniffiRustCallAsync(
+        callWithPointer { thisPtr ->
+            UniffiLib.INSTANCE.uniffi_matrix_sdk_ffi_fn_method_client_is_room_alias_available(
+                thisPtr,
+                FfiConverterString.lower(`alias`),
+            )
+        },
+        { future, callback, continuation -> UniffiLib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_poll_i8(future, callback, continuation) },
+        { future, continuation -> UniffiLib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_complete_i8(future, continuation) },
+        { future -> UniffiLib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_free_i8(future) },
+        // lift function
+        { FfiConverterBoolean.lift(it) },
+        // Error FFI converter
+        ClientException.ErrorHandler,
+    )
+    }
+
+    
+    /**
      * Join a room by its ID.
      *
      * Use this method when the homeserver already knows of the given room ID.
@@ -7201,7 +7271,7 @@ open class Client: Disposable, AutoCloseable, ClientInterface {
      */
     @Throws(ClientException::class)
     @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
-    override suspend fun `resolveRoomAlias`(`roomAlias`: kotlin.String) : ResolvedRoomAlias {
+    override suspend fun `resolveRoomAlias`(`roomAlias`: kotlin.String) : ResolvedRoomAlias? {
         return uniffiRustCallAsync(
         callWithPointer { thisPtr ->
             UniffiLib.INSTANCE.uniffi_matrix_sdk_ffi_fn_method_client_resolve_room_alias(
@@ -7213,7 +7283,7 @@ open class Client: Disposable, AutoCloseable, ClientInterface {
         { future, continuation -> UniffiLib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_complete_rust_buffer(future, continuation) },
         { future -> UniffiLib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_free_rust_buffer(future) },
         // lift function
-        { FfiConverterTypeResolvedRoomAlias.lift(it) },
+        { FfiConverterOptionalTypeResolvedRoomAlias.lift(it) },
         // Error FFI converter
         ClientException.ErrorHandler,
     )
@@ -7259,6 +7329,30 @@ open class Client: Disposable, AutoCloseable, ClientInterface {
     )
     }
     
+
+    
+    /**
+     * Checks if a room alias exists in the current homeserver.
+     */
+    @Throws(ClientException::class)
+    @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
+    override suspend fun `roomAliasExists`(`roomAlias`: kotlin.String) : kotlin.Boolean {
+        return uniffiRustCallAsync(
+        callWithPointer { thisPtr ->
+            UniffiLib.INSTANCE.uniffi_matrix_sdk_ffi_fn_method_client_room_alias_exists(
+                thisPtr,
+                FfiConverterString.lower(`roomAlias`),
+            )
+        },
+        { future, callback, continuation -> UniffiLib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_poll_i8(future, callback, continuation) },
+        { future, continuation -> UniffiLib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_complete_i8(future, continuation) },
+        { future -> UniffiLib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_free_i8(future) },
+        // lift function
+        { FfiConverterBoolean.lift(it) },
+        // Error FFI converter
+        ClientException.ErrorHandler,
+    )
+    }
 
     override fun `roomDirectorySearch`(): RoomDirectorySearch {
             return FfiConverterTypeRoomDirectorySearch.lift(
@@ -14446,21 +14540,62 @@ public object FfiConverterTypeRoom: FfiConverter<Room, Pointer> {
 //
 
 
+/**
+ * A helper for performing room searches in the room directory.
+ * The way this is intended to be used is:
+ *
+ * 1. Register a callback using [`RoomDirectorySearch::results`].
+ * 2. Start the room search with [`RoomDirectorySearch::search`].
+ * 3. To get more results, use [`RoomDirectorySearch::next_page`].
+ */
 public interface RoomDirectorySearchInterface {
     
+    /**
+     * Get whether the search is at the last page.
+     */
     suspend fun `isAtLastPage`(): kotlin.Boolean
     
+    /**
+     * Get the number of pages that have been loaded so far.
+     */
     suspend fun `loadedPages`(): kotlin.UInt
     
+    /**
+     * Asks the server for the next page of the current search.
+     */
     suspend fun `nextPage`()
     
+    /**
+     * Registers a callback to receive new search results when starting a
+     * search or getting new paginated results.
+     */
     suspend fun `results`(`listener`: RoomDirectorySearchEntriesListener): TaskHandle
     
-    suspend fun `search`(`filter`: kotlin.String?, `batchSize`: kotlin.UInt)
+    /**
+     * Starts a filtered search for the server.
+     *
+     * If the `filter` is not provided it will search for all the rooms.
+     * You can specify a `batch_size` to control the number of rooms to fetch
+     * per request.
+     *
+     * If the `via_server` is not provided it will search in the current
+     * homeserver by default.
+     *
+     * This method will clear the current search results and start a new one.
+     */
+    suspend fun `search`(`filter`: kotlin.String?, `batchSize`: kotlin.UInt, `viaServerName`: kotlin.String?)
     
     companion object
 }
 
+/**
+ * A helper for performing room searches in the room directory.
+ * The way this is intended to be used is:
+ *
+ * 1. Register a callback using [`RoomDirectorySearch::results`].
+ * 2. Start the room search with [`RoomDirectorySearch::search`].
+ * 3. To get more results, use [`RoomDirectorySearch::next_page`].
+ */
 open class RoomDirectorySearch: Disposable, AutoCloseable, RoomDirectorySearchInterface {
 
     constructor(pointer: Pointer) {
@@ -14543,6 +14678,9 @@ open class RoomDirectorySearch: Disposable, AutoCloseable, RoomDirectorySearchIn
     }
 
     
+    /**
+     * Get whether the search is at the last page.
+     */
     @Throws(ClientException::class)
     @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
     override suspend fun `isAtLastPage`() : kotlin.Boolean {
@@ -14564,6 +14702,9 @@ open class RoomDirectorySearch: Disposable, AutoCloseable, RoomDirectorySearchIn
     }
 
     
+    /**
+     * Get the number of pages that have been loaded so far.
+     */
     @Throws(ClientException::class)
     @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
     override suspend fun `loadedPages`() : kotlin.UInt {
@@ -14585,6 +14726,9 @@ open class RoomDirectorySearch: Disposable, AutoCloseable, RoomDirectorySearchIn
     }
 
     
+    /**
+     * Asks the server for the next page of the current search.
+     */
     @Throws(ClientException::class)
     @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
     override suspend fun `nextPage`() {
@@ -14607,6 +14751,10 @@ open class RoomDirectorySearch: Disposable, AutoCloseable, RoomDirectorySearchIn
     }
 
     
+    /**
+     * Registers a callback to receive new search results when starting a
+     * search or getting new paginated results.
+     */
     @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
     override suspend fun `results`(`listener`: RoomDirectorySearchEntriesListener) : TaskHandle {
         return uniffiRustCallAsync(
@@ -14627,14 +14775,26 @@ open class RoomDirectorySearch: Disposable, AutoCloseable, RoomDirectorySearchIn
     }
 
     
+    /**
+     * Starts a filtered search for the server.
+     *
+     * If the `filter` is not provided it will search for all the rooms.
+     * You can specify a `batch_size` to control the number of rooms to fetch
+     * per request.
+     *
+     * If the `via_server` is not provided it will search in the current
+     * homeserver by default.
+     *
+     * This method will clear the current search results and start a new one.
+     */
     @Throws(ClientException::class)
     @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
-    override suspend fun `search`(`filter`: kotlin.String?, `batchSize`: kotlin.UInt) {
+    override suspend fun `search`(`filter`: kotlin.String?, `batchSize`: kotlin.UInt, `viaServerName`: kotlin.String?) {
         return uniffiRustCallAsync(
         callWithPointer { thisPtr ->
             UniffiLib.INSTANCE.uniffi_matrix_sdk_ffi_fn_method_roomdirectorysearch_search(
                 thisPtr,
-                FfiConverterOptionalString.lower(`filter`),FfiConverterUInt.lower(`batchSize`),
+                FfiConverterOptionalString.lower(`filter`),FfiConverterUInt.lower(`batchSize`),FfiConverterOptionalString.lower(`viaServerName`),
             )
         },
         { future, callback, continuation -> UniffiLib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_poll_void(future, callback, continuation) },
@@ -19956,11 +20116,11 @@ public interface TimelineInterface {
      */
     suspend fun `send`(`msg`: RoomMessageEventContentWithoutRelation): SendHandle
     
-    fun `sendAudio`(`url`: kotlin.String, `audioInfo`: AudioInfo, `caption`: kotlin.String?, `formattedCaption`: FormattedBody?, `storeInCache`: kotlin.Boolean, `progressWatcher`: ProgressWatcher?): SendAttachmentJoinHandle
+    fun `sendAudio`(`url`: kotlin.String, `audioInfo`: AudioInfo, `caption`: kotlin.String?, `formattedCaption`: FormattedBody?, `progressWatcher`: ProgressWatcher?, `useSendQueue`: kotlin.Boolean): SendAttachmentJoinHandle
     
-    fun `sendFile`(`url`: kotlin.String, `fileInfo`: FileInfo, `storeInCache`: kotlin.Boolean, `progressWatcher`: ProgressWatcher?): SendAttachmentJoinHandle
+    fun `sendFile`(`url`: kotlin.String, `fileInfo`: FileInfo, `progressWatcher`: ProgressWatcher?, `useSendQueue`: kotlin.Boolean): SendAttachmentJoinHandle
     
-    fun `sendImage`(`url`: kotlin.String, `thumbnailUrl`: kotlin.String?, `imageInfo`: ImageInfo, `caption`: kotlin.String?, `formattedCaption`: FormattedBody?, `storeInCache`: kotlin.Boolean, `progressWatcher`: ProgressWatcher?): SendAttachmentJoinHandle
+    fun `sendImage`(`url`: kotlin.String, `thumbnailUrl`: kotlin.String?, `imageInfo`: ImageInfo, `caption`: kotlin.String?, `formattedCaption`: FormattedBody?, `progressWatcher`: ProgressWatcher?, `useSendQueue`: kotlin.Boolean): SendAttachmentJoinHandle
     
     suspend fun `sendLocation`(`body`: kotlin.String, `geoUri`: kotlin.String, `description`: kotlin.String?, `zoomLevel`: kotlin.UByte?, `assetType`: AssetType?)
     
@@ -19970,9 +20130,9 @@ public interface TimelineInterface {
     
     suspend fun `sendReply`(`msg`: RoomMessageEventContentWithoutRelation, `eventId`: kotlin.String)
     
-    fun `sendVideo`(`url`: kotlin.String, `thumbnailUrl`: kotlin.String?, `videoInfo`: VideoInfo, `caption`: kotlin.String?, `formattedCaption`: FormattedBody?, `storeInCache`: kotlin.Boolean, `progressWatcher`: ProgressWatcher?): SendAttachmentJoinHandle
+    fun `sendVideo`(`url`: kotlin.String, `thumbnailUrl`: kotlin.String?, `videoInfo`: VideoInfo, `caption`: kotlin.String?, `formattedCaption`: FormattedBody?, `progressWatcher`: ProgressWatcher?, `useSendQueue`: kotlin.Boolean): SendAttachmentJoinHandle
     
-    fun `sendVoiceMessage`(`url`: kotlin.String, `audioInfo`: AudioInfo, `waveform`: List<kotlin.UShort>, `caption`: kotlin.String?, `formattedCaption`: FormattedBody?, `storeInCache`: kotlin.Boolean, `progressWatcher`: ProgressWatcher?): SendAttachmentJoinHandle
+    fun `sendVoiceMessage`(`url`: kotlin.String, `audioInfo`: AudioInfo, `waveform`: List<kotlin.UShort>, `caption`: kotlin.String?, `formattedCaption`: FormattedBody?, `progressWatcher`: ProgressWatcher?, `useSendQueue`: kotlin.Boolean): SendAttachmentJoinHandle
     
     suspend fun `subscribeToBackPaginationStatus`(`listener`: PaginationStatusListener): TaskHandle
     
@@ -20495,36 +20655,36 @@ open class Timeline: Disposable, AutoCloseable, TimelineInterface {
     )
     }
 
-    override fun `sendAudio`(`url`: kotlin.String, `audioInfo`: AudioInfo, `caption`: kotlin.String?, `formattedCaption`: FormattedBody?, `storeInCache`: kotlin.Boolean, `progressWatcher`: ProgressWatcher?): SendAttachmentJoinHandle {
+    override fun `sendAudio`(`url`: kotlin.String, `audioInfo`: AudioInfo, `caption`: kotlin.String?, `formattedCaption`: FormattedBody?, `progressWatcher`: ProgressWatcher?, `useSendQueue`: kotlin.Boolean): SendAttachmentJoinHandle {
             return FfiConverterTypeSendAttachmentJoinHandle.lift(
     callWithPointer {
     uniffiRustCall() { _status ->
     UniffiLib.INSTANCE.uniffi_matrix_sdk_ffi_fn_method_timeline_send_audio(
-        it, FfiConverterString.lower(`url`),FfiConverterTypeAudioInfo.lower(`audioInfo`),FfiConverterOptionalString.lower(`caption`),FfiConverterOptionalTypeFormattedBody.lower(`formattedCaption`),FfiConverterBoolean.lower(`storeInCache`),FfiConverterOptionalTypeProgressWatcher.lower(`progressWatcher`),_status)
+        it, FfiConverterString.lower(`url`),FfiConverterTypeAudioInfo.lower(`audioInfo`),FfiConverterOptionalString.lower(`caption`),FfiConverterOptionalTypeFormattedBody.lower(`formattedCaption`),FfiConverterOptionalTypeProgressWatcher.lower(`progressWatcher`),FfiConverterBoolean.lower(`useSendQueue`),_status)
 }
     }
     )
     }
     
 
-    override fun `sendFile`(`url`: kotlin.String, `fileInfo`: FileInfo, `storeInCache`: kotlin.Boolean, `progressWatcher`: ProgressWatcher?): SendAttachmentJoinHandle {
+    override fun `sendFile`(`url`: kotlin.String, `fileInfo`: FileInfo, `progressWatcher`: ProgressWatcher?, `useSendQueue`: kotlin.Boolean): SendAttachmentJoinHandle {
             return FfiConverterTypeSendAttachmentJoinHandle.lift(
     callWithPointer {
     uniffiRustCall() { _status ->
     UniffiLib.INSTANCE.uniffi_matrix_sdk_ffi_fn_method_timeline_send_file(
-        it, FfiConverterString.lower(`url`),FfiConverterTypeFileInfo.lower(`fileInfo`),FfiConverterBoolean.lower(`storeInCache`),FfiConverterOptionalTypeProgressWatcher.lower(`progressWatcher`),_status)
+        it, FfiConverterString.lower(`url`),FfiConverterTypeFileInfo.lower(`fileInfo`),FfiConverterOptionalTypeProgressWatcher.lower(`progressWatcher`),FfiConverterBoolean.lower(`useSendQueue`),_status)
 }
     }
     )
     }
     
 
-    override fun `sendImage`(`url`: kotlin.String, `thumbnailUrl`: kotlin.String?, `imageInfo`: ImageInfo, `caption`: kotlin.String?, `formattedCaption`: FormattedBody?, `storeInCache`: kotlin.Boolean, `progressWatcher`: ProgressWatcher?): SendAttachmentJoinHandle {
+    override fun `sendImage`(`url`: kotlin.String, `thumbnailUrl`: kotlin.String?, `imageInfo`: ImageInfo, `caption`: kotlin.String?, `formattedCaption`: FormattedBody?, `progressWatcher`: ProgressWatcher?, `useSendQueue`: kotlin.Boolean): SendAttachmentJoinHandle {
             return FfiConverterTypeSendAttachmentJoinHandle.lift(
     callWithPointer {
     uniffiRustCall() { _status ->
     UniffiLib.INSTANCE.uniffi_matrix_sdk_ffi_fn_method_timeline_send_image(
-        it, FfiConverterString.lower(`url`),FfiConverterOptionalString.lower(`thumbnailUrl`),FfiConverterTypeImageInfo.lower(`imageInfo`),FfiConverterOptionalString.lower(`caption`),FfiConverterOptionalTypeFormattedBody.lower(`formattedCaption`),FfiConverterBoolean.lower(`storeInCache`),FfiConverterOptionalTypeProgressWatcher.lower(`progressWatcher`),_status)
+        it, FfiConverterString.lower(`url`),FfiConverterOptionalString.lower(`thumbnailUrl`),FfiConverterTypeImageInfo.lower(`imageInfo`),FfiConverterOptionalString.lower(`caption`),FfiConverterOptionalTypeFormattedBody.lower(`formattedCaption`),FfiConverterOptionalTypeProgressWatcher.lower(`progressWatcher`),FfiConverterBoolean.lower(`useSendQueue`),_status)
 }
     }
     )
@@ -20618,24 +20778,24 @@ open class Timeline: Disposable, AutoCloseable, TimelineInterface {
     )
     }
 
-    override fun `sendVideo`(`url`: kotlin.String, `thumbnailUrl`: kotlin.String?, `videoInfo`: VideoInfo, `caption`: kotlin.String?, `formattedCaption`: FormattedBody?, `storeInCache`: kotlin.Boolean, `progressWatcher`: ProgressWatcher?): SendAttachmentJoinHandle {
+    override fun `sendVideo`(`url`: kotlin.String, `thumbnailUrl`: kotlin.String?, `videoInfo`: VideoInfo, `caption`: kotlin.String?, `formattedCaption`: FormattedBody?, `progressWatcher`: ProgressWatcher?, `useSendQueue`: kotlin.Boolean): SendAttachmentJoinHandle {
             return FfiConverterTypeSendAttachmentJoinHandle.lift(
     callWithPointer {
     uniffiRustCall() { _status ->
     UniffiLib.INSTANCE.uniffi_matrix_sdk_ffi_fn_method_timeline_send_video(
-        it, FfiConverterString.lower(`url`),FfiConverterOptionalString.lower(`thumbnailUrl`),FfiConverterTypeVideoInfo.lower(`videoInfo`),FfiConverterOptionalString.lower(`caption`),FfiConverterOptionalTypeFormattedBody.lower(`formattedCaption`),FfiConverterBoolean.lower(`storeInCache`),FfiConverterOptionalTypeProgressWatcher.lower(`progressWatcher`),_status)
+        it, FfiConverterString.lower(`url`),FfiConverterOptionalString.lower(`thumbnailUrl`),FfiConverterTypeVideoInfo.lower(`videoInfo`),FfiConverterOptionalString.lower(`caption`),FfiConverterOptionalTypeFormattedBody.lower(`formattedCaption`),FfiConverterOptionalTypeProgressWatcher.lower(`progressWatcher`),FfiConverterBoolean.lower(`useSendQueue`),_status)
 }
     }
     )
     }
     
 
-    override fun `sendVoiceMessage`(`url`: kotlin.String, `audioInfo`: AudioInfo, `waveform`: List<kotlin.UShort>, `caption`: kotlin.String?, `formattedCaption`: FormattedBody?, `storeInCache`: kotlin.Boolean, `progressWatcher`: ProgressWatcher?): SendAttachmentJoinHandle {
+    override fun `sendVoiceMessage`(`url`: kotlin.String, `audioInfo`: AudioInfo, `waveform`: List<kotlin.UShort>, `caption`: kotlin.String?, `formattedCaption`: FormattedBody?, `progressWatcher`: ProgressWatcher?, `useSendQueue`: kotlin.Boolean): SendAttachmentJoinHandle {
             return FfiConverterTypeSendAttachmentJoinHandle.lift(
     callWithPointer {
     uniffiRustCall() { _status ->
     UniffiLib.INSTANCE.uniffi_matrix_sdk_ffi_fn_method_timeline_send_voice_message(
-        it, FfiConverterString.lower(`url`),FfiConverterTypeAudioInfo.lower(`audioInfo`),FfiConverterSequenceUShort.lower(`waveform`),FfiConverterOptionalString.lower(`caption`),FfiConverterOptionalTypeFormattedBody.lower(`formattedCaption`),FfiConverterBoolean.lower(`storeInCache`),FfiConverterOptionalTypeProgressWatcher.lower(`progressWatcher`),_status)
+        it, FfiConverterString.lower(`url`),FfiConverterTypeAudioInfo.lower(`audioInfo`),FfiConverterSequenceUShort.lower(`waveform`),FfiConverterOptionalString.lower(`caption`),FfiConverterOptionalTypeFormattedBody.lower(`formattedCaption`),FfiConverterOptionalTypeProgressWatcher.lower(`progressWatcher`),FfiConverterBoolean.lower(`useSendQueue`),_status)
 }
     }
     )
@@ -31043,6 +31203,20 @@ sealed class QueueWedgeError {
     
     
     /**
+     * Some media content to be sent has disappeared from the cache.
+     */
+    object MissingMediaContent : QueueWedgeError()
+    
+    
+    /**
+     * Some mime type couldn't be parsed.
+     */
+    data class InvalidMimeType(
+        val `mimeType`: kotlin.String) : QueueWedgeError() {
+        companion object
+    }
+    
+    /**
      * Other errors.
      */
     data class GenericApiError(
@@ -31065,7 +31239,11 @@ public object FfiConverterTypeQueueWedgeError : FfiConverterRustBuffer<QueueWedg
                 FfiConverterSequenceString.read(buf),
                 )
             3 -> QueueWedgeError.CrossVerificationRequired
-            4 -> QueueWedgeError.GenericApiError(
+            4 -> QueueWedgeError.MissingMediaContent
+            5 -> QueueWedgeError.InvalidMimeType(
+                FfiConverterString.read(buf),
+                )
+            6 -> QueueWedgeError.GenericApiError(
                 FfiConverterString.read(buf),
                 )
             else -> throw RuntimeException("invalid enum value, something is very wrong!!")
@@ -31093,6 +31271,19 @@ public object FfiConverterTypeQueueWedgeError : FfiConverterRustBuffer<QueueWedg
                 4UL
             )
         }
+        is QueueWedgeError.MissingMediaContent -> {
+            // Add the size for the Int that specifies the variant plus the size needed for all fields
+            (
+                4UL
+            )
+        }
+        is QueueWedgeError.InvalidMimeType -> {
+            // Add the size for the Int that specifies the variant plus the size needed for all fields
+            (
+                4UL
+                + FfiConverterString.allocationSize(value.`mimeType`)
+            )
+        }
         is QueueWedgeError.GenericApiError -> {
             // Add the size for the Int that specifies the variant plus the size needed for all fields
             (
@@ -31118,8 +31309,17 @@ public object FfiConverterTypeQueueWedgeError : FfiConverterRustBuffer<QueueWedg
                 buf.putInt(3)
                 Unit
             }
-            is QueueWedgeError.GenericApiError -> {
+            is QueueWedgeError.MissingMediaContent -> {
                 buf.putInt(4)
+                Unit
+            }
+            is QueueWedgeError.InvalidMimeType -> {
+                buf.putInt(5)
+                FfiConverterString.write(value.`mimeType`, buf)
+                Unit
+            }
+            is QueueWedgeError.GenericApiError -> {
+                buf.putInt(6)
                 FfiConverterString.write(value.`msg`, buf)
                 Unit
             }
@@ -36748,6 +36948,35 @@ public object FfiConverterOptionalTypePowerLevels: FfiConverterRustBuffer<PowerL
 
 
 
+public object FfiConverterOptionalTypeResolvedRoomAlias: FfiConverterRustBuffer<ResolvedRoomAlias?> {
+    override fun read(buf: ByteBuffer): ResolvedRoomAlias? {
+        if (buf.get().toInt() == 0) {
+            return null
+        }
+        return FfiConverterTypeResolvedRoomAlias.read(buf)
+    }
+
+    override fun allocationSize(value: ResolvedRoomAlias?): ULong {
+        if (value == null) {
+            return 1UL
+        } else {
+            return 1UL + FfiConverterTypeResolvedRoomAlias.allocationSize(value)
+        }
+    }
+
+    override fun write(value: ResolvedRoomAlias?, buf: ByteBuffer) {
+        if (value == null) {
+            buf.put(0)
+        } else {
+            buf.put(1)
+            FfiConverterTypeResolvedRoomAlias.write(value, buf)
+        }
+    }
+}
+
+
+
+
 public object FfiConverterOptionalTypeRoomMember: FfiConverterRustBuffer<RoomMember?> {
     override fun read(buf: ByteBuffer): RoomMember? {
         if (buf.get().toInt() == 0) {
@@ -38567,6 +38796,18 @@ public object FfiConverterMapStringSequenceString: FfiConverterRustBuffer<Map<ko
     
 
         /**
+         * Verifies the passed `String` matches the expected room alias format.
+         */ fun `isRoomAliasFormatValid`(`alias`: kotlin.String): kotlin.Boolean {
+            return FfiConverterBoolean.lift(
+    uniffiRustCall() { _status ->
+    UniffiLib.INSTANCE.uniffi_matrix_sdk_ffi_fn_func_is_room_alias_format_valid(
+        FfiConverterString.lower(`alias`),_status)
+}
+    )
+    }
+    
+
+        /**
          * Log an event.
          *
          * The target should be something like a module path, and can be referenced in
@@ -38725,6 +38966,18 @@ public object FfiConverterMapStringSequenceString: FfiConverterRustBuffer<Map<ko
     uniffiRustCall() { _status ->
     UniffiLib.INSTANCE.uniffi_matrix_sdk_ffi_fn_func_parse_matrix_entity_from(
         FfiConverterString.lower(`uri`),_status)
+}
+    )
+    }
+    
+
+        /**
+         * Transforms a Room's display name into a valid room alias name.
+         */ fun `roomAliasNameFromRoomDisplayName`(`roomName`: kotlin.String): kotlin.String {
+            return FfiConverterString.lift(
+    uniffiRustCall() { _status ->
+    UniffiLib.INSTANCE.uniffi_matrix_sdk_ffi_fn_func_room_alias_name_from_room_display_name(
+        FfiConverterString.lower(`roomName`),_status)
 }
     )
     }
