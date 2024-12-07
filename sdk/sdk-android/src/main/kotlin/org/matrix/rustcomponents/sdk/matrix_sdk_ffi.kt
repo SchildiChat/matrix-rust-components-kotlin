@@ -2189,6 +2189,10 @@ internal open class UniffiVTableCallbackInterfaceWidgetCapabilitiesProvider(
 
 
 
+
+
+
+
 // A JNA Library to expose the extern-C FFI definitions.
 // This is an implementation detail which will be called internally by the public API.
 
@@ -2234,16 +2238,6 @@ internal interface UniffiLib : Library {
         }
     }
 
-    fun uniffi_matrix_sdk_ffi_fn_clone_mediasource(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
-    ): Pointer
-    fun uniffi_matrix_sdk_ffi_fn_free_mediasource(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
-    ): Unit
-    fun uniffi_matrix_sdk_ffi_fn_constructor_mediasource_from_json(`json`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
-    ): Pointer
-    fun uniffi_matrix_sdk_ffi_fn_method_mediasource_to_json(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
-    ): RustBuffer.ByValue
-    fun uniffi_matrix_sdk_ffi_fn_method_mediasource_url(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
-    ): RustBuffer.ByValue
     fun uniffi_matrix_sdk_ffi_fn_clone_roommessageeventcontentwithoutrelation(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
     ): Pointer
     fun uniffi_matrix_sdk_ffi_fn_free_roommessageeventcontentwithoutrelation(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
@@ -2538,6 +2532,18 @@ internal interface UniffiLib : Library {
     ): RustBuffer.ByValue
     fun uniffi_matrix_sdk_ffi_fn_method_mediafilehandle_persist(`ptr`: Pointer,`path`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
     ): Byte
+    fun uniffi_matrix_sdk_ffi_fn_clone_mediasource(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
+    ): Pointer
+    fun uniffi_matrix_sdk_ffi_fn_free_mediasource(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
+    ): Unit
+    fun uniffi_matrix_sdk_ffi_fn_constructor_mediasource_from_json(`json`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
+    ): Pointer
+    fun uniffi_matrix_sdk_ffi_fn_constructor_mediasource_from_url(`url`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
+    ): Pointer
+    fun uniffi_matrix_sdk_ffi_fn_method_mediasource_to_json(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
+    ): RustBuffer.ByValue
+    fun uniffi_matrix_sdk_ffi_fn_method_mediasource_url(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
+    ): RustBuffer.ByValue
     fun uniffi_matrix_sdk_ffi_fn_clone_notificationclient(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
     ): Pointer
     fun uniffi_matrix_sdk_ffi_fn_free_notificationclient(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
@@ -2700,6 +2706,8 @@ internal interface UniffiLib : Library {
     ): Long
     fun uniffi_matrix_sdk_ffi_fn_method_room_membership(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
     ): RustBuffer.ByValue
+    fun uniffi_matrix_sdk_ffi_fn_method_room_message_filtered_timeline(`ptr`: Pointer,`internalIdPrefix`: RustBuffer.ByValue,`allowedMessageTypes`: RustBuffer.ByValue,
+    ): Long
     fun uniffi_matrix_sdk_ffi_fn_method_room_own_user_id(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
     ): RustBuffer.ByValue
     fun uniffi_matrix_sdk_ffi_fn_method_room_pinned_events_timeline(`ptr`: Pointer,`internalIdPrefix`: RustBuffer.ByValue,`maxEventsToLoad`: Short,`maxConcurrentRequests`: Short,
@@ -3170,6 +3178,8 @@ internal interface UniffiLib : Library {
     ): Unit
     fun uniffi_matrix_sdk_ffi_fn_func_content_without_relation_from_message(`message`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
     ): Pointer
+    fun uniffi_matrix_sdk_ffi_fn_func_create_caption_edit(`caption`: RustBuffer.ByValue,`formattedCaption`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
+    ): RustBuffer.ByValue
     fun uniffi_matrix_sdk_ffi_fn_func_gen_transaction_id(uniffi_out_err: UniffiRustCallStatus, 
     ): RustBuffer.ByValue
     fun uniffi_matrix_sdk_ffi_fn_func_generate_webview_url(`widgetSettings`: RustBuffer.ByValue,`room`: Pointer,`props`: RustBuffer.ByValue,
@@ -3188,8 +3198,6 @@ internal interface UniffiLib : Library {
     ): RustBuffer.ByValue
     fun uniffi_matrix_sdk_ffi_fn_func_matrix_to_user_permalink(`userId`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
     ): RustBuffer.ByValue
-    fun uniffi_matrix_sdk_ffi_fn_func_media_source_from_url(`url`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
-    ): Pointer
     fun uniffi_matrix_sdk_ffi_fn_func_message_event_content_from_html(`body`: RustBuffer.ByValue,`htmlBody`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
     ): Pointer
     fun uniffi_matrix_sdk_ffi_fn_func_message_event_content_from_html_as_emote(`body`: RustBuffer.ByValue,`htmlBody`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
@@ -3328,6 +3336,8 @@ internal interface UniffiLib : Library {
     ): Unit
     fun uniffi_matrix_sdk_ffi_checksum_func_content_without_relation_from_message(
     ): Short
+    fun uniffi_matrix_sdk_ffi_checksum_func_create_caption_edit(
+    ): Short
     fun uniffi_matrix_sdk_ffi_checksum_func_gen_transaction_id(
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_func_generate_webview_url(
@@ -3345,8 +3355,6 @@ internal interface UniffiLib : Library {
     fun uniffi_matrix_sdk_ffi_checksum_func_matrix_to_room_alias_permalink(
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_func_matrix_to_user_permalink(
-    ): Short
-    fun uniffi_matrix_sdk_ffi_checksum_func_media_source_from_url(
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_func_message_event_content_from_html(
     ): Short
@@ -3371,10 +3379,6 @@ internal interface UniffiLib : Library {
     fun uniffi_matrix_sdk_ffi_checksum_func_suggested_power_level_for_role(
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_func_suggested_role_for_power_level(
-    ): Short
-    fun uniffi_matrix_sdk_ffi_checksum_method_mediasource_to_json(
-    ): Short
-    fun uniffi_matrix_sdk_ffi_checksum_method_mediasource_url(
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_roommessageeventcontentwithoutrelation_with_mentions(
     ): Short
@@ -3632,6 +3636,10 @@ internal interface UniffiLib : Library {
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_mediafilehandle_persist(
     ): Short
+    fun uniffi_matrix_sdk_ffi_checksum_method_mediasource_to_json(
+    ): Short
+    fun uniffi_matrix_sdk_ffi_checksum_method_mediasource_url(
+    ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_notificationclient_get_notification(
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_notificationsettings_can_homeserver_push_encrypted_event_to_device(
@@ -3775,6 +3783,8 @@ internal interface UniffiLib : Library {
     fun uniffi_matrix_sdk_ffi_checksum_method_room_members_no_sync(
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_room_membership(
+    ): Short
+    fun uniffi_matrix_sdk_ffi_checksum_method_room_message_filtered_timeline(
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_room_own_user_id(
     ): Short
@@ -4080,9 +4090,11 @@ internal interface UniffiLib : Library {
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_widgetdriverhandle_send(
     ): Short
+    fun uniffi_matrix_sdk_ffi_checksum_constructor_clientbuilder_new(
+    ): Short
     fun uniffi_matrix_sdk_ffi_checksum_constructor_mediasource_from_json(
     ): Short
-    fun uniffi_matrix_sdk_ffi_checksum_constructor_clientbuilder_new(
+    fun uniffi_matrix_sdk_ffi_checksum_constructor_mediasource_from_url(
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_constructor_qrcodedata_from_bytes(
     ): Short
@@ -4182,6 +4194,9 @@ private fun uniffiCheckApiChecksums(lib: UniffiLib) {
     if (lib.uniffi_matrix_sdk_ffi_checksum_func_content_without_relation_from_message() != 1366.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
+    if (lib.uniffi_matrix_sdk_ffi_checksum_func_create_caption_edit() != 49747.toShort()) {
+        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    }
     if (lib.uniffi_matrix_sdk_ffi_checksum_func_gen_transaction_id() != 15808.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
@@ -4207,9 +4222,6 @@ private fun uniffiCheckApiChecksums(lib: UniffiLib) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_matrix_sdk_ffi_checksum_func_matrix_to_user_permalink() != 46473.toShort()) {
-        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
-    }
-    if (lib.uniffi_matrix_sdk_ffi_checksum_func_media_source_from_url() != 12165.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_matrix_sdk_ffi_checksum_func_message_event_content_from_html() != 37203.toShort()) {
@@ -4246,12 +4258,6 @@ private fun uniffiCheckApiChecksums(lib: UniffiLib) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_matrix_sdk_ffi_checksum_func_suggested_role_for_power_level() != 48532.toShort()) {
-        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
-    }
-    if (lib.uniffi_matrix_sdk_ffi_checksum_method_mediasource_to_json() != 2998.toShort()) {
-        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
-    }
-    if (lib.uniffi_matrix_sdk_ffi_checksum_method_mediasource_url() != 34026.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_roommessageeventcontentwithoutrelation_with_mentions() != 8867.toShort()) {
@@ -4638,6 +4644,12 @@ private fun uniffiCheckApiChecksums(lib: UniffiLib) {
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_mediafilehandle_persist() != 12883.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
+    if (lib.uniffi_matrix_sdk_ffi_checksum_method_mediasource_to_json() != 23306.toShort()) {
+        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    }
+    if (lib.uniffi_matrix_sdk_ffi_checksum_method_mediasource_url() != 62692.toShort()) {
+        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    }
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_notificationclient_get_notification() != 2524.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
@@ -4852,6 +4864,9 @@ private fun uniffiCheckApiChecksums(lib: UniffiLib) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_room_membership() != 26065.toShort()) {
+        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    }
+    if (lib.uniffi_matrix_sdk_ffi_checksum_method_room_message_filtered_timeline() != 47862.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_room_own_user_id() != 39510.toShort()) {
@@ -5310,10 +5325,13 @@ private fun uniffiCheckApiChecksums(lib: UniffiLib) {
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_widgetdriverhandle_send() != 18689.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
-    if (lib.uniffi_matrix_sdk_ffi_checksum_constructor_mediasource_from_json() != 29216.toShort()) {
+    if (lib.uniffi_matrix_sdk_ffi_checksum_constructor_clientbuilder_new() != 27991.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
-    if (lib.uniffi_matrix_sdk_ffi_checksum_constructor_clientbuilder_new() != 27991.toShort()) {
+    if (lib.uniffi_matrix_sdk_ffi_checksum_constructor_mediasource_from_json() != 10564.toShort()) {
+        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    }
+    if (lib.uniffi_matrix_sdk_ffi_checksum_constructor_mediasource_from_url() != 11983.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_matrix_sdk_ffi_checksum_constructor_qrcodedata_from_bytes() != 32675.toShort()) {
@@ -10894,6 +10912,17 @@ open class MediaSource: Disposable, AutoCloseable, MediaSourceInterface {
     
 
         
+    @Throws(ClientException::class) fun `fromUrl`(`url`: kotlin.String): MediaSource {
+            return FfiConverterTypeMediaSource.lift(
+    uniffiRustCallWithError(ClientException) { _status ->
+    UniffiLib.INSTANCE.uniffi_matrix_sdk_ffi_fn_constructor_mediasource_from_url(
+        FfiConverterString.lower(`url`),_status)
+}
+    )
+    }
+    
+
+        
     }
     
 }
@@ -12570,6 +12599,24 @@ public interface RoomInterface {
     
     fun `membership`(): Membership
     
+    /**
+     * A timeline instance that can be configured to only include RoomMessage
+     * type events and filter those further based on their message type.
+     *
+     * Virtual timeline items will still be provided and the
+     * `default_event_filter` will be applied before everything else.
+     *
+     * # Arguments
+     *
+     * * `internal_id_prefix` - An optional String that will be prepended to
+     * all the timeline item's internal IDs, making it possible to
+     * distinguish different timeline instances from each other.
+     *
+     * * `allowed_message_types` - A list of `RoomMessageEventMessageType` that
+     * will be allowed to appear in the timeline
+     */
+    suspend fun `messageFilteredTimeline`(`internalIdPrefix`: kotlin.String?, `allowedMessageTypes`: List<RoomMessageEventMessageType>): Timeline
+    
     fun `ownUserId`(): kotlin.String
     
     suspend fun `pinnedEventsTimeline`(`internalIdPrefix`: kotlin.String?, `maxEventsToLoad`: kotlin.UShort, `maxConcurrentRequests`: kotlin.UShort): Timeline
@@ -13808,6 +13855,43 @@ open class Room: Disposable, AutoCloseable, RoomInterface {
     )
     }
     
+
+    
+    /**
+     * A timeline instance that can be configured to only include RoomMessage
+     * type events and filter those further based on their message type.
+     *
+     * Virtual timeline items will still be provided and the
+     * `default_event_filter` will be applied before everything else.
+     *
+     * # Arguments
+     *
+     * * `internal_id_prefix` - An optional String that will be prepended to
+     * all the timeline item's internal IDs, making it possible to
+     * distinguish different timeline instances from each other.
+     *
+     * * `allowed_message_types` - A list of `RoomMessageEventMessageType` that
+     * will be allowed to appear in the timeline
+     */
+    @Throws(ClientException::class)
+    @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
+    override suspend fun `messageFilteredTimeline`(`internalIdPrefix`: kotlin.String?, `allowedMessageTypes`: List<RoomMessageEventMessageType>) : Timeline {
+        return uniffiRustCallAsync(
+        callWithPointer { thisPtr ->
+            UniffiLib.INSTANCE.uniffi_matrix_sdk_ffi_fn_method_room_message_filtered_timeline(
+                thisPtr,
+                FfiConverterOptionalString.lower(`internalIdPrefix`),FfiConverterSequenceTypeRoomMessageEventMessageType.lower(`allowedMessageTypes`),
+            )
+        },
+        { future, callback, continuation -> UniffiLib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_poll_pointer(future, callback, continuation) },
+        { future, continuation -> UniffiLib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_complete_pointer(future, continuation) },
+        { future -> UniffiLib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_free_pointer(future) },
+        // lift function
+        { FfiConverterTypeTimeline.lift(it) },
+        // Error FFI converter
+        ClientException.ErrorHandler,
+    )
+    }
 
     override fun `ownUserId`(): kotlin.String {
             return FfiConverterString.lift(
@@ -25247,9 +25331,13 @@ data class RoomInfo (
      */
     var `numUnreadMentions`: kotlin.ULong, 
     /**
-     * The currently pinned event ids
+     * The currently pinned event ids.
      */
-    var `pinnedEventIds`: List<kotlin.String>
+    var `pinnedEventIds`: List<kotlin.String>, 
+    /**
+     * The join rule for this room, if known.
+     */
+    var `joinRule`: JoinRule?
 ) {
     
     companion object
@@ -25291,6 +25379,7 @@ public object FfiConverterTypeRoomInfo: FfiConverterRustBuffer<RoomInfo> {
             FfiConverterULong.read(buf),
             FfiConverterULong.read(buf),
             FfiConverterSequenceString.read(buf),
+            FfiConverterOptionalTypeJoinRule.read(buf),
         )
     }
 
@@ -25327,7 +25416,8 @@ public object FfiConverterTypeRoomInfo: FfiConverterRustBuffer<RoomInfo> {
             FfiConverterULong.allocationSize(value.`numUnreadMessages`) +
             FfiConverterULong.allocationSize(value.`numUnreadNotifications`) +
             FfiConverterULong.allocationSize(value.`numUnreadMentions`) +
-            FfiConverterSequenceString.allocationSize(value.`pinnedEventIds`)
+            FfiConverterSequenceString.allocationSize(value.`pinnedEventIds`) +
+            FfiConverterOptionalTypeJoinRule.allocationSize(value.`joinRule`)
     )
 
     override fun write(value: RoomInfo, buf: ByteBuffer) {
@@ -25364,6 +25454,7 @@ public object FfiConverterTypeRoomInfo: FfiConverterRustBuffer<RoomInfo> {
             FfiConverterULong.write(value.`numUnreadNotifications`, buf)
             FfiConverterULong.write(value.`numUnreadMentions`, buf)
             FfiConverterSequenceString.write(value.`pinnedEventIds`, buf)
+            FfiConverterOptionalTypeJoinRule.write(value.`joinRule`, buf)
     }
 }
 
@@ -25632,7 +25723,7 @@ data class RoomPreviewInfo (
     /**
      * Is the history world-readable for this room?
      */
-    var `isHistoryWorldReadable`: kotlin.Boolean, 
+    var `isHistoryWorldReadable`: kotlin.Boolean?, 
     /**
      * The membership state for the current user, if known.
      */
@@ -25644,7 +25735,11 @@ data class RoomPreviewInfo (
     /**
      * Whether the room is direct or not, if known.
      */
-    var `isDirect`: kotlin.Boolean?
+    var `isDirect`: kotlin.Boolean?, 
+    /**
+     * Room heroes.
+     */
+    var `heroes`: List<RoomHero>?
 ) {
     
     companion object
@@ -25661,10 +25756,11 @@ public object FfiConverterTypeRoomPreviewInfo: FfiConverterRustBuffer<RoomPrevie
             FfiConverterULong.read(buf),
             FfiConverterOptionalULong.read(buf),
             FfiConverterTypeRoomType.read(buf),
-            FfiConverterBoolean.read(buf),
+            FfiConverterOptionalBoolean.read(buf),
             FfiConverterOptionalTypeMembership.read(buf),
             FfiConverterTypeJoinRule.read(buf),
             FfiConverterOptionalBoolean.read(buf),
+            FfiConverterOptionalSequenceTypeRoomHero.read(buf),
         )
     }
 
@@ -25677,10 +25773,11 @@ public object FfiConverterTypeRoomPreviewInfo: FfiConverterRustBuffer<RoomPrevie
             FfiConverterULong.allocationSize(value.`numJoinedMembers`) +
             FfiConverterOptionalULong.allocationSize(value.`numActiveMembers`) +
             FfiConverterTypeRoomType.allocationSize(value.`roomType`) +
-            FfiConverterBoolean.allocationSize(value.`isHistoryWorldReadable`) +
+            FfiConverterOptionalBoolean.allocationSize(value.`isHistoryWorldReadable`) +
             FfiConverterOptionalTypeMembership.allocationSize(value.`membership`) +
             FfiConverterTypeJoinRule.allocationSize(value.`joinRule`) +
-            FfiConverterOptionalBoolean.allocationSize(value.`isDirect`)
+            FfiConverterOptionalBoolean.allocationSize(value.`isDirect`) +
+            FfiConverterOptionalSequenceTypeRoomHero.allocationSize(value.`heroes`)
     )
 
     override fun write(value: RoomPreviewInfo, buf: ByteBuffer) {
@@ -25692,10 +25789,11 @@ public object FfiConverterTypeRoomPreviewInfo: FfiConverterRustBuffer<RoomPrevie
             FfiConverterULong.write(value.`numJoinedMembers`, buf)
             FfiConverterOptionalULong.write(value.`numActiveMembers`, buf)
             FfiConverterTypeRoomType.write(value.`roomType`, buf)
-            FfiConverterBoolean.write(value.`isHistoryWorldReadable`, buf)
+            FfiConverterOptionalBoolean.write(value.`isHistoryWorldReadable`, buf)
             FfiConverterOptionalTypeMembership.write(value.`membership`, buf)
             FfiConverterTypeJoinRule.write(value.`joinRule`, buf)
             FfiConverterOptionalBoolean.write(value.`isDirect`, buf)
+            FfiConverterOptionalSequenceTypeRoomHero.write(value.`heroes`, buf)
     }
 }
 
@@ -26877,6 +26975,15 @@ sealed class AllowRule {
         companion object
     }
     
+    /**
+     * A custom allow rule implementation, containing its JSON representation
+     * as a `String`.
+     */
+    data class Custom(
+        val `json`: kotlin.String) : AllowRule() {
+        companion object
+    }
+    
 
     
     companion object
@@ -26886,6 +26993,9 @@ public object FfiConverterTypeAllowRule : FfiConverterRustBuffer<AllowRule>{
     override fun read(buf: ByteBuffer): AllowRule {
         return when(buf.getInt()) {
             1 -> AllowRule.RoomMembership(
+                FfiConverterString.read(buf),
+                )
+            2 -> AllowRule.Custom(
                 FfiConverterString.read(buf),
                 )
             else -> throw RuntimeException("invalid enum value, something is very wrong!!")
@@ -26900,6 +27010,13 @@ public object FfiConverterTypeAllowRule : FfiConverterRustBuffer<AllowRule>{
                 + FfiConverterString.allocationSize(value.`roomId`)
             )
         }
+        is AllowRule.Custom -> {
+            // Add the size for the Int that specifies the variant plus the size needed for all fields
+            (
+                4UL
+                + FfiConverterString.allocationSize(value.`json`)
+            )
+        }
     }
 
     override fun write(value: AllowRule, buf: ByteBuffer) {
@@ -26907,6 +27024,11 @@ public object FfiConverterTypeAllowRule : FfiConverterRustBuffer<AllowRule>{
             is AllowRule.RoomMembership -> {
                 buf.putInt(1)
                 FfiConverterString.write(value.`roomId`, buf)
+                Unit
+            }
+            is AllowRule.Custom -> {
+                buf.putInt(2)
+                FfiConverterString.write(value.`json`, buf)
                 Unit
             }
         }.let { /* this makes the `when` an expression, which ensures it is exhaustive */ }
@@ -27433,6 +27555,12 @@ sealed class EditedContent: Disposable  {
         companion object
     }
     
+    data class MediaCaption(
+        val `caption`: kotlin.String?, 
+        val `formattedCaption`: FormattedBody?) : EditedContent() {
+        companion object
+    }
+    
     data class PollStart(
         val `pollData`: PollData) : EditedContent() {
         companion object
@@ -27446,6 +27574,14 @@ sealed class EditedContent: Disposable  {
             is EditedContent.RoomMessage -> {
                 
         Disposable.destroy(this.`content`)
+    
+                
+            }
+            is EditedContent.MediaCaption -> {
+                
+        Disposable.destroy(this.`caption`)
+    
+        Disposable.destroy(this.`formattedCaption`)
     
                 
             }
@@ -27467,7 +27603,11 @@ public object FfiConverterTypeEditedContent : FfiConverterRustBuffer<EditedConte
             1 -> EditedContent.RoomMessage(
                 FfiConverterTypeRoomMessageEventContentWithoutRelation.read(buf),
                 )
-            2 -> EditedContent.PollStart(
+            2 -> EditedContent.MediaCaption(
+                FfiConverterOptionalString.read(buf),
+                FfiConverterOptionalTypeFormattedBody.read(buf),
+                )
+            3 -> EditedContent.PollStart(
                 FfiConverterTypePollData.read(buf),
                 )
             else -> throw RuntimeException("invalid enum value, something is very wrong!!")
@@ -27480,6 +27620,14 @@ public object FfiConverterTypeEditedContent : FfiConverterRustBuffer<EditedConte
             (
                 4UL
                 + FfiConverterTypeRoomMessageEventContentWithoutRelation.allocationSize(value.`content`)
+            )
+        }
+        is EditedContent.MediaCaption -> {
+            // Add the size for the Int that specifies the variant plus the size needed for all fields
+            (
+                4UL
+                + FfiConverterOptionalString.allocationSize(value.`caption`)
+                + FfiConverterOptionalTypeFormattedBody.allocationSize(value.`formattedCaption`)
             )
         }
         is EditedContent.PollStart -> {
@@ -27498,8 +27646,14 @@ public object FfiConverterTypeEditedContent : FfiConverterRustBuffer<EditedConte
                 FfiConverterTypeRoomMessageEventContentWithoutRelation.write(value.`content`, buf)
                 Unit
             }
-            is EditedContent.PollStart -> {
+            is EditedContent.MediaCaption -> {
                 buf.putInt(2)
+                FfiConverterOptionalString.write(value.`caption`, buf)
+                FfiConverterOptionalTypeFormattedBody.write(value.`formattedCaption`, buf)
+                Unit
+            }
+            is EditedContent.PollStart -> {
+                buf.putInt(3)
                 FfiConverterTypePollData.write(value.`pollData`, buf)
                 Unit
             }
@@ -32897,6 +33051,42 @@ public object FfiConverterTypeRoomListServiceSyncIndicator: FfiConverterRustBuff
 
 
 
+
+enum class RoomMessageEventMessageType {
+    
+    AUDIO,
+    EMOTE,
+    FILE,
+    IMAGE,
+    LOCATION,
+    NOTICE,
+    SERVER_NOTICE,
+    TEXT,
+    VIDEO,
+    VERIFICATION_REQUEST,
+    OTHER;
+    companion object
+}
+
+
+public object FfiConverterTypeRoomMessageEventMessageType: FfiConverterRustBuffer<RoomMessageEventMessageType> {
+    override fun read(buf: ByteBuffer) = try {
+        RoomMessageEventMessageType.values()[buf.getInt() - 1]
+    } catch (e: IndexOutOfBoundsException) {
+        throw RuntimeException("invalid enum value, something is very wrong!!", e)
+    }
+
+    override fun allocationSize(value: RoomMessageEventMessageType) = 4UL
+
+    override fun write(value: RoomMessageEventMessageType, buf: ByteBuffer) {
+        buf.putInt(value.ordinal + 1)
+    }
+}
+
+
+
+
+
 /**
  * Enum representing the push notification modes for a room.
  */
@@ -37895,6 +38085,35 @@ public object FfiConverterOptionalSequenceTypeTimelineItem: FfiConverterRustBuff
 
 
 
+public object FfiConverterOptionalSequenceTypeRoomHero: FfiConverterRustBuffer<List<RoomHero>?> {
+    override fun read(buf: ByteBuffer): List<RoomHero>? {
+        if (buf.get().toInt() == 0) {
+            return null
+        }
+        return FfiConverterSequenceTypeRoomHero.read(buf)
+    }
+
+    override fun allocationSize(value: List<RoomHero>?): ULong {
+        if (value == null) {
+            return 1UL
+        } else {
+            return 1UL + FfiConverterSequenceTypeRoomHero.allocationSize(value)
+        }
+    }
+
+    override fun write(value: List<RoomHero>?, buf: ByteBuffer) {
+        if (value == null) {
+            buf.put(0)
+        } else {
+            buf.put(1)
+            FfiConverterSequenceTypeRoomHero.write(value, buf)
+        }
+    }
+}
+
+
+
+
 public object FfiConverterOptionalSequenceTypeRoomMember: FfiConverterRustBuffer<List<RoomMember>?> {
     override fun read(buf: ByteBuffer): List<RoomMember>? {
         if (buf.get().toInt() == 0) {
@@ -38607,6 +38826,31 @@ public object FfiConverterSequenceTypeRoomListEntriesUpdate: FfiConverterRustBuf
 
 
 
+public object FfiConverterSequenceTypeRoomMessageEventMessageType: FfiConverterRustBuffer<List<RoomMessageEventMessageType>> {
+    override fun read(buf: ByteBuffer): List<RoomMessageEventMessageType> {
+        val len = buf.getInt()
+        return List<RoomMessageEventMessageType>(len) {
+            FfiConverterTypeRoomMessageEventMessageType.read(buf)
+        }
+    }
+
+    override fun allocationSize(value: List<RoomMessageEventMessageType>): ULong {
+        val sizeForLength = 4UL
+        val sizeForItems = value.map { FfiConverterTypeRoomMessageEventMessageType.allocationSize(it) }.sum()
+        return sizeForLength + sizeForItems
+    }
+
+    override fun write(value: List<RoomMessageEventMessageType>, buf: ByteBuffer) {
+        buf.putInt(value.size)
+        value.iterator().forEach {
+            FfiConverterTypeRoomMessageEventMessageType.write(it, buf)
+        }
+    }
+}
+
+
+
+
 public object FfiConverterSequenceTypeSlidingSyncVersion: FfiConverterRustBuffer<List<SlidingSyncVersion>> {
     override fun read(buf: ByteBuffer): List<SlidingSyncVersion> {
         val len = buf.getInt()
@@ -38901,6 +39145,21 @@ public object FfiConverterMapStringSequenceString: FfiConverterRustBuffer<Map<ko
     )
     }
     
+
+        /**
+         * Create a caption edit.
+         *
+         * If no `formatted_caption` is provided, then it's assumed the `caption`
+         * represents valid Markdown that can be used as the formatted caption.
+         */ fun `createCaptionEdit`(`caption`: kotlin.String?, `formattedCaption`: FormattedBody?): EditedContent {
+            return FfiConverterTypeEditedContent.lift(
+    uniffiRustCall() { _status ->
+    UniffiLib.INSTANCE.uniffi_matrix_sdk_ffi_fn_func_create_caption_edit(
+        FfiConverterOptionalString.lower(`caption`),FfiConverterOptionalTypeFormattedBody.lower(`formattedCaption`),_status)
+}
+    )
+    }
+    
  fun `genTransactionId`(): kotlin.String {
             return FfiConverterString.lift(
     uniffiRustCall() { _status ->
@@ -39041,15 +39300,6 @@ public object FfiConverterMapStringSequenceString: FfiConverterRustBuffer<Map<ko
     uniffiRustCallWithError(ClientException) { _status ->
     UniffiLib.INSTANCE.uniffi_matrix_sdk_ffi_fn_func_matrix_to_user_permalink(
         FfiConverterString.lower(`userId`),_status)
-}
-    )
-    }
-    
- fun `mediaSourceFromUrl`(`url`: kotlin.String): MediaSource {
-            return FfiConverterTypeMediaSource.lift(
-    uniffiRustCall() { _status ->
-    UniffiLib.INSTANCE.uniffi_matrix_sdk_ffi_fn_func_media_source_from_url(
-        FfiConverterString.lower(`url`),_status)
 }
     )
     }

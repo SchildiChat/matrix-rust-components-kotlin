@@ -1410,7 +1410,33 @@ enum class UtdCause {
      * data was obtained from an insecure source (imported from a file,
      * obtained from a legacy (asymmetric) backup, unsafe key forward, etc.)
      */
-    UNKNOWN_DEVICE;
+    UNKNOWN_DEVICE,
+    /**
+     * We are missing the keys for this event, but it is a "device-historical"
+     * message and no backup is accessible or usable.
+     *
+     * Device-historical means that the message was sent before the current
+     * device existed (but the current user was probably a member of the room
+     * at the time the message was sent). Not to
+     * be confused with pre-join or pre-invite messages (see
+     * [`UtdCause::SentBeforeWeJoined`] for that).
+     */
+    HISTORICAL_MESSAGE,
+    /**
+     * The keys for this event are intentionally withheld.
+     *
+     * The sender has refused to share the key because our device does not meet
+     * the sender's security requirements.
+     */
+    WITHHELD_FOR_UNVERIFIED_OR_INSECURE_DEVICE,
+    /**
+     * The keys for this event are missing, likely because the sender was
+     * unable to share them (e.g., failure to establish an Olm 1:1
+     * channel). Alternatively, the sender may have deliberately excluded
+     * this device by cherry-picking and blocking it, in which case, no action
+     * can be taken on our side.
+     */
+    WITHHELD_BY_SENDER;
     companion object
 }
 
