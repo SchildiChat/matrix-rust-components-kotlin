@@ -2193,6 +2193,10 @@ internal open class UniffiVTableCallbackInterfaceWidgetCapabilitiesProvider(
 
 
 
+
+
+
+
 // A JNA Library to expose the extern-C FFI definitions.
 // This is an implementation detail which will be called internally by the public API.
 
@@ -2610,6 +2614,8 @@ internal interface UniffiLib : Library {
     ): Long
     fun uniffi_matrix_sdk_ffi_fn_method_room_active_room_call_participants(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
     ): RustBuffer.ByValue
+    fun uniffi_matrix_sdk_ffi_fn_method_room_add_space_child(`ptr`: Pointer,`childRoomId`: RustBuffer.ByValue,
+    ): Long
     fun uniffi_matrix_sdk_ffi_fn_method_room_alternative_aliases(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
     ): RustBuffer.ByValue
     fun uniffi_matrix_sdk_ffi_fn_method_room_apply_power_level_changes(`ptr`: Pointer,`changes`: RustBufferRoomPowerLevelChanges.ByValue,
@@ -2717,6 +2723,8 @@ internal interface UniffiLib : Library {
     fun uniffi_matrix_sdk_ffi_fn_method_room_redact(`ptr`: Pointer,`eventId`: RustBuffer.ByValue,`reason`: RustBuffer.ByValue,
     ): Long
     fun uniffi_matrix_sdk_ffi_fn_method_room_remove_avatar(`ptr`: Pointer,
+    ): Long
+    fun uniffi_matrix_sdk_ffi_fn_method_room_remove_space_child(`ptr`: Pointer,`childRoomId`: RustBuffer.ByValue,
     ): Long
     fun uniffi_matrix_sdk_ffi_fn_method_room_report_content(`ptr`: Pointer,`eventId`: RustBuffer.ByValue,`score`: RustBuffer.ByValue,`reason`: RustBuffer.ByValue,
     ): Long
@@ -3688,6 +3696,8 @@ internal interface UniffiLib : Library {
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_room_active_room_call_participants(
     ): Short
+    fun uniffi_matrix_sdk_ffi_checksum_method_room_add_space_child(
+    ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_room_alternative_aliases(
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_room_apply_power_level_changes(
@@ -3795,6 +3805,8 @@ internal interface UniffiLib : Library {
     fun uniffi_matrix_sdk_ffi_checksum_method_room_redact(
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_room_remove_avatar(
+    ): Short
+    fun uniffi_matrix_sdk_ffi_checksum_method_room_remove_space_child(
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_room_report_content(
     ): Short
@@ -4722,6 +4734,9 @@ private fun uniffiCheckApiChecksums(lib: UniffiLib) {
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_room_active_room_call_participants() != 41533.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
+    if (lib.uniffi_matrix_sdk_ffi_checksum_method_room_add_space_child() != 15024.toShort()) {
+        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    }
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_room_alternative_aliases() != 28555.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
@@ -4884,6 +4899,9 @@ private fun uniffiCheckApiChecksums(lib: UniffiLib) {
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_room_remove_avatar() != 7230.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
+    if (lib.uniffi_matrix_sdk_ffi_checksum_method_room_remove_space_child() != 39605.toShort()) {
+        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    }
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_room_report_content() != 16529.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
@@ -4899,7 +4917,7 @@ private fun uniffiCheckApiChecksums(lib: UniffiLib) {
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_room_send_call_notification() != 43366.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
-    if (lib.uniffi_matrix_sdk_ffi_checksum_method_room_send_call_notification_if_needed() != 53551.toShort()) {
+    if (lib.uniffi_matrix_sdk_ffi_checksum_method_room_send_call_notification_if_needed() != 51729.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_room_set_is_favourite() != 64403.toShort()) {
@@ -12424,6 +12442,11 @@ public interface RoomInterface {
      */
     fun `activeRoomCallParticipants`(): List<kotlin.String>
     
+    /**
+     * SC start
+     */
+    suspend fun `addSpaceChild`(`childRoomId`: kotlin.String)
+    
     fun `alternativeAliases`(): List<kotlin.String>
     
     suspend fun `applyPowerLevelChanges`(`changes`: RoomPowerLevelChanges)
@@ -12643,6 +12666,8 @@ public interface RoomInterface {
      */
     suspend fun `removeAvatar`()
     
+    suspend fun `removeSpaceChild`(`childRoomId`: kotlin.String)
+    
     /**
      * Reports an event from the room.
      *
@@ -12683,6 +12708,7 @@ public interface RoomInterface {
     suspend fun `sendCallNotification`(`callId`: kotlin.String, `application`: RtcApplicationType, `notifyType`: NotifyType, `mentions`: Mentions)
     
     /**
+     * SC end
      * This will only send a call notification event if appropriate.
      *
      * This function is supposed to be called whenever the user creates a room
@@ -12910,6 +12936,31 @@ open class Room: Disposable, AutoCloseable, RoomInterface {
     )
     }
     
+
+    
+    /**
+     * SC start
+     */
+    @Throws(ClientException::class)
+    @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
+    override suspend fun `addSpaceChild`(`childRoomId`: kotlin.String) {
+        return uniffiRustCallAsync(
+        callWithPointer { thisPtr ->
+            UniffiLib.INSTANCE.uniffi_matrix_sdk_ffi_fn_method_room_add_space_child(
+                thisPtr,
+                FfiConverterString.lower(`childRoomId`),
+            )
+        },
+        { future, callback, continuation -> UniffiLib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_poll_void(future, callback, continuation) },
+        { future, continuation -> UniffiLib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_complete_void(future, continuation) },
+        { future -> UniffiLib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_free_void(future) },
+        // lift function
+        { Unit },
+        
+        // Error FFI converter
+        ClientException.ErrorHandler,
+    )
+    }
 
     override fun `alternativeAliases`(): List<kotlin.String> {
             return FfiConverterSequenceString.lift(
@@ -13999,6 +14050,28 @@ open class Room: Disposable, AutoCloseable, RoomInterface {
     }
 
     
+    @Throws(ClientException::class)
+    @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
+    override suspend fun `removeSpaceChild`(`childRoomId`: kotlin.String) {
+        return uniffiRustCallAsync(
+        callWithPointer { thisPtr ->
+            UniffiLib.INSTANCE.uniffi_matrix_sdk_ffi_fn_method_room_remove_space_child(
+                thisPtr,
+                FfiConverterString.lower(`childRoomId`),
+            )
+        },
+        { future, callback, continuation -> UniffiLib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_poll_void(future, callback, continuation) },
+        { future, continuation -> UniffiLib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_complete_void(future, continuation) },
+        { future -> UniffiLib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_free_void(future) },
+        // lift function
+        { Unit },
+        
+        // Error FFI converter
+        ClientException.ErrorHandler,
+    )
+    }
+
+    
     /**
      * Reports an event from the room.
      *
@@ -14137,6 +14210,7 @@ open class Room: Disposable, AutoCloseable, RoomInterface {
 
     
     /**
+     * SC end
      * This will only send a call notification event if appropriate.
      *
      * This function is supposed to be called whenever the user creates a room
