@@ -25385,6 +25385,7 @@ data class RoomInfo (
      * SC: Space-specific fields
      */
     var `spaceChildren`: List<SpaceChildInfo>, 
+    var `canUserManageSpaces`: kotlin.Boolean, 
     /**
      * Whether this room has been explicitly marked as unread
      */
@@ -25449,6 +25450,7 @@ public object FfiConverterTypeRoomInfo: FfiConverterRustBuffer<RoomInfo> {
             FfiConverterSequenceString.read(buf),
             FfiConverterSequenceTypeSpaceChildInfo.read(buf),
             FfiConverterBoolean.read(buf),
+            FfiConverterBoolean.read(buf),
             FfiConverterULong.read(buf),
             FfiConverterULong.read(buf),
             FfiConverterULong.read(buf),
@@ -25486,6 +25488,7 @@ public object FfiConverterTypeRoomInfo: FfiConverterRustBuffer<RoomInfo> {
             FfiConverterBoolean.allocationSize(value.`hasRoomCall`) +
             FfiConverterSequenceString.allocationSize(value.`activeRoomCallParticipants`) +
             FfiConverterSequenceTypeSpaceChildInfo.allocationSize(value.`spaceChildren`) +
+            FfiConverterBoolean.allocationSize(value.`canUserManageSpaces`) +
             FfiConverterBoolean.allocationSize(value.`isMarkedUnread`) +
             FfiConverterULong.allocationSize(value.`numUnreadMessages`) +
             FfiConverterULong.allocationSize(value.`numUnreadNotifications`) +
@@ -25523,6 +25526,7 @@ public object FfiConverterTypeRoomInfo: FfiConverterRustBuffer<RoomInfo> {
             FfiConverterBoolean.write(value.`hasRoomCall`, buf)
             FfiConverterSequenceString.write(value.`activeRoomCallParticipants`, buf)
             FfiConverterSequenceTypeSpaceChildInfo.write(value.`spaceChildren`, buf)
+            FfiConverterBoolean.write(value.`canUserManageSpaces`, buf)
             FfiConverterBoolean.write(value.`isMarkedUnread`, buf)
             FfiConverterULong.write(value.`numUnreadMessages`, buf)
             FfiConverterULong.write(value.`numUnreadNotifications`, buf)
