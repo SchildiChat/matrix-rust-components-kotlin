@@ -229,6 +229,7 @@ parser.add_argument("-p", "--path-to-sdk", type=str, required=False,
                     help="Choose a module (SDK or CRYPTO)")
 parser.add_argument("-s", "--skip-clone", action="store_true", required=False,
                     help="Skip cloning the Rust SDK repository")
+parser.add_argument("-f", "--force", action="store_true", help="Allow re-running for an existing version")
 
 args = parser.parse_args()
 
@@ -253,6 +254,9 @@ major, minor, patch = read_version_numbers_from_kotlin_file(build_version_file_p
 if is_provided_version_higher(major, minor, patch, args.version):
     print(
         f"The provided version ({args.version}) is higher than the previous version ({major}.{minor}.{patch}) so we can start the release process")
+elif args.force:
+    print(
+        f"The provided version ({args.version}) is not higher than the previous version ({major}.{minor}.{patch}), continuing anyway.")
 else:
     print(
         f"The provided version ({args.version}) is not higher than the previous version ({major}.{minor}.{patch}) so bump the version before retrying.")
