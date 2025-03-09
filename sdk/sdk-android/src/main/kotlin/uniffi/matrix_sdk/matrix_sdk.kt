@@ -1586,9 +1586,10 @@ public object FfiConverterTypePaginatorState: FfiConverterRustBuffer<PaginatorSt
 sealed class QrCodeLoginException(message: String): kotlin.Exception(message) {
         
     /**
-     * An error happened while we were communicating with the OIDC provider.
+     * An error happened while we were communicating with the OAuth 2.0
+     * authorization server.
      */
-        class Oidc(message: String) : QrCodeLoginException(message)
+        class Oauth(message: String) : QrCodeLoginException(message)
         
     /**
      * The other device has signaled to us that the login has failed.
@@ -1612,7 +1613,8 @@ sealed class QrCodeLoginException(message: String): kotlin.Exception(message) {
         
     /**
      * An error happened while we were trying to discover our user and device
-     * ID, after we have acquired an access token from the OIDC provider.
+     * ID, after we have acquired an access token from the OAuth 2.0
+     * authorization server.
      */
         class UserIdDiscovery(message: String) : QrCodeLoginException(message)
         
@@ -1643,7 +1645,7 @@ public object FfiConverterTypeQRCodeLoginError : FfiConverterRustBuffer<QrCodeLo
     override fun read(buf: ByteBuffer): QrCodeLoginException {
         
             return when(buf.getInt()) {
-            1 -> QrCodeLoginException.Oidc(FfiConverterString.read(buf))
+            1 -> QrCodeLoginException.Oauth(FfiConverterString.read(buf))
             2 -> QrCodeLoginException.LoginFailure(FfiConverterString.read(buf))
             3 -> QrCodeLoginException.UnexpectedMessage(FfiConverterString.read(buf))
             4 -> QrCodeLoginException.SecureChannel(FfiConverterString.read(buf))
@@ -1663,7 +1665,7 @@ public object FfiConverterTypeQRCodeLoginError : FfiConverterRustBuffer<QrCodeLo
 
     override fun write(value: QrCodeLoginException, buf: ByteBuffer) {
         when(value) {
-            is QrCodeLoginException.Oidc -> {
+            is QrCodeLoginException.Oauth -> {
                 buf.putInt(1)
                 Unit
             }
@@ -1739,6 +1741,80 @@ public object FfiConverterTypeRoomMemberRole: FfiConverterRustBuffer<RoomMemberR
 
     override fun write(value: RoomMemberRole, buf: ByteBuffer) {
         buf.putInt(value.ordinal + 1)
+    }
+}
+
+
+
+
+
+/**
+ * Status for the back-pagination on a room event cache.
+ */
+sealed class RoomPaginationStatus {
+    
+    /**
+     * No back-pagination is happening right now.
+     */
+    data class Idle(
+        /**
+         * Have we hit the start of the timeline, i.e. back-paginating wouldn't
+         * have any effect?
+         */
+        val `hitTimelineStart`: kotlin.Boolean) : RoomPaginationStatus() {
+        companion object
+    }
+    
+    /**
+     * Back-pagination is already running in the background.
+     */
+    object Paginating : RoomPaginationStatus()
+    
+    
+
+    
+    companion object
+}
+
+public object FfiConverterTypeRoomPaginationStatus : FfiConverterRustBuffer<RoomPaginationStatus>{
+    override fun read(buf: ByteBuffer): RoomPaginationStatus {
+        return when(buf.getInt()) {
+            1 -> RoomPaginationStatus.Idle(
+                FfiConverterBoolean.read(buf),
+                )
+            2 -> RoomPaginationStatus.Paginating
+            else -> throw RuntimeException("invalid enum value, something is very wrong!!")
+        }
+    }
+
+    override fun allocationSize(value: RoomPaginationStatus) = when(value) {
+        is RoomPaginationStatus.Idle -> {
+            // Add the size for the Int that specifies the variant plus the size needed for all fields
+            (
+                4UL
+                + FfiConverterBoolean.allocationSize(value.`hitTimelineStart`)
+            )
+        }
+        is RoomPaginationStatus.Paginating -> {
+            // Add the size for the Int that specifies the variant plus the size needed for all fields
+            (
+                4UL
+            )
+        }
+    }
+
+    override fun write(value: RoomPaginationStatus, buf: ByteBuffer) {
+        when(value) {
+            is RoomPaginationStatus.Idle -> {
+                buf.putInt(1)
+                FfiConverterBoolean.write(value.`hitTimelineStart`, buf)
+                Unit
+            }
+            is RoomPaginationStatus.Paginating -> {
+                buf.putInt(2)
+                Unit
+            }
+        }.let { /* this makes the `when` an expression, which ensures it is exhaustive */ }
     }
 }
 
