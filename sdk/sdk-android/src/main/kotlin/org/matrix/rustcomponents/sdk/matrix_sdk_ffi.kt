@@ -2434,6 +2434,12 @@ internal open class UniffiVTableCallbackInterfaceWidgetCapabilitiesProvider(
 
 
 
+
+
+
+
+
+
 // A JNA Library to expose the extern-C FFI definitions.
 // This is an implementation detail which will be called internally by the public API.
 
@@ -2588,6 +2594,8 @@ internal interface UniffiLib : Library {
     ): Long
     fun uniffi_matrix_sdk_ffi_fn_method_client_login_with_oidc_callback(`ptr`: Pointer,`callbackUrl`: RustBuffer.ByValue,
     ): Long
+    fun uniffi_matrix_sdk_ffi_fn_method_client_login_with_qr_code(`ptr`: Pointer,`qrCodeData`: Pointer,`oidcConfiguration`: RustBuffer.ByValue,`progressListener`: Long,
+    ): Long
     fun uniffi_matrix_sdk_ffi_fn_method_client_logout(`ptr`: Pointer,
     ): Long
     fun uniffi_matrix_sdk_ffi_fn_method_client_notification_client(`ptr`: Pointer,`processSetup`: RustBuffer.ByValue,
@@ -2658,7 +2666,7 @@ internal interface UniffiLib : Library {
     ): Long
     fun uniffi_matrix_sdk_ffi_fn_method_client_upload_media(`ptr`: Pointer,`mimeType`: RustBuffer.ByValue,`data`: RustBuffer.ByValue,`progressWatcher`: RustBuffer.ByValue,
     ): Long
-    fun uniffi_matrix_sdk_ffi_fn_method_client_url_for_oidc(`ptr`: Pointer,`oidcConfiguration`: RustBuffer.ByValue,`prompt`: RustBuffer.ByValue,`loginHint`: RustBuffer.ByValue,
+    fun uniffi_matrix_sdk_ffi_fn_method_client_url_for_oidc(`ptr`: Pointer,`oidcConfiguration`: RustBuffer.ByValue,`prompt`: RustBuffer.ByValue,`loginHint`: RustBuffer.ByValue,`deviceId`: RustBuffer.ByValue,
     ): Long
     fun uniffi_matrix_sdk_ffi_fn_method_client_user_id(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
     ): RustBuffer.ByValue
@@ -2679,8 +2687,6 @@ internal interface UniffiLib : Library {
     fun uniffi_matrix_sdk_ffi_fn_method_clientbuilder_backup_download_strategy(`ptr`: Pointer,`backupDownloadStrategy`: RustBufferBackupDownloadStrategy.ByValue,uniffi_out_err: UniffiRustCallStatus, 
     ): Pointer
     fun uniffi_matrix_sdk_ffi_fn_method_clientbuilder_build(`ptr`: Pointer,
-    ): Long
-    fun uniffi_matrix_sdk_ffi_fn_method_clientbuilder_build_with_qr_code(`ptr`: Pointer,`qrCodeData`: Pointer,`oidcConfiguration`: RustBuffer.ByValue,`progressListener`: Long,
     ): Long
     fun uniffi_matrix_sdk_ffi_fn_method_clientbuilder_cross_process_store_locks_holder_name(`ptr`: Pointer,`holderName`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
     ): Pointer
@@ -2723,6 +2729,8 @@ internal interface UniffiLib : Library {
     fun uniffi_matrix_sdk_ffi_fn_method_clientbuilder_sliding_sync_version_builder(`ptr`: Pointer,`versionBuilder`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
     ): Pointer
     fun uniffi_matrix_sdk_ffi_fn_method_clientbuilder_system_is_memory_constrained(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
+    ): Pointer
+    fun uniffi_matrix_sdk_ffi_fn_method_clientbuilder_threads_enabled(`ptr`: Pointer,`enabled`: Byte,uniffi_out_err: UniffiRustCallStatus, 
     ): Pointer
     fun uniffi_matrix_sdk_ffi_fn_method_clientbuilder_user_agent(`ptr`: Pointer,`userAgent`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
     ): Pointer
@@ -3166,8 +3174,8 @@ internal interface UniffiLib : Library {
     ): Pointer
     fun uniffi_matrix_sdk_ffi_fn_method_roomlistservice_state(`ptr`: Pointer,`listener`: Long,uniffi_out_err: UniffiRustCallStatus, 
     ): Pointer
-    fun uniffi_matrix_sdk_ffi_fn_method_roomlistservice_subscribe_to_rooms(`ptr`: Pointer,`roomIds`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
-    ): Unit
+    fun uniffi_matrix_sdk_ffi_fn_method_roomlistservice_subscribe_to_rooms(`ptr`: Pointer,`roomIds`: RustBuffer.ByValue,
+    ): Long
     fun uniffi_matrix_sdk_ffi_fn_method_roomlistservice_sync_indicator(`ptr`: Pointer,`delayBeforeShowingInMs`: Int,`delayBeforeHidingInMs`: Int,`listener`: Long,uniffi_out_err: UniffiRustCallStatus, 
     ): Pointer
     fun uniffi_matrix_sdk_ffi_fn_clone_roommembersiterator(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
@@ -3333,6 +3341,8 @@ internal interface UniffiLib : Library {
     fun uniffi_matrix_sdk_ffi_fn_method_syncservicebuilder_with_cross_process_lock(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
     ): Pointer
     fun uniffi_matrix_sdk_ffi_fn_method_syncservicebuilder_with_offline_mode(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
+    ): Pointer
+    fun uniffi_matrix_sdk_ffi_fn_method_syncservicebuilder_with_share_pos(`ptr`: Pointer,`enable`: Byte,uniffi_out_err: UniffiRustCallStatus, 
     ): Pointer
     fun uniffi_matrix_sdk_ffi_fn_clone_taskhandle(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
     ): Pointer
@@ -3610,6 +3620,8 @@ internal interface UniffiLib : Library {
     ): RustBuffer.ByValue
     fun uniffi_matrix_sdk_ffi_fn_func_parse_matrix_entity_from(`uri`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
     ): RustBuffer.ByValue
+    fun uniffi_matrix_sdk_ffi_fn_func_reload_tracing_file_writer(`configuration`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
+    ): Unit
     fun uniffi_matrix_sdk_ffi_fn_func_room_alias_name_from_room_display_name(`roomName`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
     ): RustBuffer.ByValue
     fun uniffi_matrix_sdk_ffi_fn_func_sdk_git_sha(uniffi_out_err: UniffiRustCallStatus, 
@@ -3768,6 +3780,8 @@ internal interface UniffiLib : Library {
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_func_parse_matrix_entity_from(
     ): Short
+    fun uniffi_matrix_sdk_ffi_checksum_func_reload_tracing_file_writer(
+    ): Short
     fun uniffi_matrix_sdk_ffi_checksum_func_room_alias_name_from_room_display_name(
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_func_sdk_git_sha(
@@ -3872,6 +3886,8 @@ internal interface UniffiLib : Library {
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_client_login_with_oidc_callback(
     ): Short
+    fun uniffi_matrix_sdk_ffi_checksum_method_client_login_with_qr_code(
+    ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_client_logout(
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_client_notification_client(
@@ -3958,8 +3974,6 @@ internal interface UniffiLib : Library {
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_clientbuilder_build(
     ): Short
-    fun uniffi_matrix_sdk_ffi_checksum_method_clientbuilder_build_with_qr_code(
-    ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_clientbuilder_cross_process_store_locks_holder_name(
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_clientbuilder_decryption_settings(
@@ -4001,6 +4015,8 @@ internal interface UniffiLib : Library {
     fun uniffi_matrix_sdk_ffi_checksum_method_clientbuilder_sliding_sync_version_builder(
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_clientbuilder_system_is_memory_constrained(
+    ): Short
+    fun uniffi_matrix_sdk_ffi_checksum_method_clientbuilder_threads_enabled(
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_clientbuilder_user_agent(
     ): Short
@@ -4486,6 +4502,8 @@ internal interface UniffiLib : Library {
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_syncservicebuilder_with_offline_mode(
     ): Short
+    fun uniffi_matrix_sdk_ffi_checksum_method_syncservicebuilder_with_share_pos(
+    ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_taskhandle_cancel(
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_taskhandle_is_finished(
@@ -4780,6 +4798,9 @@ private fun uniffiCheckApiChecksums(lib: UniffiLib) {
     if (lib.uniffi_matrix_sdk_ffi_checksum_func_parse_matrix_entity_from() != 49710.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
+    if (lib.uniffi_matrix_sdk_ffi_checksum_func_reload_tracing_file_writer() != 1447.toShort()) {
+        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    }
     if (lib.uniffi_matrix_sdk_ffi_checksum_func_room_alias_name_from_room_display_name() != 65010.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
@@ -4936,6 +4957,9 @@ private fun uniffiCheckApiChecksums(lib: UniffiLib) {
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_client_login_with_oidc_callback() != 32591.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
+    if (lib.uniffi_matrix_sdk_ffi_checksum_method_client_login_with_qr_code() != 3481.toShort()) {
+        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    }
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_client_logout() != 42911.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
@@ -5041,7 +5065,7 @@ private fun uniffiCheckApiChecksums(lib: UniffiLib) {
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_client_upload_media() != 51195.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
-    if (lib.uniffi_matrix_sdk_ffi_checksum_method_client_url_for_oidc() != 28386.toShort()) {
+    if (lib.uniffi_matrix_sdk_ffi_checksum_method_client_url_for_oidc() != 34524.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_client_user_id() != 40531.toShort()) {
@@ -5063,9 +5087,6 @@ private fun uniffiCheckApiChecksums(lib: UniffiLib) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_clientbuilder_build() != 56018.toShort()) {
-        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
-    }
-    if (lib.uniffi_matrix_sdk_ffi_checksum_method_clientbuilder_build_with_qr_code() != 42452.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_clientbuilder_cross_process_store_locks_holder_name() != 46627.toShort()) {
@@ -5129,6 +5150,9 @@ private fun uniffiCheckApiChecksums(lib: UniffiLib) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_clientbuilder_system_is_memory_constrained() != 6898.toShort()) {
+        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    }
+    if (lib.uniffi_matrix_sdk_ffi_checksum_method_clientbuilder_threads_enabled() != 33768.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_clientbuilder_user_agent() != 13719.toShort()) {
@@ -5263,10 +5287,10 @@ private fun uniffiCheckApiChecksums(lib: UniffiLib) {
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_mediasource_url() != 62692.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
-    if (lib.uniffi_matrix_sdk_ffi_checksum_method_notificationclient_get_notification() != 2524.toShort()) {
+    if (lib.uniffi_matrix_sdk_ffi_checksum_method_notificationclient_get_notification() != 52873.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
-    if (lib.uniffi_matrix_sdk_ffi_checksum_method_notificationclient_get_notifications() != 30600.toShort()) {
+    if (lib.uniffi_matrix_sdk_ffi_checksum_method_notificationclient_get_notifications() != 64372.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_notificationclient_get_room() != 26581.toShort()) {
@@ -5683,7 +5707,7 @@ private fun uniffiCheckApiChecksums(lib: UniffiLib) {
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_roomlistservice_state() != 64650.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
-    if (lib.uniffi_matrix_sdk_ffi_checksum_method_roomlistservice_subscribe_to_rooms() != 59765.toShort()) {
+    if (lib.uniffi_matrix_sdk_ffi_checksum_method_roomlistservice_subscribe_to_rooms() != 5528.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_roomlistservice_sync_indicator() != 16821.toShort()) {
@@ -5855,6 +5879,9 @@ private fun uniffiCheckApiChecksums(lib: UniffiLib) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_syncservicebuilder_with_offline_mode() != 16958.toShort()) {
+        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    }
+    if (lib.uniffi_matrix_sdk_ffi_checksum_method_syncservicebuilder_with_share_pos() != 18892.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_taskhandle_cancel() != 9124.toShort()) {
@@ -6978,6 +7005,21 @@ public interface ClientInterface {
     suspend fun `loginWithOidcCallback`(`callbackUrl`: kotlin.String)
     
     /**
+     * Log in using the provided [`QrCodeData`]. The `Client` must be built
+     * by providing [`QrCodeData::server_name`] as the server name for this
+     * login to succeed.
+     *
+     * This method uses the login mechanism described in [MSC4108]. As such
+     * this method requires OAuth 2.0 support as well as sliding sync support.
+     *
+     * The usage of the progress_listener is required to transfer the
+     * [`CheckCode`] to the existing client.
+     *
+     * [MSC4108]: https://github.com/matrix-org/matrix-spec-proposals/pull/4108
+     */
+    suspend fun `loginWithQrCode`(`qrCodeData`: QrCodeData, `oidcConfiguration`: OidcConfiguration, `progressListener`: QrLoginProgressListener)
+    
+    /**
      * Log the current user out.
      */
     suspend fun `logout`()
@@ -7182,8 +7224,13 @@ public interface ClientInterface {
      * However, it should be noted that when providing a user ID as a hint
      * for MAS (with no upstream provider), then the format to use is defined
      * by [MSC4198]: https://github.com/matrix-org/matrix-spec-proposals/pull/4198
+     *
+     * * `device_id` - The unique ID that will be associated with the session.
+     * If not set, a random one will be generated. It can be an existing
+     * device ID from a previous login call. Note that this should be done
+     * only if the client also holds the corresponding encryption keys.
      */
-    suspend fun `urlForOidc`(`oidcConfiguration`: OidcConfiguration, `prompt`: OidcPrompt?, `loginHint`: kotlin.String?): OAuthAuthorizationData
+    suspend fun `urlForOidc`(`oidcConfiguration`: OidcConfiguration, `prompt`: OidcPrompt?, `loginHint`: kotlin.String?, `deviceId`: kotlin.String?): OAuthAuthorizationData
     
     fun `userId`(): kotlin.String
     
@@ -8407,6 +8454,41 @@ open class Client: Disposable, AutoCloseable, ClientInterface {
 
     
     /**
+     * Log in using the provided [`QrCodeData`]. The `Client` must be built
+     * by providing [`QrCodeData::server_name`] as the server name for this
+     * login to succeed.
+     *
+     * This method uses the login mechanism described in [MSC4108]. As such
+     * this method requires OAuth 2.0 support as well as sliding sync support.
+     *
+     * The usage of the progress_listener is required to transfer the
+     * [`CheckCode`] to the existing client.
+     *
+     * [MSC4108]: https://github.com/matrix-org/matrix-spec-proposals/pull/4108
+     */
+    @Throws(HumanQrLoginException::class)
+    @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
+    override suspend fun `loginWithQrCode`(`qrCodeData`: QrCodeData, `oidcConfiguration`: OidcConfiguration, `progressListener`: QrLoginProgressListener) {
+        return uniffiRustCallAsync(
+        callWithPointer { thisPtr ->
+            UniffiLib.INSTANCE.uniffi_matrix_sdk_ffi_fn_method_client_login_with_qr_code(
+                thisPtr,
+                FfiConverterTypeQrCodeData.lower(`qrCodeData`),FfiConverterTypeOidcConfiguration.lower(`oidcConfiguration`),FfiConverterTypeQrLoginProgressListener.lower(`progressListener`),
+            )
+        },
+        { future, callback, continuation -> UniffiLib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_poll_void(future, callback, continuation) },
+        { future, continuation -> UniffiLib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_complete_void(future, continuation) },
+        { future -> UniffiLib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_free_void(future) },
+        // lift function
+        { Unit },
+        
+        // Error FFI converter
+        HumanQrLoginException.ErrorHandler,
+    )
+    }
+
+    
+    /**
      * Log the current user out.
      */
     @Throws(ClientException::class)
@@ -9195,15 +9277,20 @@ open class Client: Disposable, AutoCloseable, ClientInterface {
      * However, it should be noted that when providing a user ID as a hint
      * for MAS (with no upstream provider), then the format to use is defined
      * by [MSC4198]: https://github.com/matrix-org/matrix-spec-proposals/pull/4198
+     *
+     * * `device_id` - The unique ID that will be associated with the session.
+     * If not set, a random one will be generated. It can be an existing
+     * device ID from a previous login call. Note that this should be done
+     * only if the client also holds the corresponding encryption keys.
      */
     @Throws(OidcException::class)
     @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
-    override suspend fun `urlForOidc`(`oidcConfiguration`: OidcConfiguration, `prompt`: OidcPrompt?, `loginHint`: kotlin.String?) : OAuthAuthorizationData {
+    override suspend fun `urlForOidc`(`oidcConfiguration`: OidcConfiguration, `prompt`: OidcPrompt?, `loginHint`: kotlin.String?, `deviceId`: kotlin.String?) : OAuthAuthorizationData {
         return uniffiRustCallAsync(
         callWithPointer { thisPtr ->
             UniffiLib.INSTANCE.uniffi_matrix_sdk_ffi_fn_method_client_url_for_oidc(
                 thisPtr,
-                FfiConverterTypeOidcConfiguration.lower(`oidcConfiguration`),FfiConverterOptionalTypeOidcPrompt.lower(`prompt`),FfiConverterOptionalString.lower(`loginHint`),
+                FfiConverterTypeOidcConfiguration.lower(`oidcConfiguration`),FfiConverterOptionalTypeOidcPrompt.lower(`prompt`),FfiConverterOptionalString.lower(`loginHint`),FfiConverterOptionalString.lower(`deviceId`),
             )
         },
         { future, callback, continuation -> UniffiLib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_poll_pointer(future, callback, continuation) },
@@ -9398,22 +9485,6 @@ public interface ClientBuilderInterface {
     
     suspend fun `build`(): Client
     
-    /**
-     * Finish the building of the client and attempt to log in using the
-     * provided [`QrCodeData`].
-     *
-     * This method will build the client and immediately attempt to log the
-     * client in using the provided [`QrCodeData`] using the login
-     * mechanism described in [MSC4108]. As such this methods requires OAuth
-     * 2.0 support as well as sliding sync support.
-     *
-     * The usage of the progress_listener is required to transfer the
-     * [`CheckCode`] to the existing client.
-     *
-     * [MSC4108]: https://github.com/matrix-org/matrix-spec-proposals/pull/4108
-     */
-    suspend fun `buildWithQrCode`(`qrCodeData`: QrCodeData, `oidcConfiguration`: OidcConfiguration, `progressListener`: QrLoginProgressListener): Client
-    
     fun `crossProcessStoreLocksHolderName`(`holderName`: kotlin.String): ClientBuilder
     
     /**
@@ -9531,6 +9602,8 @@ public interface ClientBuilderInterface {
      * check [`SqliteStoreConfig::with_low_memory_config`].
      */
     fun `systemIsMemoryConstrained`(): ClientBuilder
+    
+    fun `threadsEnabled`(`enabled`: kotlin.Boolean): ClientBuilder
     
     fun `userAgent`(`userAgent`: kotlin.String): ClientBuilder
     
@@ -9702,41 +9775,6 @@ open class ClientBuilder: Disposable, AutoCloseable, ClientBuilderInterface {
         { FfiConverterTypeClient.lift(it) },
         // Error FFI converter
         ClientBuildException.ErrorHandler,
-    )
-    }
-
-    
-    /**
-     * Finish the building of the client and attempt to log in using the
-     * provided [`QrCodeData`].
-     *
-     * This method will build the client and immediately attempt to log the
-     * client in using the provided [`QrCodeData`] using the login
-     * mechanism described in [MSC4108]. As such this methods requires OAuth
-     * 2.0 support as well as sliding sync support.
-     *
-     * The usage of the progress_listener is required to transfer the
-     * [`CheckCode`] to the existing client.
-     *
-     * [MSC4108]: https://github.com/matrix-org/matrix-spec-proposals/pull/4108
-     */
-    @Throws(HumanQrLoginException::class)
-    @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
-    override suspend fun `buildWithQrCode`(`qrCodeData`: QrCodeData, `oidcConfiguration`: OidcConfiguration, `progressListener`: QrLoginProgressListener) : Client {
-        return uniffiRustCallAsync(
-        callWithPointer { thisPtr ->
-            UniffiLib.INSTANCE.uniffi_matrix_sdk_ffi_fn_method_clientbuilder_build_with_qr_code(
-                thisPtr,
-                FfiConverterTypeQrCodeData.lower(`qrCodeData`),FfiConverterTypeOidcConfiguration.lower(`oidcConfiguration`),FfiConverterTypeQrLoginProgressListener.lower(`progressListener`),
-            )
-        },
-        { future, callback, continuation -> UniffiLib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_poll_pointer(future, callback, continuation) },
-        { future, continuation -> UniffiLib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_complete_pointer(future, continuation) },
-        { future -> UniffiLib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_free_pointer(future) },
-        // lift function
-        { FfiConverterTypeClient.lift(it) },
-        // Error FFI converter
-        HumanQrLoginException.ErrorHandler,
     )
     }
 
@@ -10062,6 +10100,18 @@ open class ClientBuilder: Disposable, AutoCloseable, ClientBuilderInterface {
     uniffiRustCall() { _status ->
     UniffiLib.INSTANCE.uniffi_matrix_sdk_ffi_fn_method_clientbuilder_system_is_memory_constrained(
         it, _status)
+}
+    }
+    )
+    }
+    
+
+    override fun `threadsEnabled`(`enabled`: kotlin.Boolean): ClientBuilder {
+            return FfiConverterTypeClientBuilder.lift(
+    callWithPointer {
+    uniffiRustCall() { _status ->
+    UniffiLib.INSTANCE.uniffi_matrix_sdk_ffi_fn_method_clientbuilder_threads_enabled(
+        it, FfiConverterBoolean.lower(`enabled`),_status)
 }
     }
     )
@@ -12999,20 +13049,27 @@ public object FfiConverterTypeMediaSource: FfiConverter<MediaSource, Pointer> {
 public interface NotificationClientInterface {
     
     /**
-     * See also documentation of
-     * `MatrixNotificationClient::get_notification`.
+     * Fetches the content of a notification.
+     *
+     * This will first try to get the notification using a short-lived sliding
+     * sync, and if the sliding-sync can't find the event, then it'll use a
+     * `/context` query to find the event with associated member information.
+     *
+     * An error result means that we couldn't resolve the notification; in that
+     * case, a dummy notification may be displayed instead.
      */
-    suspend fun `getNotification`(`roomId`: kotlin.String, `eventId`: kotlin.String): NotificationItem?
+    suspend fun `getNotification`(`roomId`: kotlin.String, `eventId`: kotlin.String): NotificationStatus
     
     /**
      * Get several notification items in a single batch.
      *
      * Returns an error if the flow failed when preparing to fetch the
      * notifications, and a [`HashMap`] containing either a
-     * [`NotificationItem`] or no entry for it if it failed to fetch a
-     * notification for the provided [`EventId`].
+     * [`BatchNotificationResult`], that indicates if the notification was
+     * successfully fetched (in which case, it's a [`NotificationStatus`]), or
+     * an error message if it couldn't be fetched.
      */
-    suspend fun `getNotifications`(`requests`: List<NotificationItemsRequest>): Map<kotlin.String, NotificationItem>
+    suspend fun `getNotifications`(`requests`: List<NotificationItemsRequest>): Map<kotlin.String, BatchNotificationResult>
     
     /**
      * Fetches a room by its ID using the in-memory state store backed client.
@@ -13108,12 +13165,18 @@ open class NotificationClient: Disposable, AutoCloseable, NotificationClientInte
 
     
     /**
-     * See also documentation of
-     * `MatrixNotificationClient::get_notification`.
+     * Fetches the content of a notification.
+     *
+     * This will first try to get the notification using a short-lived sliding
+     * sync, and if the sliding-sync can't find the event, then it'll use a
+     * `/context` query to find the event with associated member information.
+     *
+     * An error result means that we couldn't resolve the notification; in that
+     * case, a dummy notification may be displayed instead.
      */
     @Throws(ClientException::class)
     @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
-    override suspend fun `getNotification`(`roomId`: kotlin.String, `eventId`: kotlin.String) : NotificationItem? {
+    override suspend fun `getNotification`(`roomId`: kotlin.String, `eventId`: kotlin.String) : NotificationStatus {
         return uniffiRustCallAsync(
         callWithPointer { thisPtr ->
             UniffiLib.INSTANCE.uniffi_matrix_sdk_ffi_fn_method_notificationclient_get_notification(
@@ -13125,7 +13188,7 @@ open class NotificationClient: Disposable, AutoCloseable, NotificationClientInte
         { future, continuation -> UniffiLib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_complete_rust_buffer(future, continuation) },
         { future -> UniffiLib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_free_rust_buffer(future) },
         // lift function
-        { FfiConverterOptionalTypeNotificationItem.lift(it) },
+        { FfiConverterTypeNotificationStatus.lift(it) },
         // Error FFI converter
         ClientException.ErrorHandler,
     )
@@ -13137,12 +13200,13 @@ open class NotificationClient: Disposable, AutoCloseable, NotificationClientInte
      *
      * Returns an error if the flow failed when preparing to fetch the
      * notifications, and a [`HashMap`] containing either a
-     * [`NotificationItem`] or no entry for it if it failed to fetch a
-     * notification for the provided [`EventId`].
+     * [`BatchNotificationResult`], that indicates if the notification was
+     * successfully fetched (in which case, it's a [`NotificationStatus`]), or
+     * an error message if it couldn't be fetched.
      */
     @Throws(ClientException::class)
     @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
-    override suspend fun `getNotifications`(`requests`: List<NotificationItemsRequest>) : Map<kotlin.String, NotificationItem> {
+    override suspend fun `getNotifications`(`requests`: List<NotificationItemsRequest>) : Map<kotlin.String, BatchNotificationResult> {
         return uniffiRustCallAsync(
         callWithPointer { thisPtr ->
             UniffiLib.INSTANCE.uniffi_matrix_sdk_ffi_fn_method_notificationclient_get_notifications(
@@ -13154,7 +13218,7 @@ open class NotificationClient: Disposable, AutoCloseable, NotificationClientInte
         { future, continuation -> UniffiLib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_complete_rust_buffer(future, continuation) },
         { future -> UniffiLib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_free_rust_buffer(future) },
         // lift function
-        { FfiConverterMapStringTypeNotificationItem.lift(it) },
+        { FfiConverterMapStringTypeBatchNotificationResult.lift(it) },
         // Error FFI converter
         ClientException.ErrorHandler,
     )
@@ -18621,7 +18685,7 @@ public interface RoomListServiceInterface {
     
     fun `state`(`listener`: RoomListServiceStateListener): TaskHandle
     
-    fun `subscribeToRooms`(`roomIds`: List<kotlin.String>)
+    suspend fun `subscribeToRooms`(`roomIds`: List<kotlin.String>)
     
     fun `syncIndicator`(`delayBeforeShowingInMs`: kotlin.UInt, `delayBeforeHidingInMs`: kotlin.UInt, `listener`: RoomListServiceSyncIndicatorListener): TaskHandle
     
@@ -18777,16 +18841,26 @@ open class RoomListService: Disposable, AutoCloseable, RoomListServiceInterface 
     
 
     
-    @Throws(RoomListException::class)override fun `subscribeToRooms`(`roomIds`: List<kotlin.String>)
-        = 
-    callWithPointer {
-    uniffiRustCallWithError(RoomListException) { _status ->
-    UniffiLib.INSTANCE.uniffi_matrix_sdk_ffi_fn_method_roomlistservice_subscribe_to_rooms(
-        it, FfiConverterSequenceString.lower(`roomIds`),_status)
-}
+    @Throws(RoomListException::class)
+    @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
+    override suspend fun `subscribeToRooms`(`roomIds`: List<kotlin.String>) {
+        return uniffiRustCallAsync(
+        callWithPointer { thisPtr ->
+            UniffiLib.INSTANCE.uniffi_matrix_sdk_ffi_fn_method_roomlistservice_subscribe_to_rooms(
+                thisPtr,
+                FfiConverterSequenceString.lower(`roomIds`),
+            )
+        },
+        { future, callback, continuation -> UniffiLib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_poll_void(future, callback, continuation) },
+        { future, continuation -> UniffiLib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_complete_void(future, continuation) },
+        { future -> UniffiLib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_free_void(future) },
+        // lift function
+        { Unit },
+        
+        // Error FFI converter
+        RoomListException.ErrorHandler,
+    )
     }
-    
-    
 
     override fun `syncIndicator`(`delayBeforeShowingInMs`: kotlin.UInt, `delayBeforeHidingInMs`: kotlin.UInt, `listener`: RoomListServiceSyncIndicatorListener): TaskHandle {
             return FfiConverterTypeTaskHandle.lift(
@@ -22951,6 +23025,8 @@ public interface SyncServiceBuilderInterface {
      */
     fun `withOfflineMode`(): SyncServiceBuilder
     
+    fun `withSharePos`(`enable`: kotlin.Boolean): SyncServiceBuilder
+    
     companion object
 }
 
@@ -23077,6 +23153,18 @@ open class SyncServiceBuilder: Disposable, AutoCloseable, SyncServiceBuilderInte
     uniffiRustCall() { _status ->
     UniffiLib.INSTANCE.uniffi_matrix_sdk_ffi_fn_method_syncservicebuilder_with_offline_mode(
         it, _status)
+}
+    }
+    )
+    }
+    
+
+    override fun `withSharePos`(`enable`: kotlin.Boolean): SyncServiceBuilder {
+            return FfiConverterTypeSyncServiceBuilder.lift(
+    callWithPointer {
+    uniffiRustCall() { _status ->
+    UniffiLib.INSTANCE.uniffi_matrix_sdk_ffi_fn_method_syncservicebuilder_with_share_pos(
+        it, FfiConverterBoolean.lower(`enable`),_status)
 }
     }
     )
@@ -32451,6 +32539,100 @@ public object FfiConverterTypeBackupUploadState : FfiConverterRustBuffer<BackupU
 
 
 
+sealed class BatchNotificationResult: Disposable  {
+    
+    /**
+     * We have more detailed information about the notification.
+     */
+    data class Ok(
+        val `status`: NotificationStatus) : BatchNotificationResult() {
+        companion object
+    }
+    
+    /**
+     * An error occurred while trying to fetch the notification.
+     */
+    data class Error(
+        /**
+         * The error message observed while handling a specific notification.
+         */
+        val `message`: kotlin.String) : BatchNotificationResult() {
+        companion object
+    }
+    
+
+    
+    @Suppress("UNNECESSARY_SAFE_CALL") // codegen is much simpler if we unconditionally emit safe calls here
+    override fun destroy() {
+        when(this) {
+            is BatchNotificationResult.Ok -> {
+                
+        Disposable.destroy(this.`status`)
+    
+                
+            }
+            is BatchNotificationResult.Error -> {
+                
+        Disposable.destroy(this.`message`)
+    
+                
+            }
+        }.let { /* this makes the `when` an expression, which ensures it is exhaustive */ }
+    }
+    
+    companion object
+}
+
+public object FfiConverterTypeBatchNotificationResult : FfiConverterRustBuffer<BatchNotificationResult>{
+    override fun read(buf: ByteBuffer): BatchNotificationResult {
+        return when(buf.getInt()) {
+            1 -> BatchNotificationResult.Ok(
+                FfiConverterTypeNotificationStatus.read(buf),
+                )
+            2 -> BatchNotificationResult.Error(
+                FfiConverterString.read(buf),
+                )
+            else -> throw RuntimeException("invalid enum value, something is very wrong!!")
+        }
+    }
+
+    override fun allocationSize(value: BatchNotificationResult) = when(value) {
+        is BatchNotificationResult.Ok -> {
+            // Add the size for the Int that specifies the variant plus the size needed for all fields
+            (
+                4UL
+                + FfiConverterTypeNotificationStatus.allocationSize(value.`status`)
+            )
+        }
+        is BatchNotificationResult.Error -> {
+            // Add the size for the Int that specifies the variant plus the size needed for all fields
+            (
+                4UL
+                + FfiConverterString.allocationSize(value.`message`)
+            )
+        }
+    }
+
+    override fun write(value: BatchNotificationResult, buf: ByteBuffer) {
+        when(value) {
+            is BatchNotificationResult.Ok -> {
+                buf.putInt(1)
+                FfiConverterTypeNotificationStatus.write(value.`status`, buf)
+                Unit
+            }
+            is BatchNotificationResult.Error -> {
+                buf.putInt(2)
+                FfiConverterString.write(value.`message`, buf)
+                Unit
+            }
+        }.let { /* this makes the `when` an expression, which ensures it is exhaustive */ }
+    }
+}
+
+
+
+
+
 
 
 sealed class ClientBuildException(message: String): kotlin.Exception(message) {
@@ -37553,6 +37735,108 @@ public object FfiConverterTypeNotificationSettingsError : FfiConverterRustBuffer
 
 
 
+sealed class NotificationStatus: Disposable  {
+    
+    /**
+     * The event has been found and was not filtered out.
+     */
+    data class Event(
+        val `item`: NotificationItem) : NotificationStatus() {
+        companion object
+    }
+    
+    /**
+     * The event couldn't be found in the network queries used to find it.
+     */
+    object EventNotFound : NotificationStatus()
+    
+    
+    /**
+     * The event has been filtered out, either because of the user's push
+     * rules, or because the user which triggered it is ignored by the
+     * current user.
+     */
+    object EventFilteredOut : NotificationStatus()
+    
+    
+
+    
+    @Suppress("UNNECESSARY_SAFE_CALL") // codegen is much simpler if we unconditionally emit safe calls here
+    override fun destroy() {
+        when(this) {
+            is NotificationStatus.Event -> {
+                
+        Disposable.destroy(this.`item`)
+    
+                
+            }
+            is NotificationStatus.EventNotFound -> {// Nothing to destroy
+            }
+            is NotificationStatus.EventFilteredOut -> {// Nothing to destroy
+            }
+        }.let { /* this makes the `when` an expression, which ensures it is exhaustive */ }
+    }
+    
+    companion object
+}
+
+public object FfiConverterTypeNotificationStatus : FfiConverterRustBuffer<NotificationStatus>{
+    override fun read(buf: ByteBuffer): NotificationStatus {
+        return when(buf.getInt()) {
+            1 -> NotificationStatus.Event(
+                FfiConverterTypeNotificationItem.read(buf),
+                )
+            2 -> NotificationStatus.EventNotFound
+            3 -> NotificationStatus.EventFilteredOut
+            else -> throw RuntimeException("invalid enum value, something is very wrong!!")
+        }
+    }
+
+    override fun allocationSize(value: NotificationStatus) = when(value) {
+        is NotificationStatus.Event -> {
+            // Add the size for the Int that specifies the variant plus the size needed for all fields
+            (
+                4UL
+                + FfiConverterTypeNotificationItem.allocationSize(value.`item`)
+            )
+        }
+        is NotificationStatus.EventNotFound -> {
+            // Add the size for the Int that specifies the variant plus the size needed for all fields
+            (
+                4UL
+            )
+        }
+        is NotificationStatus.EventFilteredOut -> {
+            // Add the size for the Int that specifies the variant plus the size needed for all fields
+            (
+                4UL
+            )
+        }
+    }
+
+    override fun write(value: NotificationStatus, buf: ByteBuffer) {
+        when(value) {
+            is NotificationStatus.Event -> {
+                buf.putInt(1)
+                FfiConverterTypeNotificationItem.write(value.`item`, buf)
+                Unit
+            }
+            is NotificationStatus.EventNotFound -> {
+                buf.putInt(2)
+                Unit
+            }
+            is NotificationStatus.EventFilteredOut -> {
+                buf.putInt(3)
+                Unit
+            }
+        }.let { /* this makes the `when` an expression, which ensures it is exhaustive */ }
+    }
+}
+
+
+
+
+
 
 enum class NotifyType {
     
@@ -42403,8 +42687,7 @@ sealed class TimelineFocus {
         /**
          * The thread root event ID to focus on.
          */
-        val `rootEventId`: kotlin.String, 
-        val `numEvents`: kotlin.UShort) : TimelineFocus() {
+        val `rootEventId`: kotlin.String) : TimelineFocus() {
         companion object
     }
     
@@ -42432,7 +42715,6 @@ public object FfiConverterTypeTimelineFocus : FfiConverterRustBuffer<TimelineFoc
                 )
             3 -> TimelineFocus.Thread(
                 FfiConverterString.read(buf),
-                FfiConverterUShort.read(buf),
                 )
             4 -> TimelineFocus.PinnedEvents(
                 FfiConverterUShort.read(buf),
@@ -42464,7 +42746,6 @@ public object FfiConverterTypeTimelineFocus : FfiConverterRustBuffer<TimelineFoc
             (
                 4UL
                 + FfiConverterString.allocationSize(value.`rootEventId`)
-                + FfiConverterUShort.allocationSize(value.`numEvents`)
             )
         }
         is TimelineFocus.PinnedEvents -> {
@@ -42494,7 +42775,6 @@ public object FfiConverterTypeTimelineFocus : FfiConverterRustBuffer<TimelineFoc
             is TimelineFocus.Thread -> {
                 buf.putInt(3)
                 FfiConverterString.write(value.`rootEventId`, buf)
-                FfiConverterUShort.write(value.`numEvents`, buf)
                 Unit
             }
             is TimelineFocus.PinnedEvents -> {
@@ -45890,35 +46170,6 @@ public object FfiConverterOptionalTypeMentions: FfiConverterRustBuffer<Mentions?
 
 
 
-public object FfiConverterOptionalTypeNotificationItem: FfiConverterRustBuffer<NotificationItem?> {
-    override fun read(buf: ByteBuffer): NotificationItem? {
-        if (buf.get().toInt() == 0) {
-            return null
-        }
-        return FfiConverterTypeNotificationItem.read(buf)
-    }
-
-    override fun allocationSize(value: NotificationItem?): ULong {
-        if (value == null) {
-            return 1UL
-        } else {
-            return 1UL + FfiConverterTypeNotificationItem.allocationSize(value)
-        }
-    }
-
-    override fun write(value: NotificationItem?, buf: ByteBuffer) {
-        if (value == null) {
-            buf.put(0)
-        } else {
-            buf.put(1)
-            FfiConverterTypeNotificationItem.write(value, buf)
-        }
-    }
-}
-
-
-
-
 public object FfiConverterOptionalTypeNotificationPowerLevels: FfiConverterRustBuffer<NotificationPowerLevels?> {
     override fun read(buf: ByteBuffer): NotificationPowerLevels? {
         if (buf.get().toInt() == 0) {
@@ -48255,41 +48506,6 @@ public object FfiConverterMapStringTypeIgnoredUser: FfiConverterRustBuffer<Map<k
 
 
 
-public object FfiConverterMapStringTypeNotificationItem: FfiConverterRustBuffer<Map<kotlin.String, NotificationItem>> {
-    override fun read(buf: ByteBuffer): Map<kotlin.String, NotificationItem> {
-        val len = buf.getInt()
-        return buildMap<kotlin.String, NotificationItem>(len) {
-            repeat(len) {
-                val k = FfiConverterString.read(buf)
-                val v = FfiConverterTypeNotificationItem.read(buf)
-                this[k] = v
-            }
-        }
-    }
-
-    override fun allocationSize(value: Map<kotlin.String, NotificationItem>): ULong {
-        val spaceForMapSize = 4UL
-        val spaceForChildren = value.map { (k, v) ->
-            FfiConverterString.allocationSize(k) +
-            FfiConverterTypeNotificationItem.allocationSize(v)
-        }.sum()
-        return spaceForMapSize + spaceForChildren
-    }
-
-    override fun write(value: Map<kotlin.String, NotificationItem>, buf: ByteBuffer) {
-        buf.putInt(value.size)
-        // The parens on `(k, v)` here ensure we're calling the right method,
-        // which is important for compatibility with older android devices.
-        // Ref https://blog.danlew.net/2017/03/16/kotlin-puzzler-whose-line-is-it-anyways/
-        value.forEach { (k, v) ->
-            FfiConverterString.write(k, buf)
-            FfiConverterTypeNotificationItem.write(v, buf)
-        }
-    }
-}
-
-
-
 public object FfiConverterMapStringTypeReceipt: FfiConverterRustBuffer<Map<kotlin.String, Receipt>> {
     override fun read(buf: ByteBuffer): Map<kotlin.String, Receipt> {
         val len = buf.getInt()
@@ -48319,6 +48535,41 @@ public object FfiConverterMapStringTypeReceipt: FfiConverterRustBuffer<Map<kotli
         value.forEach { (k, v) ->
             FfiConverterString.write(k, buf)
             FfiConverterTypeReceipt.write(v, buf)
+        }
+    }
+}
+
+
+
+public object FfiConverterMapStringTypeBatchNotificationResult: FfiConverterRustBuffer<Map<kotlin.String, BatchNotificationResult>> {
+    override fun read(buf: ByteBuffer): Map<kotlin.String, BatchNotificationResult> {
+        val len = buf.getInt()
+        return buildMap<kotlin.String, BatchNotificationResult>(len) {
+            repeat(len) {
+                val k = FfiConverterString.read(buf)
+                val v = FfiConverterTypeBatchNotificationResult.read(buf)
+                this[k] = v
+            }
+        }
+    }
+
+    override fun allocationSize(value: Map<kotlin.String, BatchNotificationResult>): ULong {
+        val spaceForMapSize = 4UL
+        val spaceForChildren = value.map { (k, v) ->
+            FfiConverterString.allocationSize(k) +
+            FfiConverterTypeBatchNotificationResult.allocationSize(v)
+        }.sum()
+        return spaceForMapSize + spaceForChildren
+    }
+
+    override fun write(value: Map<kotlin.String, BatchNotificationResult>, buf: ByteBuffer) {
+        buf.putInt(value.size)
+        // The parens on `(k, v)` here ensure we're calling the right method,
+        // which is important for compatibility with older android devices.
+        // Ref https://blog.danlew.net/2017/03/16/kotlin-puzzler-whose-line-is-it-anyways/
+        value.forEach { (k, v) ->
+            FfiConverterString.write(k, buf)
+            FfiConverterTypeBatchNotificationResult.write(v, buf)
         }
     }
 }
@@ -48745,6 +48996,22 @@ public typealias FfiConverterTypeTimestamp = FfiConverterULong
 }
     )
     }
+    
+
+        /**
+         * Updates the tracing subscriber with a new file writer based on the provided
+         * configuration.
+         *
+         * This method will throw if `init_platform` hasn't been called, or if it was
+         * called with `write_to_files` set to `None`.
+         */
+    @Throws(ClientException::class) fun `reloadTracingFileWriter`(`configuration`: TracingFileConfiguration)
+        = 
+    uniffiRustCallWithError(ClientException) { _status ->
+    UniffiLib.INSTANCE.uniffi_matrix_sdk_ffi_fn_func_reload_tracing_file_writer(
+        FfiConverterTypeTracingFileConfiguration.lower(`configuration`),_status)
+}
+    
     
 
         /**
