@@ -2440,6 +2440,12 @@ internal open class UniffiVTableCallbackInterfaceWidgetCapabilitiesProvider(
 
 
 
+
+
+
+
+
+
 // A JNA Library to expose the extern-C FFI definitions.
 // This is an implementation detail which will be called internally by the public API.
 
@@ -2666,7 +2672,7 @@ internal interface UniffiLib : Library {
     ): Long
     fun uniffi_matrix_sdk_ffi_fn_method_client_upload_media(`ptr`: Pointer,`mimeType`: RustBuffer.ByValue,`data`: RustBuffer.ByValue,`progressWatcher`: RustBuffer.ByValue,
     ): Long
-    fun uniffi_matrix_sdk_ffi_fn_method_client_url_for_oidc(`ptr`: Pointer,`oidcConfiguration`: RustBuffer.ByValue,`prompt`: RustBuffer.ByValue,`loginHint`: RustBuffer.ByValue,`deviceId`: RustBuffer.ByValue,
+    fun uniffi_matrix_sdk_ffi_fn_method_client_url_for_oidc(`ptr`: Pointer,`oidcConfiguration`: RustBuffer.ByValue,`prompt`: RustBuffer.ByValue,`loginHint`: RustBuffer.ByValue,`deviceId`: RustBuffer.ByValue,`additionalScopes`: RustBuffer.ByValue,
     ): Long
     fun uniffi_matrix_sdk_ffi_fn_method_client_user_id(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
     ): RustBuffer.ByValue
@@ -2791,6 +2797,8 @@ internal interface UniffiLib : Library {
     fun uniffi_matrix_sdk_ffi_fn_method_homeserverlogindetails_supports_oidc_login(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
     ): Byte
     fun uniffi_matrix_sdk_ffi_fn_method_homeserverlogindetails_supports_password_login(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
+    ): Byte
+    fun uniffi_matrix_sdk_ffi_fn_method_homeserverlogindetails_supports_sso_login(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
     ): Byte
     fun uniffi_matrix_sdk_ffi_fn_method_homeserverlogindetails_url(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
     ): RustBuffer.ByValue
@@ -2958,6 +2966,8 @@ internal interface UniffiLib : Library {
     ): Unit
     fun uniffi_matrix_sdk_ffi_fn_method_room_encryption_state(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
     ): RustBufferEncryptionState.ByValue
+    fun uniffi_matrix_sdk_ffi_fn_method_room_fetch_thread_subscription(`ptr`: Pointer,`threadRootEventId`: RustBuffer.ByValue,
+    ): Long
     fun uniffi_matrix_sdk_ffi_fn_method_room_force_send_single_receipt(`ptr`: Pointer,`receiptType`: RustBuffer.ByValue,`eventId`: RustBuffer.ByValue,
     ): Long
     fun uniffi_matrix_sdk_ffi_fn_method_room_forget(`ptr`: Pointer,
@@ -3069,6 +3079,8 @@ internal interface UniffiLib : Library {
     fun uniffi_matrix_sdk_ffi_fn_method_room_set_is_low_priority(`ptr`: Pointer,`isLowPriority`: Byte,`tagOrder`: RustBuffer.ByValue,
     ): Long
     fun uniffi_matrix_sdk_ffi_fn_method_room_set_name(`ptr`: Pointer,`name`: RustBuffer.ByValue,
+    ): Long
+    fun uniffi_matrix_sdk_ffi_fn_method_room_set_thread_subscription(`ptr`: Pointer,`threadRootEventId`: RustBuffer.ByValue,`subscribed`: Byte,
     ): Long
     fun uniffi_matrix_sdk_ffi_fn_method_room_set_topic(`ptr`: Pointer,`topic`: RustBuffer.ByValue,
     ): Long
@@ -3408,13 +3420,13 @@ internal interface UniffiLib : Library {
     ): Pointer
     fun uniffi_matrix_sdk_ffi_fn_method_timeline_send_image(`ptr`: Pointer,`params`: RustBuffer.ByValue,`thumbnailPath`: RustBuffer.ByValue,`imageInfo`: RustBuffer.ByValue,`progressWatcher`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
     ): Pointer
-    fun uniffi_matrix_sdk_ffi_fn_method_timeline_send_location(`ptr`: Pointer,`body`: RustBuffer.ByValue,`geoUri`: RustBuffer.ByValue,`description`: RustBuffer.ByValue,`zoomLevel`: RustBuffer.ByValue,`assetType`: RustBuffer.ByValue,`replyParams`: RustBuffer.ByValue,
+    fun uniffi_matrix_sdk_ffi_fn_method_timeline_send_location(`ptr`: Pointer,`body`: RustBuffer.ByValue,`geoUri`: RustBuffer.ByValue,`description`: RustBuffer.ByValue,`zoomLevel`: RustBuffer.ByValue,`assetType`: RustBuffer.ByValue,`repliedToEventId`: RustBuffer.ByValue,
     ): Long
     fun uniffi_matrix_sdk_ffi_fn_method_timeline_send_poll_response(`ptr`: Pointer,`pollStartEventId`: RustBuffer.ByValue,`answers`: RustBuffer.ByValue,
     ): Long
     fun uniffi_matrix_sdk_ffi_fn_method_timeline_send_read_receipt(`ptr`: Pointer,`receiptType`: RustBuffer.ByValue,`eventId`: RustBuffer.ByValue,
     ): Long
-    fun uniffi_matrix_sdk_ffi_fn_method_timeline_send_reply(`ptr`: Pointer,`msg`: Pointer,`replyParams`: RustBuffer.ByValue,
+    fun uniffi_matrix_sdk_ffi_fn_method_timeline_send_reply(`ptr`: Pointer,`msg`: Pointer,`eventId`: RustBuffer.ByValue,
     ): Long
     fun uniffi_matrix_sdk_ffi_fn_method_timeline_send_video(`ptr`: Pointer,`params`: RustBuffer.ByValue,`thumbnailPath`: RustBuffer.ByValue,`videoInfo`: RustBuffer.ByValue,`progressWatcher`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
     ): Pointer
@@ -3627,8 +3639,8 @@ internal interface UniffiLib : Library {
     fun uniffi_matrix_sdk_ffi_fn_func_sdk_git_sha(uniffi_out_err: UniffiRustCallStatus, 
     ): RustBuffer.ByValue
     fun uniffi_matrix_sdk_ffi_fn_func_suggested_power_level_for_role(`role`: RustBufferRoomMemberRole.ByValue,uniffi_out_err: UniffiRustCallStatus, 
-    ): Long
-    fun uniffi_matrix_sdk_ffi_fn_func_suggested_role_for_power_level(`powerLevel`: Long,uniffi_out_err: UniffiRustCallStatus, 
+    ): RustBuffer.ByValue
+    fun uniffi_matrix_sdk_ffi_fn_func_suggested_role_for_power_level(`powerLevel`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
     ): RustBufferRoomMemberRole.ByValue
     fun ffi_matrix_sdk_ffi_rustbuffer_alloc(`size`: Long,uniffi_out_err: UniffiRustCallStatus, 
     ): RustBuffer.ByValue
@@ -4070,6 +4082,8 @@ internal interface UniffiLib : Library {
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_homeserverlogindetails_supports_password_login(
     ): Short
+    fun uniffi_matrix_sdk_ffi_checksum_method_homeserverlogindetails_supports_sso_login(
+    ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_homeserverlogindetails_url(
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_identityresethandle_auth_type(
@@ -4190,6 +4204,8 @@ internal interface UniffiLib : Library {
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_room_encryption_state(
     ): Short
+    fun uniffi_matrix_sdk_ffi_checksum_method_room_fetch_thread_subscription(
+    ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_room_force_send_single_receipt(
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_room_forget(
@@ -4301,6 +4317,8 @@ internal interface UniffiLib : Library {
     fun uniffi_matrix_sdk_ffi_checksum_method_room_set_is_low_priority(
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_room_set_name(
+    ): Short
+    fun uniffi_matrix_sdk_ffi_checksum_method_room_set_thread_subscription(
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_room_set_topic(
     ): Short
@@ -4807,10 +4825,10 @@ private fun uniffiCheckApiChecksums(lib: UniffiLib) {
     if (lib.uniffi_matrix_sdk_ffi_checksum_func_sdk_git_sha() != 4038.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
-    if (lib.uniffi_matrix_sdk_ffi_checksum_func_suggested_power_level_for_role() != 61777.toShort()) {
+    if (lib.uniffi_matrix_sdk_ffi_checksum_func_suggested_power_level_for_role() != 29703.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
-    if (lib.uniffi_matrix_sdk_ffi_checksum_func_suggested_role_for_power_level() != 48532.toShort()) {
+    if (lib.uniffi_matrix_sdk_ffi_checksum_func_suggested_role_for_power_level() != 13856.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_roommessageeventcontentwithoutrelation_with_mentions() != 8867.toShort()) {
@@ -4912,7 +4930,7 @@ private fun uniffiCheckApiChecksums(lib: UniffiLib) {
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_client_get_session_verification_controller() != 55934.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
-    if (lib.uniffi_matrix_sdk_ffi_checksum_method_client_get_url() != 50489.toShort()) {
+    if (lib.uniffi_matrix_sdk_ffi_checksum_method_client_get_url() != 32541.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_client_get_url_preview_json() != 54853.toShort()) {
@@ -5065,7 +5083,7 @@ private fun uniffiCheckApiChecksums(lib: UniffiLib) {
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_client_upload_media() != 51195.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
-    if (lib.uniffi_matrix_sdk_ffi_checksum_method_client_url_for_oidc() != 34524.toShort()) {
+    if (lib.uniffi_matrix_sdk_ffi_checksum_method_client_url_for_oidc() != 19369.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_client_user_id() != 40531.toShort()) {
@@ -5231,6 +5249,9 @@ private fun uniffiCheckApiChecksums(lib: UniffiLib) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_homeserverlogindetails_supports_password_login() != 33501.toShort()) {
+        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    }
+    if (lib.uniffi_matrix_sdk_ffi_checksum_method_homeserverlogindetails_supports_sso_login() != 37773.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_homeserverlogindetails_url() != 61326.toShort()) {
@@ -5413,6 +5434,9 @@ private fun uniffiCheckApiChecksums(lib: UniffiLib) {
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_room_encryption_state() != 9101.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
+    if (lib.uniffi_matrix_sdk_ffi_checksum_method_room_fetch_thread_subscription() != 51696.toShort()) {
+        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    }
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_room_force_send_single_receipt() != 25531.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
@@ -5545,7 +5569,7 @@ private fun uniffiCheckApiChecksums(lib: UniffiLib) {
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_room_report_content() != 16529.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
-    if (lib.uniffi_matrix_sdk_ffi_checksum_method_room_report_room() != 8059.toShort()) {
+    if (lib.uniffi_matrix_sdk_ffi_checksum_method_room_report_room() != 6449.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_room_reset_power_levels() != 5060.toShort()) {
@@ -5579,6 +5603,9 @@ private fun uniffiCheckApiChecksums(lib: UniffiLib) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_room_set_name() != 52127.toShort()) {
+        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    }
+    if (lib.uniffi_matrix_sdk_ffi_checksum_method_room_set_thread_subscription() != 3684.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_room_set_topic() != 5576.toShort()) {
@@ -5782,7 +5809,7 @@ private fun uniffiCheckApiChecksums(lib: UniffiLib) {
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_roompreview_forget() != 18179.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
-    if (lib.uniffi_matrix_sdk_ffi_checksum_method_roompreview_info() != 9145.toShort()) {
+    if (lib.uniffi_matrix_sdk_ffi_checksum_method_roompreview_info() != 50237.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_roompreview_inviter() != 1297.toShort()) {
@@ -5962,7 +5989,7 @@ private fun uniffiCheckApiChecksums(lib: UniffiLib) {
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_timeline_send_image() != 25436.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
-    if (lib.uniffi_matrix_sdk_ffi_checksum_method_timeline_send_location() != 57832.toShort()) {
+    if (lib.uniffi_matrix_sdk_ffi_checksum_method_timeline_send_location() != 39080.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_timeline_send_poll_response() != 7453.toShort()) {
@@ -5971,7 +5998,7 @@ private fun uniffiCheckApiChecksums(lib: UniffiLib) {
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_timeline_send_read_receipt() != 37532.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
-    if (lib.uniffi_matrix_sdk_ffi_checksum_method_timeline_send_reply() != 31468.toShort()) {
+    if (lib.uniffi_matrix_sdk_ffi_checksum_method_timeline_send_reply() != 11149.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_timeline_send_video() != 1445.toShort()) {
@@ -6920,10 +6947,16 @@ public interface ClientInterface {
     suspend fun `getSessionVerificationController`(): SessionVerificationController
     
     /**
-     * Allows generic GET requests to be made through the SDKs internal HTTP
-     * client
+     * Allows generic GET requests to be made through the SDK's internal HTTP
+     * client. This is useful when the caller's native HTTP client wouldn't
+     * have the same configuration (such as certificates, proxies, etc.) This
+     * method returns the raw bytes of the response, so that any kind of
+     * resource can be fetched including images, files, etc.
+     *
+     * Note: When an HTTP error occurs, the error response can be found in the
+     * `ClientError::Generic`'s `details` field.
      */
-    suspend fun `getUrl`(`url`: kotlin.String): kotlin.String
+    suspend fun `getUrl`(`url`: kotlin.String): kotlin.ByteArray
     
     /**
      * SC: request url preview json data from the homeserver
@@ -7229,8 +7262,14 @@ public interface ClientInterface {
      * If not set, a random one will be generated. It can be an existing
      * device ID from a previous login call. Note that this should be done
      * only if the client also holds the corresponding encryption keys.
+     *
+     * * `additional_scopes` - Additional scopes to request from the
+     * authorization server, e.g. "urn:matrix:client:com.example.msc9999.foo".
+     * The scopes for API access and the device ID according to the
+     * [specification](https://spec.matrix.org/v1.15/client-server-api/#allocated-scope-tokens)
+     * are always requested.
      */
-    suspend fun `urlForOidc`(`oidcConfiguration`: OidcConfiguration, `prompt`: OidcPrompt?, `loginHint`: kotlin.String?, `deviceId`: kotlin.String?): OAuthAuthorizationData
+    suspend fun `urlForOidc`(`oidcConfiguration`: OidcConfiguration, `prompt`: OidcPrompt?, `loginHint`: kotlin.String?, `deviceId`: kotlin.String?, `additionalScopes`: List<kotlin.String>?): OAuthAuthorizationData
     
     fun `userId`(): kotlin.String
     
@@ -8090,12 +8129,18 @@ open class Client: Disposable, AutoCloseable, ClientInterface {
 
     
     /**
-     * Allows generic GET requests to be made through the SDKs internal HTTP
-     * client
+     * Allows generic GET requests to be made through the SDK's internal HTTP
+     * client. This is useful when the caller's native HTTP client wouldn't
+     * have the same configuration (such as certificates, proxies, etc.) This
+     * method returns the raw bytes of the response, so that any kind of
+     * resource can be fetched including images, files, etc.
+     *
+     * Note: When an HTTP error occurs, the error response can be found in the
+     * `ClientError::Generic`'s `details` field.
      */
     @Throws(ClientException::class)
     @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
-    override suspend fun `getUrl`(`url`: kotlin.String) : kotlin.String {
+    override suspend fun `getUrl`(`url`: kotlin.String) : kotlin.ByteArray {
         return uniffiRustCallAsync(
         callWithPointer { thisPtr ->
             UniffiLib.INSTANCE.uniffi_matrix_sdk_ffi_fn_method_client_get_url(
@@ -8107,7 +8152,7 @@ open class Client: Disposable, AutoCloseable, ClientInterface {
         { future, continuation -> UniffiLib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_complete_rust_buffer(future, continuation) },
         { future -> UniffiLib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_free_rust_buffer(future) },
         // lift function
-        { FfiConverterString.lift(it) },
+        { FfiConverterByteArray.lift(it) },
         // Error FFI converter
         ClientException.ErrorHandler,
     )
@@ -9282,15 +9327,21 @@ open class Client: Disposable, AutoCloseable, ClientInterface {
      * If not set, a random one will be generated. It can be an existing
      * device ID from a previous login call. Note that this should be done
      * only if the client also holds the corresponding encryption keys.
+     *
+     * * `additional_scopes` - Additional scopes to request from the
+     * authorization server, e.g. "urn:matrix:client:com.example.msc9999.foo".
+     * The scopes for API access and the device ID according to the
+     * [specification](https://spec.matrix.org/v1.15/client-server-api/#allocated-scope-tokens)
+     * are always requested.
      */
     @Throws(OidcException::class)
     @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
-    override suspend fun `urlForOidc`(`oidcConfiguration`: OidcConfiguration, `prompt`: OidcPrompt?, `loginHint`: kotlin.String?, `deviceId`: kotlin.String?) : OAuthAuthorizationData {
+    override suspend fun `urlForOidc`(`oidcConfiguration`: OidcConfiguration, `prompt`: OidcPrompt?, `loginHint`: kotlin.String?, `deviceId`: kotlin.String?, `additionalScopes`: List<kotlin.String>?) : OAuthAuthorizationData {
         return uniffiRustCallAsync(
         callWithPointer { thisPtr ->
             UniffiLib.INSTANCE.uniffi_matrix_sdk_ffi_fn_method_client_url_for_oidc(
                 thisPtr,
-                FfiConverterTypeOidcConfiguration.lower(`oidcConfiguration`),FfiConverterOptionalTypeOidcPrompt.lower(`prompt`),FfiConverterOptionalString.lower(`loginHint`),FfiConverterOptionalString.lower(`deviceId`),
+                FfiConverterTypeOidcConfiguration.lower(`oidcConfiguration`),FfiConverterOptionalTypeOidcPrompt.lower(`prompt`),FfiConverterOptionalString.lower(`loginHint`),FfiConverterOptionalString.lower(`deviceId`),FfiConverterOptionalSequenceString.lower(`additionalScopes`),
             )
         },
         { future, callback, continuation -> UniffiLib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_poll_pointer(future, callback, continuation) },
@@ -11014,6 +11065,11 @@ public interface HomeserverLoginDetailsInterface {
     fun `supportsPasswordLogin`(): kotlin.Boolean
     
     /**
+     * Whether the current homeserver supports login using legacy SSO.
+     */
+    fun `supportsSsoLogin`(): kotlin.Boolean
+    
+    /**
      * The URL of the currently configured homeserver.
      */
     fun `url`(): kotlin.String
@@ -11156,6 +11212,21 @@ open class HomeserverLoginDetails: Disposable, AutoCloseable, HomeserverLoginDet
     callWithPointer {
     uniffiRustCall() { _status ->
     UniffiLib.INSTANCE.uniffi_matrix_sdk_ffi_fn_method_homeserverlogindetails_supports_password_login(
+        it, _status)
+}
+    }
+    )
+    }
+    
+
+    
+    /**
+     * Whether the current homeserver supports login using legacy SSO.
+     */override fun `supportsSsoLogin`(): kotlin.Boolean {
+            return FfiConverterBoolean.lift(
+    callWithPointer {
+    uniffiRustCall() { _status ->
+    UniffiLib.INSTANCE.uniffi_matrix_sdk_ffi_fn_method_homeserverlogindetails_supports_sso_login(
         it, _status)
 }
     }
@@ -14623,6 +14694,16 @@ public interface RoomInterface {
     
     fun `encryptionState`(): EncryptionState
     
+    /**
+     * Return the current MSC4306 thread subscription for the given thread root
+     * in this room.
+     *
+     * Returns `None` if the thread doesn't exist, or isn't subscribed to, or
+     * the server can't handle MSC4306; otherwise, returns the thread
+     * subscription status.
+     */
+    suspend fun `fetchThreadSubscription`(`threadRootEventId`: kotlin.String): ThreadSubscription?
+    
     suspend fun `forceSendSingleReceipt`(`receiptType`: ReceiptType, `eventId`: kotlin.String)
     
     /**
@@ -14874,7 +14955,7 @@ public interface RoomInterface {
      *
      * Returns an error if the room is not found or on rate limit
      */
-    suspend fun `reportRoom`(`reason`: kotlin.String?)
+    suspend fun `reportRoom`(`reason`: kotlin.String)
     
     suspend fun `resetPowerLevels`(): RoomPowerLevels
     
@@ -14950,6 +15031,21 @@ public interface RoomInterface {
      * Sets a new name to the room.
      */
     suspend fun `setName`(`name`: kotlin.String)
+    
+    /**
+     * Toggle a MSC4306 subscription to a thread in this room, based on the
+     * thread root event id.
+     *
+     * If `subscribed` is `true`, it will subscribe to the thread, with a
+     * precision that the subscription was manually requested by the user
+     * (i.e. not automatic).
+     *
+     * If the thread was already subscribed to (resp. unsubscribed from), while
+     * trying to subscribe to it (resp. unsubscribe from it), it will do
+     * nothing, i.e. subscribing (resp. unsubscribing) to a thread is an
+     * idempotent operation.
+     */
+    suspend fun `setThreadSubscription`(`threadRootEventId`: kotlin.String, `subscribed`: kotlin.Boolean)
     
     /**
      * Sets a new topic in the room.
@@ -15513,6 +15609,35 @@ open class Room: Disposable, AutoCloseable, RoomInterface {
     )
     }
     
+
+    
+    /**
+     * Return the current MSC4306 thread subscription for the given thread root
+     * in this room.
+     *
+     * Returns `None` if the thread doesn't exist, or isn't subscribed to, or
+     * the server can't handle MSC4306; otherwise, returns the thread
+     * subscription status.
+     */
+    @Throws(ClientException::class)
+    @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
+    override suspend fun `fetchThreadSubscription`(`threadRootEventId`: kotlin.String) : ThreadSubscription? {
+        return uniffiRustCallAsync(
+        callWithPointer { thisPtr ->
+            UniffiLib.INSTANCE.uniffi_matrix_sdk_ffi_fn_method_room_fetch_thread_subscription(
+                thisPtr,
+                FfiConverterString.lower(`threadRootEventId`),
+            )
+        },
+        { future, callback, continuation -> UniffiLib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_poll_rust_buffer(future, callback, continuation) },
+        { future, continuation -> UniffiLib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_complete_rust_buffer(future, continuation) },
+        { future -> UniffiLib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_free_rust_buffer(future) },
+        // lift function
+        { FfiConverterOptionalTypeThreadSubscription.lift(it) },
+        // Error FFI converter
+        ClientException.ErrorHandler,
+    )
+    }
 
     
     @Throws(ClientException::class)
@@ -16506,12 +16631,12 @@ open class Room: Disposable, AutoCloseable, RoomInterface {
      */
     @Throws(ClientException::class)
     @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
-    override suspend fun `reportRoom`(`reason`: kotlin.String?) {
+    override suspend fun `reportRoom`(`reason`: kotlin.String) {
         return uniffiRustCallAsync(
         callWithPointer { thisPtr ->
             UniffiLib.INSTANCE.uniffi_matrix_sdk_ffi_fn_method_room_report_room(
                 thisPtr,
-                FfiConverterOptionalString.lower(`reason`),
+                FfiConverterString.lower(`reason`),
             )
         },
         { future, callback, continuation -> UniffiLib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_poll_void(future, callback, continuation) },
@@ -16803,6 +16928,41 @@ open class Room: Disposable, AutoCloseable, RoomInterface {
             UniffiLib.INSTANCE.uniffi_matrix_sdk_ffi_fn_method_room_set_name(
                 thisPtr,
                 FfiConverterString.lower(`name`),
+            )
+        },
+        { future, callback, continuation -> UniffiLib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_poll_void(future, callback, continuation) },
+        { future, continuation -> UniffiLib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_complete_void(future, continuation) },
+        { future -> UniffiLib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_free_void(future) },
+        // lift function
+        { Unit },
+        
+        // Error FFI converter
+        ClientException.ErrorHandler,
+    )
+    }
+
+    
+    /**
+     * Toggle a MSC4306 subscription to a thread in this room, based on the
+     * thread root event id.
+     *
+     * If `subscribed` is `true`, it will subscribe to the thread, with a
+     * precision that the subscription was manually requested by the user
+     * (i.e. not automatic).
+     *
+     * If the thread was already subscribed to (resp. unsubscribed from), while
+     * trying to subscribe to it (resp. unsubscribe from it), it will do
+     * nothing, i.e. subscribing (resp. unsubscribing) to a thread is an
+     * idempotent operation.
+     */
+    @Throws(ClientException::class)
+    @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
+    override suspend fun `setThreadSubscription`(`threadRootEventId`: kotlin.String, `subscribed`: kotlin.Boolean) {
+        return uniffiRustCallAsync(
+        callWithPointer { thisPtr ->
+            UniffiLib.INSTANCE.uniffi_matrix_sdk_ffi_fn_method_room_set_thread_subscription(
+                thisPtr,
+                FfiConverterString.lower(`threadRootEventId`),FfiConverterBoolean.lower(`subscribed`),
             )
         },
         { future, callback, continuation -> UniffiLib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_poll_void(future, callback, continuation) },
@@ -20326,11 +20486,10 @@ open class RoomPreview: Disposable, AutoCloseable, RoomPreviewInterface {
     
     /**
      * Returns the room info the preview contains.
-     */
-    @Throws(ClientException::class)override fun `info`(): RoomPreviewInfo {
+     */override fun `info`(): RoomPreviewInfo {
             return FfiConverterTypeRoomPreviewInfo.lift(
     callWithPointer {
-    uniffiRustCallWithError(ClientException) { _status ->
+    uniffiRustCall() { _status ->
     UniffiLib.INSTANCE.uniffi_matrix_sdk_ffi_fn_method_roompreview_info(
         it, _status)
 }
@@ -23933,7 +24092,7 @@ public interface TimelineInterface {
     
     fun `sendImage`(`params`: UploadParameters, `thumbnailPath`: kotlin.String?, `imageInfo`: ImageInfo, `progressWatcher`: ProgressWatcher?): SendAttachmentJoinHandle
     
-    suspend fun `sendLocation`(`body`: kotlin.String, `geoUri`: kotlin.String, `description`: kotlin.String?, `zoomLevel`: kotlin.UByte?, `assetType`: AssetType?, `replyParams`: ReplyParameters?)
+    suspend fun `sendLocation`(`body`: kotlin.String, `geoUri`: kotlin.String, `description`: kotlin.String?, `zoomLevel`: kotlin.UByte?, `assetType`: AssetType?, `repliedToEventId`: kotlin.String?)
     
     suspend fun `sendPollResponse`(`pollStartEventId`: kotlin.String, `answers`: List<kotlin.String>)
     
@@ -23946,7 +24105,7 @@ public interface TimelineInterface {
      * reply so that clients that support threads can render the reply
      * inside the thread.
      */
-    suspend fun `sendReply`(`msg`: RoomMessageEventContentWithoutRelation, `replyParams`: ReplyParameters)
+    suspend fun `sendReply`(`msg`: RoomMessageEventContentWithoutRelation, `eventId`: kotlin.String)
     
     fun `sendVideo`(`params`: UploadParameters, `thumbnailPath`: kotlin.String?, `videoInfo`: VideoInfo, `progressWatcher`: ProgressWatcher?): SendAttachmentJoinHandle
     
@@ -24556,12 +24715,12 @@ open class Timeline: Disposable, AutoCloseable, TimelineInterface {
     
     @Throws(ClientException::class)
     @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
-    override suspend fun `sendLocation`(`body`: kotlin.String, `geoUri`: kotlin.String, `description`: kotlin.String?, `zoomLevel`: kotlin.UByte?, `assetType`: AssetType?, `replyParams`: ReplyParameters?) {
+    override suspend fun `sendLocation`(`body`: kotlin.String, `geoUri`: kotlin.String, `description`: kotlin.String?, `zoomLevel`: kotlin.UByte?, `assetType`: AssetType?, `repliedToEventId`: kotlin.String?) {
         return uniffiRustCallAsync(
         callWithPointer { thisPtr ->
             UniffiLib.INSTANCE.uniffi_matrix_sdk_ffi_fn_method_timeline_send_location(
                 thisPtr,
-                FfiConverterString.lower(`body`),FfiConverterString.lower(`geoUri`),FfiConverterOptionalString.lower(`description`),FfiConverterOptionalUByte.lower(`zoomLevel`),FfiConverterOptionalTypeAssetType.lower(`assetType`),FfiConverterOptionalTypeReplyParameters.lower(`replyParams`),
+                FfiConverterString.lower(`body`),FfiConverterString.lower(`geoUri`),FfiConverterOptionalString.lower(`description`),FfiConverterOptionalUByte.lower(`zoomLevel`),FfiConverterOptionalTypeAssetType.lower(`assetType`),FfiConverterOptionalString.lower(`repliedToEventId`),
             )
         },
         { future, callback, continuation -> UniffiLib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_poll_void(future, callback, continuation) },
@@ -24629,12 +24788,12 @@ open class Timeline: Disposable, AutoCloseable, TimelineInterface {
      */
     @Throws(ClientException::class)
     @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
-    override suspend fun `sendReply`(`msg`: RoomMessageEventContentWithoutRelation, `replyParams`: ReplyParameters) {
+    override suspend fun `sendReply`(`msg`: RoomMessageEventContentWithoutRelation, `eventId`: kotlin.String) {
         return uniffiRustCallAsync(
         callWithPointer { thisPtr ->
             UniffiLib.INSTANCE.uniffi_matrix_sdk_ffi_fn_method_timeline_send_reply(
                 thisPtr,
-                FfiConverterTypeRoomMessageEventContentWithoutRelation.lower(`msg`),FfiConverterTypeReplyParameters.lower(`replyParams`),
+                FfiConverterTypeRoomMessageEventContentWithoutRelation.lower(`msg`),FfiConverterString.lower(`eventId`),
             )
         },
         { future, callback, continuation -> UniffiLib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_poll_void(future, callback, continuation) },
@@ -27885,9 +28044,9 @@ data class GalleryUploadParameters (
      */
     var `mentions`: Mentions?, 
     /**
-     * Optional parameters for sending the media as (threaded) reply.
+     * Optional Event ID to reply to.
      */
-    var `replyParams`: ReplyParameters?
+    var `inReplyTo`: kotlin.String?
 ) {
     
     companion object
@@ -27899,7 +28058,7 @@ public object FfiConverterTypeGalleryUploadParameters: FfiConverterRustBuffer<Ga
             FfiConverterOptionalString.read(buf),
             FfiConverterOptionalTypeFormattedBody.read(buf),
             FfiConverterOptionalTypeMentions.read(buf),
-            FfiConverterOptionalTypeReplyParameters.read(buf),
+            FfiConverterOptionalString.read(buf),
         )
     }
 
@@ -27907,14 +28066,14 @@ public object FfiConverterTypeGalleryUploadParameters: FfiConverterRustBuffer<Ga
             FfiConverterOptionalString.allocationSize(value.`caption`) +
             FfiConverterOptionalTypeFormattedBody.allocationSize(value.`formattedCaption`) +
             FfiConverterOptionalTypeMentions.allocationSize(value.`mentions`) +
-            FfiConverterOptionalTypeReplyParameters.allocationSize(value.`replyParams`)
+            FfiConverterOptionalString.allocationSize(value.`inReplyTo`)
     )
 
     override fun write(value: GalleryUploadParameters, buf: ByteBuffer) {
             FfiConverterOptionalString.write(value.`caption`, buf)
             FfiConverterOptionalTypeFormattedBody.write(value.`formattedCaption`, buf)
             FfiConverterOptionalTypeMentions.write(value.`mentions`, buf)
-            FfiConverterOptionalTypeReplyParameters.write(value.`replyParams`, buf)
+            FfiConverterOptionalString.write(value.`inReplyTo`, buf)
     }
 }
 
@@ -28465,11 +28624,11 @@ data class MediaPreviewConfig (
     /**
      * The media previews setting for the user.
      */
-    var `mediaPreviews`: MediaPreviews, 
+    var `mediaPreviews`: MediaPreviews?, 
     /**
      * The invite avatars setting for the user.
      */
-    var `inviteAvatars`: InviteAvatars
+    var `inviteAvatars`: InviteAvatars?
 ) {
     
     companion object
@@ -28478,19 +28637,19 @@ data class MediaPreviewConfig (
 public object FfiConverterTypeMediaPreviewConfig: FfiConverterRustBuffer<MediaPreviewConfig> {
     override fun read(buf: ByteBuffer): MediaPreviewConfig {
         return MediaPreviewConfig(
-            FfiConverterTypeMediaPreviews.read(buf),
-            FfiConverterTypeInviteAvatars.read(buf),
+            FfiConverterOptionalTypeMediaPreviews.read(buf),
+            FfiConverterOptionalTypeInviteAvatars.read(buf),
         )
     }
 
     override fun allocationSize(value: MediaPreviewConfig) = (
-            FfiConverterTypeMediaPreviews.allocationSize(value.`mediaPreviews`) +
-            FfiConverterTypeInviteAvatars.allocationSize(value.`inviteAvatars`)
+            FfiConverterOptionalTypeMediaPreviews.allocationSize(value.`mediaPreviews`) +
+            FfiConverterOptionalTypeInviteAvatars.allocationSize(value.`inviteAvatars`)
     )
 
     override fun write(value: MediaPreviewConfig, buf: ByteBuffer) {
-            FfiConverterTypeMediaPreviews.write(value.`mediaPreviews`, buf)
-            FfiConverterTypeInviteAvatars.write(value.`inviteAvatars`, buf)
+            FfiConverterOptionalTypeMediaPreviews.write(value.`mediaPreviews`, buf)
+            FfiConverterOptionalTypeInviteAvatars.write(value.`inviteAvatars`, buf)
     }
 }
 
@@ -29247,11 +29406,7 @@ data class PredecessorRoom (
     /**
      * The ID of the replacement room.
      */
-    var `roomId`: kotlin.String, 
-    /**
-     * The event ID of the last known event in the predecesssor room.
-     */
-    var `lastEventId`: kotlin.String
+    var `roomId`: kotlin.String
 ) {
     
     companion object
@@ -29261,18 +29416,15 @@ public object FfiConverterTypePredecessorRoom: FfiConverterRustBuffer<Predecesso
     override fun read(buf: ByteBuffer): PredecessorRoom {
         return PredecessorRoom(
             FfiConverterString.read(buf),
-            FfiConverterString.read(buf),
         )
     }
 
     override fun allocationSize(value: PredecessorRoom) = (
-            FfiConverterString.allocationSize(value.`roomId`) +
-            FfiConverterString.allocationSize(value.`lastEventId`)
+            FfiConverterString.allocationSize(value.`roomId`)
     )
 
     override fun write(value: PredecessorRoom, buf: ByteBuffer) {
             FfiConverterString.write(value.`roomId`, buf)
-            FfiConverterString.write(value.`lastEventId`, buf)
     }
 }
 
@@ -29385,49 +29537,6 @@ public object FfiConverterTypeReceipt: FfiConverterRustBuffer<Receipt> {
 
     override fun write(value: Receipt, buf: ByteBuffer) {
             FfiConverterOptionalTypeTimestamp.write(value.`timestamp`, buf)
-    }
-}
-
-
-
-data class ReplyParameters (
-    /**
-     * The ID of the event to reply to.
-     */
-    var `eventId`: kotlin.String, 
-    /**
-     * Whether to enforce a thread relation.
-     */
-    var `enforceThread`: kotlin.Boolean, 
-    /**
-     * If enforcing a threaded relation, whether the message is a reply on a
-     * thread.
-     */
-    var `replyWithinThread`: kotlin.Boolean
-) {
-    
-    companion object
-}
-
-public object FfiConverterTypeReplyParameters: FfiConverterRustBuffer<ReplyParameters> {
-    override fun read(buf: ByteBuffer): ReplyParameters {
-        return ReplyParameters(
-            FfiConverterString.read(buf),
-            FfiConverterBoolean.read(buf),
-            FfiConverterBoolean.read(buf),
-        )
-    }
-
-    override fun allocationSize(value: ReplyParameters) = (
-            FfiConverterString.allocationSize(value.`eventId`) +
-            FfiConverterBoolean.allocationSize(value.`enforceThread`) +
-            FfiConverterBoolean.allocationSize(value.`replyWithinThread`)
-    )
-
-    override fun write(value: ReplyParameters, buf: ByteBuffer) {
-            FfiConverterString.write(value.`eventId`, buf)
-            FfiConverterBoolean.write(value.`enforceThread`, buf)
-            FfiConverterBoolean.write(value.`replyWithinThread`, buf)
     }
 }
 
@@ -29656,7 +29765,7 @@ public object FfiConverterTypeRoomHero: FfiConverterRustBuffer<RoomHero> {
 data class RoomInfo (
     var `id`: kotlin.String, 
     var `encryptionState`: EncryptionState, 
-    var `creator`: kotlin.String?, 
+    var `creators`: List<kotlin.String>?, 
     /**
      * The room's name from the room state event if received from sync, or one
      * that's been computed otherwise.
@@ -29745,7 +29854,16 @@ data class RoomInfo (
      *
      * Can be missing if the room power levels event is missing from the store.
      */
-    var `powerLevels`: RoomPowerLevels?
+    var `powerLevels`: RoomPowerLevels?, 
+    /**
+     * This room's version.
+     */
+    var `roomVersion`: kotlin.String?, 
+    /**
+     * Whether creators are privileged over every other user (have infinite
+     * power level).
+     */
+    var `privilegedCreatorsRole`: kotlin.Boolean
 ) : Disposable {
     
     @Suppress("UNNECESSARY_SAFE_CALL") // codegen is much simpler if we unconditionally emit safe calls here
@@ -29755,7 +29873,7 @@ data class RoomInfo (
     
         Disposable.destroy(this.`encryptionState`)
     
-        Disposable.destroy(this.`creator`)
+        Disposable.destroy(this.`creators`)
     
         Disposable.destroy(this.`displayName`)
     
@@ -29825,6 +29943,10 @@ data class RoomInfo (
     
         Disposable.destroy(this.`powerLevels`)
     
+        Disposable.destroy(this.`roomVersion`)
+    
+        Disposable.destroy(this.`privilegedCreatorsRole`)
+    
     }
     
     companion object
@@ -29835,7 +29957,7 @@ public object FfiConverterTypeRoomInfo: FfiConverterRustBuffer<RoomInfo> {
         return RoomInfo(
             FfiConverterString.read(buf),
             FfiConverterTypeEncryptionState.read(buf),
-            FfiConverterOptionalString.read(buf),
+            FfiConverterOptionalSequenceString.read(buf),
             FfiConverterOptionalString.read(buf),
             FfiConverterOptionalString.read(buf),
             FfiConverterOptionalString.read(buf),
@@ -29870,13 +29992,15 @@ public object FfiConverterTypeRoomInfo: FfiConverterRustBuffer<RoomInfo> {
             FfiConverterOptionalTypeJoinRule.read(buf),
             FfiConverterTypeRoomHistoryVisibility.read(buf),
             FfiConverterOptionalTypeRoomPowerLevels.read(buf),
+            FfiConverterOptionalString.read(buf),
+            FfiConverterBoolean.read(buf),
         )
     }
 
     override fun allocationSize(value: RoomInfo) = (
             FfiConverterString.allocationSize(value.`id`) +
             FfiConverterTypeEncryptionState.allocationSize(value.`encryptionState`) +
-            FfiConverterOptionalString.allocationSize(value.`creator`) +
+            FfiConverterOptionalSequenceString.allocationSize(value.`creators`) +
             FfiConverterOptionalString.allocationSize(value.`displayName`) +
             FfiConverterOptionalString.allocationSize(value.`rawName`) +
             FfiConverterOptionalString.allocationSize(value.`topic`) +
@@ -29910,13 +30034,15 @@ public object FfiConverterTypeRoomInfo: FfiConverterRustBuffer<RoomInfo> {
             FfiConverterSequenceString.allocationSize(value.`pinnedEventIds`) +
             FfiConverterOptionalTypeJoinRule.allocationSize(value.`joinRule`) +
             FfiConverterTypeRoomHistoryVisibility.allocationSize(value.`historyVisibility`) +
-            FfiConverterOptionalTypeRoomPowerLevels.allocationSize(value.`powerLevels`)
+            FfiConverterOptionalTypeRoomPowerLevels.allocationSize(value.`powerLevels`) +
+            FfiConverterOptionalString.allocationSize(value.`roomVersion`) +
+            FfiConverterBoolean.allocationSize(value.`privilegedCreatorsRole`)
     )
 
     override fun write(value: RoomInfo, buf: ByteBuffer) {
             FfiConverterString.write(value.`id`, buf)
             FfiConverterTypeEncryptionState.write(value.`encryptionState`, buf)
-            FfiConverterOptionalString.write(value.`creator`, buf)
+            FfiConverterOptionalSequenceString.write(value.`creators`, buf)
             FfiConverterOptionalString.write(value.`displayName`, buf)
             FfiConverterOptionalString.write(value.`rawName`, buf)
             FfiConverterOptionalString.write(value.`topic`, buf)
@@ -29951,6 +30077,8 @@ public object FfiConverterTypeRoomInfo: FfiConverterRustBuffer<RoomInfo> {
             FfiConverterOptionalTypeJoinRule.write(value.`joinRule`, buf)
             FfiConverterTypeRoomHistoryVisibility.write(value.`historyVisibility`, buf)
             FfiConverterOptionalTypeRoomPowerLevels.write(value.`powerLevels`, buf)
+            FfiConverterOptionalString.write(value.`roomVersion`, buf)
+            FfiConverterBoolean.write(value.`privilegedCreatorsRole`, buf)
     }
 }
 
@@ -30000,8 +30128,8 @@ data class RoomMember (
     var `avatarUrl`: kotlin.String?, 
     var `membership`: MembershipState, 
     var `isNameAmbiguous`: kotlin.Boolean, 
-    var `powerLevel`: kotlin.Long, 
-    var `normalizedPowerLevel`: kotlin.Long, 
+    var `powerLevel`: PowerLevel, 
+    var `normalizedPowerLevel`: PowerLevel, 
     var `isIgnored`: kotlin.Boolean, 
     var `suggestedRoleForPowerLevel`: RoomMemberRole, 
     var `membershipChangeReason`: kotlin.String?
@@ -30018,8 +30146,8 @@ public object FfiConverterTypeRoomMember: FfiConverterRustBuffer<RoomMember> {
             FfiConverterOptionalString.read(buf),
             FfiConverterTypeMembershipState.read(buf),
             FfiConverterBoolean.read(buf),
-            FfiConverterLong.read(buf),
-            FfiConverterLong.read(buf),
+            FfiConverterTypePowerLevel.read(buf),
+            FfiConverterTypePowerLevel.read(buf),
             FfiConverterBoolean.read(buf),
             FfiConverterTypeRoomMemberRole.read(buf),
             FfiConverterOptionalString.read(buf),
@@ -30032,8 +30160,8 @@ public object FfiConverterTypeRoomMember: FfiConverterRustBuffer<RoomMember> {
             FfiConverterOptionalString.allocationSize(value.`avatarUrl`) +
             FfiConverterTypeMembershipState.allocationSize(value.`membership`) +
             FfiConverterBoolean.allocationSize(value.`isNameAmbiguous`) +
-            FfiConverterLong.allocationSize(value.`powerLevel`) +
-            FfiConverterLong.allocationSize(value.`normalizedPowerLevel`) +
+            FfiConverterTypePowerLevel.allocationSize(value.`powerLevel`) +
+            FfiConverterTypePowerLevel.allocationSize(value.`normalizedPowerLevel`) +
             FfiConverterBoolean.allocationSize(value.`isIgnored`) +
             FfiConverterTypeRoomMemberRole.allocationSize(value.`suggestedRoleForPowerLevel`) +
             FfiConverterOptionalString.allocationSize(value.`membershipChangeReason`)
@@ -30045,8 +30173,8 @@ public object FfiConverterTypeRoomMember: FfiConverterRustBuffer<RoomMember> {
             FfiConverterOptionalString.write(value.`avatarUrl`, buf)
             FfiConverterTypeMembershipState.write(value.`membership`, buf)
             FfiConverterBoolean.write(value.`isNameAmbiguous`, buf)
-            FfiConverterLong.write(value.`powerLevel`, buf)
-            FfiConverterLong.write(value.`normalizedPowerLevel`, buf)
+            FfiConverterTypePowerLevel.write(value.`powerLevel`, buf)
+            FfiConverterTypePowerLevel.write(value.`normalizedPowerLevel`, buf)
             FfiConverterBoolean.write(value.`isIgnored`, buf)
             FfiConverterTypeRoomMemberRole.write(value.`suggestedRoleForPowerLevel`, buf)
             FfiConverterOptionalString.write(value.`membershipChangeReason`, buf)
@@ -30827,6 +30955,38 @@ public object FfiConverterTypeTextMessageContent: FfiConverterRustBuffer<TextMes
 
 
 
+/**
+ * Status of a thread subscription (MSC4306).
+ */
+data class ThreadSubscription (
+    /**
+     * Whether the thread subscription happened automatically (e.g. after a
+     * mention) or if it was manually requested by the user.
+     */
+    var `automatic`: kotlin.Boolean
+) {
+    
+    companion object
+}
+
+public object FfiConverterTypeThreadSubscription: FfiConverterRustBuffer<ThreadSubscription> {
+    override fun read(buf: ByteBuffer): ThreadSubscription {
+        return ThreadSubscription(
+            FfiConverterBoolean.read(buf),
+        )
+    }
+
+    override fun allocationSize(value: ThreadSubscription) = (
+            FfiConverterBoolean.allocationSize(value.`automatic`)
+    )
+
+    override fun write(value: ThreadSubscription, buf: ByteBuffer) {
+            FfiConverterBoolean.write(value.`automatic`, buf)
+    }
+}
+
+
+
 data class ThumbnailInfo (
     var `height`: kotlin.ULong?, 
     var `width`: kotlin.ULong?, 
@@ -31282,9 +31442,9 @@ data class UploadParameters (
      */
     var `mentions`: Mentions?, 
     /**
-     * Optional parameters for sending the media as (threaded) reply.
+     * Optional Event ID to reply to.
      */
-    var `replyParams`: ReplyParameters?, 
+    var `inReplyTo`: kotlin.String?, 
     /**
      * Should the media be sent with the send queue, or synchronously?
      *
@@ -31303,7 +31463,7 @@ public object FfiConverterTypeUploadParameters: FfiConverterRustBuffer<UploadPar
             FfiConverterOptionalString.read(buf),
             FfiConverterOptionalTypeFormattedBody.read(buf),
             FfiConverterOptionalTypeMentions.read(buf),
-            FfiConverterOptionalTypeReplyParameters.read(buf),
+            FfiConverterOptionalString.read(buf),
             FfiConverterBoolean.read(buf),
         )
     }
@@ -31313,7 +31473,7 @@ public object FfiConverterTypeUploadParameters: FfiConverterRustBuffer<UploadPar
             FfiConverterOptionalString.allocationSize(value.`caption`) +
             FfiConverterOptionalTypeFormattedBody.allocationSize(value.`formattedCaption`) +
             FfiConverterOptionalTypeMentions.allocationSize(value.`mentions`) +
-            FfiConverterOptionalTypeReplyParameters.allocationSize(value.`replyParams`) +
+            FfiConverterOptionalString.allocationSize(value.`inReplyTo`) +
             FfiConverterBoolean.allocationSize(value.`useSendQueue`)
     )
 
@@ -31322,7 +31482,7 @@ public object FfiConverterTypeUploadParameters: FfiConverterRustBuffer<UploadPar
             FfiConverterOptionalString.write(value.`caption`, buf)
             FfiConverterOptionalTypeFormattedBody.write(value.`formattedCaption`, buf)
             FfiConverterOptionalTypeMentions.write(value.`mentions`, buf)
-            FfiConverterOptionalTypeReplyParameters.write(value.`replyParams`, buf)
+            FfiConverterOptionalString.write(value.`inReplyTo`, buf)
             FfiConverterBoolean.write(value.`useSendQueue`, buf)
     }
 }
@@ -38540,6 +38700,75 @@ public object FfiConverterTypePollKind: FfiConverterRustBuffer<PollKind> {
 
 
 
+sealed class PowerLevel {
+    
+    /**
+     * The user is a room creator and has infinite power level.
+     *
+     * This power level was introduced in room version 12.
+     */
+    object Infinite : PowerLevel()
+    
+    
+    /**
+     * The user has the given power level.
+     */
+    data class Value(
+        val `value`: kotlin.Long) : PowerLevel() {
+        companion object
+    }
+    
+
+    
+    companion object
+}
+
+public object FfiConverterTypePowerLevel : FfiConverterRustBuffer<PowerLevel>{
+    override fun read(buf: ByteBuffer): PowerLevel {
+        return when(buf.getInt()) {
+            1 -> PowerLevel.Infinite
+            2 -> PowerLevel.Value(
+                FfiConverterLong.read(buf),
+                )
+            else -> throw RuntimeException("invalid enum value, something is very wrong!!")
+        }
+    }
+
+    override fun allocationSize(value: PowerLevel) = when(value) {
+        is PowerLevel.Infinite -> {
+            // Add the size for the Int that specifies the variant plus the size needed for all fields
+            (
+                4UL
+            )
+        }
+        is PowerLevel.Value -> {
+            // Add the size for the Int that specifies the variant plus the size needed for all fields
+            (
+                4UL
+                + FfiConverterLong.allocationSize(value.`value`)
+            )
+        }
+    }
+
+    override fun write(value: PowerLevel, buf: ByteBuffer) {
+        when(value) {
+            is PowerLevel.Infinite -> {
+                buf.putInt(1)
+                Unit
+            }
+            is PowerLevel.Value -> {
+                buf.putInt(2)
+                FfiConverterLong.write(value.`value`, buf)
+                Unit
+            }
+        }.let { /* this makes the `when` an expression, which ensures it is exhaustive */ }
+    }
+}
+
+
+
+
+
 sealed class ProfileDetails {
     
     object Unavailable : ProfileDetails()
@@ -38647,7 +38876,10 @@ public object FfiConverterTypeProfileDetails : FfiConverterRustBuffer<ProfileDet
 enum class PublicRoomJoinRule {
     
     PUBLIC,
-    KNOCK;
+    KNOCK,
+    RESTRICTED,
+    KNOCK_RESTRICTED,
+    INVITE;
     companion object
 }
 
@@ -46286,35 +46518,6 @@ public object FfiConverterOptionalTypePredecessorRoom: FfiConverterRustBuffer<Pr
 
 
 
-public object FfiConverterOptionalTypeReplyParameters: FfiConverterRustBuffer<ReplyParameters?> {
-    override fun read(buf: ByteBuffer): ReplyParameters? {
-        if (buf.get().toInt() == 0) {
-            return null
-        }
-        return FfiConverterTypeReplyParameters.read(buf)
-    }
-
-    override fun allocationSize(value: ReplyParameters?): ULong {
-        if (value == null) {
-            return 1UL
-        } else {
-            return 1UL + FfiConverterTypeReplyParameters.allocationSize(value)
-        }
-    }
-
-    override fun write(value: ReplyParameters?, buf: ByteBuffer) {
-        if (value == null) {
-            buf.put(0)
-        } else {
-            buf.put(1)
-            FfiConverterTypeReplyParameters.write(value, buf)
-        }
-    }
-}
-
-
-
-
 public object FfiConverterOptionalTypeResolvedRoomAlias: FfiConverterRustBuffer<ResolvedRoomAlias?> {
     override fun read(buf: ByteBuffer): ResolvedRoomAlias? {
         if (buf.get().toInt() == 0) {
@@ -46453,6 +46656,35 @@ public object FfiConverterOptionalTypeSuccessorRoom: FfiConverterRustBuffer<Succ
         } else {
             buf.put(1)
             FfiConverterTypeSuccessorRoom.write(value, buf)
+        }
+    }
+}
+
+
+
+
+public object FfiConverterOptionalTypeThreadSubscription: FfiConverterRustBuffer<ThreadSubscription?> {
+    override fun read(buf: ByteBuffer): ThreadSubscription? {
+        if (buf.get().toInt() == 0) {
+            return null
+        }
+        return FfiConverterTypeThreadSubscription.read(buf)
+    }
+
+    override fun allocationSize(value: ThreadSubscription?): ULong {
+        if (value == null) {
+            return 1UL
+        } else {
+            return 1UL + FfiConverterTypeThreadSubscription.allocationSize(value)
+        }
+    }
+
+    override fun write(value: ThreadSubscription?, buf: ByteBuffer) {
+        if (value == null) {
+            buf.put(0)
+        } else {
+            buf.put(1)
+            FfiConverterTypeThreadSubscription.write(value, buf)
         }
     }
 }
@@ -49034,20 +49266,33 @@ public typealias FfiConverterTypeTimestamp = FfiConverterULong
     )
     }
     
- fun `suggestedPowerLevelForRole`(`role`: RoomMemberRole): kotlin.Long {
-            return FfiConverterLong.lift(
-    uniffiRustCall() { _status ->
+
+        /**
+         * Get the suggested power level for the given role.
+         *
+         * Returns an error if the value of the power level is unsupported.
+         */
+    @Throws(ClientException::class) fun `suggestedPowerLevelForRole`(`role`: RoomMemberRole): PowerLevel {
+            return FfiConverterTypePowerLevel.lift(
+    uniffiRustCallWithError(ClientException) { _status ->
     UniffiLib.INSTANCE.uniffi_matrix_sdk_ffi_fn_func_suggested_power_level_for_role(
         FfiConverterTypeRoomMemberRole.lower(`role`),_status)
 }
     )
     }
     
- fun `suggestedRoleForPowerLevel`(`powerLevel`: kotlin.Long): RoomMemberRole {
+
+        /**
+         * Get the suggested role for the given power level.
+         *
+         * Returns an error if the value of the power level is out of range for numbers
+         * accepted in canonical JSON.
+         */
+    @Throws(ClientException::class) fun `suggestedRoleForPowerLevel`(`powerLevel`: PowerLevel): RoomMemberRole {
             return FfiConverterTypeRoomMemberRole.lift(
-    uniffiRustCall() { _status ->
+    uniffiRustCallWithError(ClientException) { _status ->
     UniffiLib.INSTANCE.uniffi_matrix_sdk_ffi_fn_func_suggested_role_for_power_level(
-        FfiConverterLong.lower(`powerLevel`),_status)
+        FfiConverterTypePowerLevel.lower(`powerLevel`),_status)
 }
     )
     }
