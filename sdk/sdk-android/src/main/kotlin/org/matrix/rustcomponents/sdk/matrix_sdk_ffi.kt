@@ -2422,8 +2422,6 @@ internal open class UniffiVTableCallbackInterfaceWidgetCapabilitiesProvider(
 
 
 
-
-
 // A JNA Library to expose the extern-C FFI definitions.
 // This is an implementation detail which will be called internally by the public API.
 
@@ -3155,8 +3153,6 @@ internal interface UniffiLib : Library {
     fun uniffi_matrix_sdk_ffi_fn_free_roomlistservice(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
     ): Unit
     fun uniffi_matrix_sdk_ffi_fn_method_roomlistservice_all_rooms(`ptr`: Pointer,
-    ): Long
-    fun uniffi_matrix_sdk_ffi_fn_method_roomlistservice_all_spaces(`ptr`: Pointer,
     ): Long
     fun uniffi_matrix_sdk_ffi_fn_method_roomlistservice_room(`ptr`: Pointer,`roomId`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
     ): Pointer
@@ -4349,8 +4345,6 @@ internal interface UniffiLib : Library {
     fun uniffi_matrix_sdk_ffi_checksum_method_roomlistentrieswithdynamicadaptersresult_entries_stream(
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_roomlistservice_all_rooms(
-    ): Short
-    fun uniffi_matrix_sdk_ffi_checksum_method_roomlistservice_all_spaces(
     ): Short
     fun uniffi_matrix_sdk_ffi_checksum_method_roomlistservice_room(
     ): Short
@@ -5654,9 +5648,6 @@ private fun uniffiCheckApiChecksums(lib: UniffiLib) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_roomlistservice_all_rooms() != 49704.toShort()) {
-        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
-    }
-    if (lib.uniffi_matrix_sdk_ffi_checksum_method_roomlistservice_all_spaces() != 38634.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_roomlistservice_room() != 60695.toShort()) {
@@ -18659,8 +18650,6 @@ public interface RoomListServiceInterface {
     
     suspend fun `allRooms`(): RoomList
     
-    suspend fun `allSpaces`(): RoomList
-    
     fun `room`(`roomId`: kotlin.String): Room
     
     fun `state`(`listener`: RoomListServiceStateListener): TaskHandle
@@ -18760,27 +18749,6 @@ open class RoomListService: Disposable, AutoCloseable, RoomListServiceInterface 
         return uniffiRustCallAsync(
         callWithPointer { thisPtr ->
             UniffiLib.INSTANCE.uniffi_matrix_sdk_ffi_fn_method_roomlistservice_all_rooms(
-                thisPtr,
-                
-            )
-        },
-        { future, callback, continuation -> UniffiLib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_poll_pointer(future, callback, continuation) },
-        { future, continuation -> UniffiLib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_complete_pointer(future, continuation) },
-        { future -> UniffiLib.INSTANCE.ffi_matrix_sdk_ffi_rust_future_free_pointer(future) },
-        // lift function
-        { FfiConverterTypeRoomList.lift(it) },
-        // Error FFI converter
-        RoomListException.ErrorHandler,
-    )
-    }
-
-    
-    @Throws(RoomListException::class)
-    @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
-    override suspend fun `allSpaces`() : RoomList {
-        return uniffiRustCallAsync(
-        callWithPointer { thisPtr ->
-            UniffiLib.INSTANCE.uniffi_matrix_sdk_ffi_fn_method_roomlistservice_all_spaces(
                 thisPtr,
                 
             )
@@ -39783,6 +39751,9 @@ sealed class RoomListEntriesDynamicFilterKind {
     object NonSpace : RoomListEntriesDynamicFilterKind()
     
     
+    object IsSpace : RoomListEntriesDynamicFilterKind()
+    
+    
     object NonLeft : RoomListEntriesDynamicFilterKind()
     
     
@@ -39839,25 +39810,26 @@ public object FfiConverterTypeRoomListEntriesDynamicFilterKind : FfiConverterRus
                 FfiConverterSequenceTypeRoomListEntriesDynamicFilterKind.read(buf),
                 )
             3 -> RoomListEntriesDynamicFilterKind.NonSpace
-            4 -> RoomListEntriesDynamicFilterKind.NonLeft
-            5 -> RoomListEntriesDynamicFilterKind.Joined
-            6 -> RoomListEntriesDynamicFilterKind.Unread
-            7 -> RoomListEntriesDynamicFilterKind.Favourite
-            8 -> RoomListEntriesDynamicFilterKind.Invite
-            9 -> RoomListEntriesDynamicFilterKind.Category(
+            4 -> RoomListEntriesDynamicFilterKind.IsSpace
+            5 -> RoomListEntriesDynamicFilterKind.NonLeft
+            6 -> RoomListEntriesDynamicFilterKind.Joined
+            7 -> RoomListEntriesDynamicFilterKind.Unread
+            8 -> RoomListEntriesDynamicFilterKind.Favourite
+            9 -> RoomListEntriesDynamicFilterKind.Invite
+            10 -> RoomListEntriesDynamicFilterKind.Category(
                 FfiConverterTypeRoomListFilterCategory.read(buf),
                 )
-            10 -> RoomListEntriesDynamicFilterKind.None
-            11 -> RoomListEntriesDynamicFilterKind.NormalizedMatchRoomName(
+            11 -> RoomListEntriesDynamicFilterKind.None
+            12 -> RoomListEntriesDynamicFilterKind.NormalizedMatchRoomName(
                 FfiConverterString.read(buf),
                 )
-            12 -> RoomListEntriesDynamicFilterKind.FuzzyMatchRoomName(
+            13 -> RoomListEntriesDynamicFilterKind.FuzzyMatchRoomName(
                 FfiConverterString.read(buf),
                 )
-            13 -> RoomListEntriesDynamicFilterKind.ScRooms(
+            14 -> RoomListEntriesDynamicFilterKind.ScRooms(
                 FfiConverterSequenceString.read(buf),
                 )
-            14 -> RoomListEntriesDynamicFilterKind.DeduplicateVersions
+            15 -> RoomListEntriesDynamicFilterKind.DeduplicateVersions
             else -> throw RuntimeException("invalid enum value, something is very wrong!!")
         }
     }
@@ -39878,6 +39850,12 @@ public object FfiConverterTypeRoomListEntriesDynamicFilterKind : FfiConverterRus
             )
         }
         is RoomListEntriesDynamicFilterKind.NonSpace -> {
+            // Add the size for the Int that specifies the variant plus the size needed for all fields
+            (
+                4UL
+            )
+        }
+        is RoomListEntriesDynamicFilterKind.IsSpace -> {
             // Add the size for the Int that specifies the variant plus the size needed for all fields
             (
                 4UL
@@ -39971,52 +39949,56 @@ public object FfiConverterTypeRoomListEntriesDynamicFilterKind : FfiConverterRus
                 buf.putInt(3)
                 Unit
             }
-            is RoomListEntriesDynamicFilterKind.NonLeft -> {
+            is RoomListEntriesDynamicFilterKind.IsSpace -> {
                 buf.putInt(4)
                 Unit
             }
-            is RoomListEntriesDynamicFilterKind.Joined -> {
+            is RoomListEntriesDynamicFilterKind.NonLeft -> {
                 buf.putInt(5)
                 Unit
             }
-            is RoomListEntriesDynamicFilterKind.Unread -> {
+            is RoomListEntriesDynamicFilterKind.Joined -> {
                 buf.putInt(6)
                 Unit
             }
-            is RoomListEntriesDynamicFilterKind.Favourite -> {
+            is RoomListEntriesDynamicFilterKind.Unread -> {
                 buf.putInt(7)
                 Unit
             }
-            is RoomListEntriesDynamicFilterKind.Invite -> {
+            is RoomListEntriesDynamicFilterKind.Favourite -> {
                 buf.putInt(8)
                 Unit
             }
-            is RoomListEntriesDynamicFilterKind.Category -> {
+            is RoomListEntriesDynamicFilterKind.Invite -> {
                 buf.putInt(9)
+                Unit
+            }
+            is RoomListEntriesDynamicFilterKind.Category -> {
+                buf.putInt(10)
                 FfiConverterTypeRoomListFilterCategory.write(value.`expect`, buf)
                 Unit
             }
             is RoomListEntriesDynamicFilterKind.None -> {
-                buf.putInt(10)
+                buf.putInt(11)
                 Unit
             }
             is RoomListEntriesDynamicFilterKind.NormalizedMatchRoomName -> {
-                buf.putInt(11)
-                FfiConverterString.write(value.`pattern`, buf)
-                Unit
-            }
-            is RoomListEntriesDynamicFilterKind.FuzzyMatchRoomName -> {
                 buf.putInt(12)
                 FfiConverterString.write(value.`pattern`, buf)
                 Unit
             }
-            is RoomListEntriesDynamicFilterKind.ScRooms -> {
+            is RoomListEntriesDynamicFilterKind.FuzzyMatchRoomName -> {
                 buf.putInt(13)
+                FfiConverterString.write(value.`pattern`, buf)
+                Unit
+            }
+            is RoomListEntriesDynamicFilterKind.ScRooms -> {
+                buf.putInt(14)
                 FfiConverterSequenceString.write(value.`rooms`, buf)
                 Unit
             }
             is RoomListEntriesDynamicFilterKind.DeduplicateVersions -> {
-                buf.putInt(14)
+                buf.putInt(15)
                 Unit
             }
         }.let { /* this makes the `when` an expression, which ensures it is exhaustive */ }
