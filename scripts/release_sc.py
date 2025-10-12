@@ -200,11 +200,8 @@ def get_asset_path(root_project_dir: str, module: Module) -> str:
 def get_publish_task(module: Module) -> str:
     if module == Module.SDK:
         return ":sdk:sdk-android:publish"
-    elif module == Module.CRYPTO:
-        return ":crypto:crypto-android:publishToSonatype"
     else:
         raise ValueError(f"Unknown module: {module}")
-
 
 def run_publish_close_and_release_tasks(root_project_dir, publish_task: str):
     gradle_command = f"./gradlew {publish_task}"
@@ -259,7 +256,7 @@ elif args.force:
         f"The provided version ({args.version}) is not higher than the previous version ({major}.{minor}.{patch}), continuing anyway.")
 else:
     print(
-        f"The provided version ({args.version}) is not higher than the previous version ({major}.{minor}.{patch}) so bump the version before retrying.")
+        f"The provided version ({args.version}) is not higher than the previous version ({major}.{minor}.{patch}) so bump the version before retrying, or pass -f to force a rebuild.")
     exit(0)
 
 if skip_clone is False:
