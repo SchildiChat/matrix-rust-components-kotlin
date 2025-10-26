@@ -42,6 +42,9 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+
+    // Keep NDK version in sync with rest of the build, https://github.com/SchildiChat/schildichat-android-next/issues/75
+    ndkVersion = "29.0.14206865"
 }
 
 dependencies {
