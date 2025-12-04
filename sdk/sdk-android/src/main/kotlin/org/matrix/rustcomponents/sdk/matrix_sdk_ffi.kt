@@ -76,8 +76,10 @@ import uniffi.matrix_sdk_ui.EventItemOrigin
 import uniffi.matrix_sdk_ui.FfiConverterTypeEventItemOrigin
 import uniffi.matrix_sdk_ui.FfiConverterTypeRoomPinnedEventsChange
 import uniffi.matrix_sdk_ui.FfiConverterTypeSpaceRoomListPaginationState
+import uniffi.matrix_sdk_ui.FfiConverterTypeTimelineReadReceiptTracking
 import uniffi.matrix_sdk_ui.RoomPinnedEventsChange
 import uniffi.matrix_sdk_ui.SpaceRoomListPaginationState
+import uniffi.matrix_sdk_ui.TimelineReadReceiptTracking
 import uniffi.matrix_sdk.RustBuffer as RustBufferBackupDownloadStrategy
 import uniffi.matrix_sdk.RustBuffer as RustBufferOAuthAuthorizationData
 import uniffi.matrix_sdk.RustBuffer as RustBufferRoomMemberRole
@@ -97,6 +99,7 @@ import uniffi.matrix_sdk_crypto.RustBuffer as RustBufferUtdCause
 import uniffi.matrix_sdk_ui.RustBuffer as RustBufferEventItemOrigin
 import uniffi.matrix_sdk_ui.RustBuffer as RustBufferRoomPinnedEventsChange
 import uniffi.matrix_sdk_ui.RustBuffer as RustBufferSpaceRoomListPaginationState
+import uniffi.matrix_sdk_ui.RustBuffer as RustBufferTimelineReadReceiptTracking
 
 // This is a helper for safely working with byte buffers returned from the Rust code.
 // A rust-owned buffer is represented by its capacity, its current length, and a
@@ -1832,7 +1835,9 @@ external fun uniffi_matrix_sdk_ffi_checksum_method_client_register_notification_
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_client_remove_avatar(
 ): Short
-external fun uniffi_matrix_sdk_ffi_checksum_method_client_reset_server_info(
+external fun uniffi_matrix_sdk_ffi_checksum_method_client_reset_supported_versions(
+): Short
+external fun uniffi_matrix_sdk_ffi_checksum_method_client_reset_well_known(
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_client_resolve_room_alias(
 ): Short
@@ -2460,9 +2465,17 @@ external fun uniffi_matrix_sdk_ffi_checksum_method_spaceroomlist_subscribe_to_ro
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_spaceroomlist_subscribe_to_space_updates(
 ): Short
+external fun uniffi_matrix_sdk_ffi_checksum_method_spaceservice_add_child_to_space(
+): Short
+external fun uniffi_matrix_sdk_ffi_checksum_method_spaceservice_editable_spaces(
+): Short
+external fun uniffi_matrix_sdk_ffi_checksum_method_spaceservice_joined_parents_of_child(
+): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_spaceservice_joined_spaces(
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_spaceservice_leave_space(
+): Short
+external fun uniffi_matrix_sdk_ffi_checksum_method_spaceservice_remove_child_from_space(
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_spaceservice_space_room_list(
 ): Short
@@ -2632,6 +2645,8 @@ external fun uniffi_matrix_sdk_ffi_checksum_constructor_span_current(
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_constructor_span_new(
 ): Short
+external fun uniffi_matrix_sdk_ffi_checksum_constructor_span_new_bridge_span(
+): Short
 external fun uniffi_matrix_sdk_ffi_checksum_constructor_sqlitestorebuilder_new(
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_constructor_timelineeventtypefilter_exclude(
@@ -2794,11 +2809,11 @@ internal object UniffiLib {
         uniffiCallbackInterfaceUnableToDecryptDelegate.register(this)
         uniffiCallbackInterfaceVerificationStateListener.register(this)
         uniffiCallbackInterfaceWidgetCapabilitiesProvider.register(this)
-        uniffi.matrix_sdk_base.uniffiEnsureInitialized()
-        uniffi.matrix_sdk_crypto.uniffiEnsureInitialized()
         uniffi.matrix_sdk.uniffiEnsureInitialized()
+        uniffi.matrix_sdk_crypto.uniffiEnsureInitialized()
         uniffi.matrix_sdk_common.uniffiEnsureInitialized()
         uniffi.matrix_sdk_ui.uniffiEnsureInitialized()
+        uniffi.matrix_sdk_base.uniffiEnsureInitialized()
         
     }
     external fun uniffi_matrix_sdk_ffi_fn_clone_checkcodesender(`handle`: Long,uniffi_out_err: UniffiRustCallStatus, 
@@ -2927,7 +2942,9 @@ external fun uniffi_matrix_sdk_ffi_fn_method_client_register_notification_handle
 ): Long
 external fun uniffi_matrix_sdk_ffi_fn_method_client_remove_avatar(`ptr`: Long,
 ): Long
-external fun uniffi_matrix_sdk_ffi_fn_method_client_reset_server_info(`ptr`: Long,
+external fun uniffi_matrix_sdk_ffi_fn_method_client_reset_supported_versions(`ptr`: Long,
+): Long
+external fun uniffi_matrix_sdk_ffi_fn_method_client_reset_well_known(`ptr`: Long,
 ): Long
 external fun uniffi_matrix_sdk_ffi_fn_method_client_resolve_room_alias(`ptr`: Long,`roomAlias`: RustBuffer.ByValue,
 ): Long
@@ -3095,7 +3112,7 @@ external fun uniffi_matrix_sdk_ffi_fn_method_encryption_reset_identity(`ptr`: Lo
 ): Long
 external fun uniffi_matrix_sdk_ffi_fn_method_encryption_reset_recovery_key(`ptr`: Long,
 ): Long
-external fun uniffi_matrix_sdk_ffi_fn_method_encryption_user_identity(`ptr`: Long,`userId`: RustBuffer.ByValue,
+external fun uniffi_matrix_sdk_ffi_fn_method_encryption_user_identity(`ptr`: Long,`userId`: RustBuffer.ByValue,`fallbackToServer`: Byte,
 ): Long
 external fun uniffi_matrix_sdk_ffi_fn_method_encryption_verification_state(`ptr`: Long,uniffi_out_err: UniffiRustCallStatus, 
 ): RustBuffer.ByValue
@@ -3691,9 +3708,17 @@ external fun uniffi_matrix_sdk_ffi_fn_clone_spaceservice(`handle`: Long,uniffi_o
 ): Long
 external fun uniffi_matrix_sdk_ffi_fn_free_spaceservice(`handle`: Long,uniffi_out_err: UniffiRustCallStatus, 
 ): Unit
+external fun uniffi_matrix_sdk_ffi_fn_method_spaceservice_add_child_to_space(`ptr`: Long,`childId`: RustBuffer.ByValue,`spaceId`: RustBuffer.ByValue,
+): Long
+external fun uniffi_matrix_sdk_ffi_fn_method_spaceservice_editable_spaces(`ptr`: Long,
+): Long
+external fun uniffi_matrix_sdk_ffi_fn_method_spaceservice_joined_parents_of_child(`ptr`: Long,`childId`: RustBuffer.ByValue,
+): Long
 external fun uniffi_matrix_sdk_ffi_fn_method_spaceservice_joined_spaces(`ptr`: Long,
 ): Long
 external fun uniffi_matrix_sdk_ffi_fn_method_spaceservice_leave_space(`ptr`: Long,`spaceId`: RustBuffer.ByValue,
+): Long
+external fun uniffi_matrix_sdk_ffi_fn_method_spaceservice_remove_child_from_space(`ptr`: Long,`childId`: RustBuffer.ByValue,`spaceId`: RustBuffer.ByValue,
 ): Long
 external fun uniffi_matrix_sdk_ffi_fn_method_spaceservice_space_room_list(`ptr`: Long,`spaceId`: RustBuffer.ByValue,
 ): Long
@@ -3705,7 +3730,9 @@ external fun uniffi_matrix_sdk_ffi_fn_free_span(`handle`: Long,uniffi_out_err: U
 ): Unit
 external fun uniffi_matrix_sdk_ffi_fn_constructor_span_current(uniffi_out_err: UniffiRustCallStatus, 
 ): Long
-external fun uniffi_matrix_sdk_ffi_fn_constructor_span_new(`file`: RustBuffer.ByValue,`line`: RustBuffer.ByValue,`level`: RustBuffer.ByValue,`target`: RustBuffer.ByValue,`name`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
+external fun uniffi_matrix_sdk_ffi_fn_constructor_span_new(`file`: RustBuffer.ByValue,`line`: RustBuffer.ByValue,`level`: RustBuffer.ByValue,`target`: RustBuffer.ByValue,`name`: RustBuffer.ByValue,`bridgeTraceId`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
+): Long
+external fun uniffi_matrix_sdk_ffi_fn_constructor_span_new_bridge_span(`target`: RustBuffer.ByValue,`parentTraceId`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
 ): Long
 external fun uniffi_matrix_sdk_ffi_fn_method_span_enter(`ptr`: Long,uniffi_out_err: UniffiRustCallStatus, 
 ): Unit
@@ -4421,7 +4448,10 @@ private fun uniffiCheckApiChecksums(lib: IntegrityCheckingUniffiLib) {
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_client_remove_avatar() != 29033.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
-    if (lib.uniffi_matrix_sdk_ffi_checksum_method_client_reset_server_info() != 16333.toShort()) {
+    if (lib.uniffi_matrix_sdk_ffi_checksum_method_client_reset_supported_versions() != 32820.toShort()) {
+        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    }
+    if (lib.uniffi_matrix_sdk_ffi_checksum_method_client_reset_well_known() != 61934.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_client_resolve_room_alias() != 3551.toShort()) {
@@ -4658,7 +4688,7 @@ private fun uniffiCheckApiChecksums(lib: IntegrityCheckingUniffiLib) {
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_encryption_reset_recovery_key() != 20380.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
-    if (lib.uniffi_matrix_sdk_ffi_checksum_method_encryption_user_identity() != 20644.toShort()) {
+    if (lib.uniffi_matrix_sdk_ffi_checksum_method_encryption_user_identity() != 17575.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_encryption_verification_state() != 29114.toShort()) {
@@ -5363,10 +5393,22 @@ private fun uniffiCheckApiChecksums(lib: IntegrityCheckingUniffiLib) {
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_spaceroomlist_subscribe_to_space_updates() != 26327.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
+    if (lib.uniffi_matrix_sdk_ffi_checksum_method_spaceservice_add_child_to_space() != 31295.toShort()) {
+        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    }
+    if (lib.uniffi_matrix_sdk_ffi_checksum_method_spaceservice_editable_spaces() != 62969.toShort()) {
+        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    }
+    if (lib.uniffi_matrix_sdk_ffi_checksum_method_spaceservice_joined_parents_of_child() != 18724.toShort()) {
+        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    }
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_spaceservice_joined_spaces() != 54285.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_spaceservice_leave_space() != 7949.toShort()) {
+        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    }
+    if (lib.uniffi_matrix_sdk_ffi_checksum_method_spaceservice_remove_child_from_space() != 14438.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_spaceservice_space_room_list() != 6768.toShort()) {
@@ -5618,7 +5660,10 @@ private fun uniffiCheckApiChecksums(lib: IntegrityCheckingUniffiLib) {
     if (lib.uniffi_matrix_sdk_ffi_checksum_constructor_span_current() != 53698.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
-    if (lib.uniffi_matrix_sdk_ffi_checksum_constructor_span_new() != 14105.toShort()) {
+    if (lib.uniffi_matrix_sdk_ffi_checksum_constructor_span_new() != 8957.toShort()) {
+        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    }
+    if (lib.uniffi_matrix_sdk_ffi_checksum_constructor_span_new_bridge_span() != 63835.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_matrix_sdk_ffi_checksum_constructor_sqlitestorebuilder_new() != 51363.toShort()) {
@@ -7082,11 +7127,20 @@ public interface ClientInterface {
     /**
      * Empty the server version and unstable features cache.
      *
-     * Since the SDK caches server info (versions, unstable features,
-     * well-known etc), it's possible to have a stale entry in the cache.
-     * This functions makes it possible to force reset it.
+     * Since the SDK caches the supported versions, it's possible to have a
+     * stale entry in the cache. This functions makes it possible to force
+     * reset it.
      */
-    suspend fun `resetServerInfo`()
+    suspend fun `resetSupportedVersions`()
+    
+    /**
+     * Empty the well-known cache.
+     *
+     * Since the SDK caches the well-known, it's possible to have a stale
+     * entry in the cache. This functions makes it possible to force reset
+     * it.
+     */
+    suspend fun `resetWellKnown`()
     
     /**
      * Resolves the given room alias to a room ID (and a list of servers), if
@@ -8791,16 +8845,45 @@ open class Client: Disposable, AutoCloseable, ClientInterface
     /**
      * Empty the server version and unstable features cache.
      *
-     * Since the SDK caches server info (versions, unstable features,
-     * well-known etc), it's possible to have a stale entry in the cache.
-     * This functions makes it possible to force reset it.
+     * Since the SDK caches the supported versions, it's possible to have a
+     * stale entry in the cache. This functions makes it possible to force
+     * reset it.
      */
     @Throws(ClientException::class)
     @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
-    override suspend fun `resetServerInfo`() {
+    override suspend fun `resetSupportedVersions`() {
         return uniffiRustCallAsync(
         callWithHandle { uniffiHandle ->
-            UniffiLib.uniffi_matrix_sdk_ffi_fn_method_client_reset_server_info(
+            UniffiLib.uniffi_matrix_sdk_ffi_fn_method_client_reset_supported_versions(
+                uniffiHandle,
+                
+            )
+        },
+        { future, callback, continuation -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_poll_void(future, callback, continuation) },
+        { future, continuation -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_complete_void(future, continuation) },
+        { future -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_free_void(future) },
+        // lift function
+        { Unit },
+        
+        // Error FFI converter
+        ClientException.ErrorHandler,
+    )
+    }
+
+    
+    /**
+     * Empty the well-known cache.
+     *
+     * Since the SDK caches the well-known, it's possible to have a stale
+     * entry in the cache. This functions makes it possible to force reset
+     * it.
+     */
+    @Throws(ClientException::class)
+    @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
+    override suspend fun `resetWellKnown`() {
+        return uniffiRustCallAsync(
+        callWithHandle { uniffiHandle ->
+            UniffiLib.uniffi_matrix_sdk_ffi_fn_method_client_reset_well_known(
                 uniffiHandle,
                 
             )
@@ -10587,11 +10670,13 @@ public interface EncryptionInterface {
      * This method always tries to fetch the identity from the store, which we
      * only have if the user is tracked, meaning that we are both members
      * of the same encrypted room. If no user is found locally, a request will
-     * be made to the homeserver.
+     * be made to the homeserver unless `fallback_to_server` is set to `false`.
      *
      * # Arguments
      *
      * * `user_id` - The ID of the user that the identity belongs to.
+     * * `fallback_to_server` - Should we request the user identity from the
+     * homeserver if one isn't found locally.
      *
      * Returns a `UserIdentity` if one is found. Returns an error if there
      * was an issue with the crypto store or with the request to the
@@ -10599,7 +10684,7 @@ public interface EncryptionInterface {
      *
      * This will always return `None` if the client hasn't been logged in.
      */
-    suspend fun `userIdentity`(`userId`: kotlin.String): UserIdentity?
+    suspend fun `userIdentity`(`userId`: kotlin.String, `fallbackToServer`: kotlin.Boolean): UserIdentity?
     
     fun `verificationState`(): VerificationState
     
@@ -11054,11 +11139,13 @@ open class Encryption: Disposable, AutoCloseable, EncryptionInterface
      * This method always tries to fetch the identity from the store, which we
      * only have if the user is tracked, meaning that we are both members
      * of the same encrypted room. If no user is found locally, a request will
-     * be made to the homeserver.
+     * be made to the homeserver unless `fallback_to_server` is set to `false`.
      *
      * # Arguments
      *
      * * `user_id` - The ID of the user that the identity belongs to.
+     * * `fallback_to_server` - Should we request the user identity from the
+     * homeserver if one isn't found locally.
      *
      * Returns a `UserIdentity` if one is found. Returns an error if there
      * was an issue with the crypto store or with the request to the
@@ -11068,12 +11155,12 @@ open class Encryption: Disposable, AutoCloseable, EncryptionInterface
      */
     @Throws(ClientException::class)
     @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
-    override suspend fun `userIdentity`(`userId`: kotlin.String) : UserIdentity? {
+    override suspend fun `userIdentity`(`userId`: kotlin.String, `fallbackToServer`: kotlin.Boolean) : UserIdentity? {
         return uniffiRustCallAsync(
         callWithHandle { uniffiHandle ->
             UniffiLib.uniffi_matrix_sdk_ffi_fn_method_encryption_user_identity(
                 uniffiHandle,
-                FfiConverterString.lower(`userId`),
+                FfiConverterString.lower(`userId`),FfiConverterBoolean.lower(`fallbackToServer`),
             )
         },
         { future, callback, continuation -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_poll_rust_buffer(future, callback, continuation) },
@@ -24688,6 +24775,22 @@ public object FfiConverterTypeSpaceRoomList: FfiConverter<SpaceRoomList, Long> {
  */
 public interface SpaceServiceInterface {
     
+    suspend fun `addChildToSpace`(`childId`: kotlin.String, `spaceId`: kotlin.String)
+    
+    /**
+     * Returns a flattened list containing all the spaces where the user has
+     * permission to send `m.space.child` state events.
+     *
+     * Note: Unlike [`Self::joined_spaces()`], this method does not recompute
+     * the space graph, nor does it notify subscribers about changes.
+     */
+    suspend fun `editableSpaces`(): List<SpaceRoom>
+    
+    /**
+     * Returns all known direct-parents of a given space room ID.
+     */
+    suspend fun `joinedParentsOfChild`(`childId`: kotlin.String): List<SpaceRoom>
+    
     /**
      * Returns a list of all the top-level joined spaces. It will eagerly
      * compute the latest version and also notify subscribers if there were
@@ -24705,6 +24808,8 @@ public interface SpaceServiceInterface {
      * them.
      */
     suspend fun `leaveSpace`(`spaceId`: kotlin.String): LeaveSpaceHandle
+    
+    suspend fun `removeChildFromSpace`(`childId`: kotlin.String, `spaceId`: kotlin.String)
     
     /**
      * Returns a `SpaceRoomList` for the given space ID.
@@ -24824,6 +24929,79 @@ open class SpaceService: Disposable, AutoCloseable, SpaceServiceInterface
     }
 
     
+    @Throws(ClientException::class)
+    @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
+    override suspend fun `addChildToSpace`(`childId`: kotlin.String, `spaceId`: kotlin.String) {
+        return uniffiRustCallAsync(
+        callWithHandle { uniffiHandle ->
+            UniffiLib.uniffi_matrix_sdk_ffi_fn_method_spaceservice_add_child_to_space(
+                uniffiHandle,
+                FfiConverterString.lower(`childId`),FfiConverterString.lower(`spaceId`),
+            )
+        },
+        { future, callback, continuation -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_poll_void(future, callback, continuation) },
+        { future, continuation -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_complete_void(future, continuation) },
+        { future -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_free_void(future) },
+        // lift function
+        { Unit },
+        
+        // Error FFI converter
+        ClientException.ErrorHandler,
+    )
+    }
+
+    
+    /**
+     * Returns a flattened list containing all the spaces where the user has
+     * permission to send `m.space.child` state events.
+     *
+     * Note: Unlike [`Self::joined_spaces()`], this method does not recompute
+     * the space graph, nor does it notify subscribers about changes.
+     */
+    @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
+    override suspend fun `editableSpaces`() : List<SpaceRoom> {
+        return uniffiRustCallAsync(
+        callWithHandle { uniffiHandle ->
+            UniffiLib.uniffi_matrix_sdk_ffi_fn_method_spaceservice_editable_spaces(
+                uniffiHandle,
+                
+            )
+        },
+        { future, callback, continuation -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_poll_rust_buffer(future, callback, continuation) },
+        { future, continuation -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_complete_rust_buffer(future, continuation) },
+        { future -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_free_rust_buffer(future) },
+        // lift function
+        { FfiConverterSequenceTypeSpaceRoom.lift(it) },
+        // Error FFI converter
+        UniffiNullRustCallStatusErrorHandler,
+    )
+    }
+
+    
+    /**
+     * Returns all known direct-parents of a given space room ID.
+     */
+    @Throws(ClientException::class)
+    @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
+    override suspend fun `joinedParentsOfChild`(`childId`: kotlin.String) : List<SpaceRoom> {
+        return uniffiRustCallAsync(
+        callWithHandle { uniffiHandle ->
+            UniffiLib.uniffi_matrix_sdk_ffi_fn_method_spaceservice_joined_parents_of_child(
+                uniffiHandle,
+                FfiConverterString.lower(`childId`),
+            )
+        },
+        { future, callback, continuation -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_poll_rust_buffer(future, callback, continuation) },
+        { future, continuation -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_complete_rust_buffer(future, continuation) },
+        { future -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_free_rust_buffer(future) },
+        // lift function
+        { FfiConverterSequenceTypeSpaceRoom.lift(it) },
+        // Error FFI converter
+        ClientException.ErrorHandler,
+    )
+    }
+
+    
     /**
      * Returns a list of all the top-level joined spaces. It will eagerly
      * compute the latest version and also notify subscribers if there were
@@ -24873,6 +25051,28 @@ open class SpaceService: Disposable, AutoCloseable, SpaceServiceInterface
         { future -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_free_u64(future) },
         // lift function
         { FfiConverterTypeLeaveSpaceHandle.lift(it) },
+        // Error FFI converter
+        ClientException.ErrorHandler,
+    )
+    }
+
+    
+    @Throws(ClientException::class)
+    @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
+    override suspend fun `removeChildFromSpace`(`childId`: kotlin.String, `spaceId`: kotlin.String) {
+        return uniffiRustCallAsync(
+        callWithHandle { uniffiHandle ->
+            UniffiLib.uniffi_matrix_sdk_ffi_fn_method_spaceservice_remove_child_from_space(
+                uniffiHandle,
+                FfiConverterString.lower(`childId`),FfiConverterString.lower(`spaceId`),
+            )
+        },
+        { future, callback, continuation -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_poll_void(future, callback, continuation) },
+        { future, continuation -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_complete_void(future, continuation) },
+        { future -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_free_void(future) },
+        // lift function
+        { Unit },
+        
         // Error FFI converter
         ClientException.ErrorHandler,
     )
@@ -25122,12 +25322,12 @@ open class Span: Disposable, AutoCloseable, SpanInterface
      * unless you *want* the span to be attached to all further events created
      * on that thread.
      */
-    constructor(`file`: kotlin.String, `line`: kotlin.UInt?, `level`: LogLevel, `target`: kotlin.String, `name`: kotlin.String) :
+    constructor(`file`: kotlin.String, `line`: kotlin.UInt?, `level`: LogLevel, `target`: kotlin.String, `name`: kotlin.String, `bridgeTraceId`: kotlin.String?) :
         this(UniffiWithHandle, 
     uniffiRustCall() { _status ->
     UniffiLib.uniffi_matrix_sdk_ffi_fn_constructor_span_new(
     
-        FfiConverterString.lower(`file`),FfiConverterOptionalUInt.lower(`line`),FfiConverterTypeLogLevel.lower(`level`),FfiConverterString.lower(`target`),FfiConverterString.lower(`name`),_status)
+        FfiConverterString.lower(`file`),FfiConverterOptionalUInt.lower(`line`),FfiConverterTypeLogLevel.lower(`level`),FfiConverterString.lower(`target`),FfiConverterString.lower(`name`),FfiConverterOptionalString.lower(`bridgeTraceId`),_status)
 }
     )
 
@@ -25252,6 +25452,23 @@ open class Span: Disposable, AutoCloseable, SpanInterface
     UniffiLib.uniffi_matrix_sdk_ffi_fn_constructor_span_current(
     
         _status)
+}
+    )
+    }
+    
+
+        
+    /**
+     * Creates a [`Span`] that acts as a bridge between the client spans and
+     * the SDK ones, allowing them to be joined in Sentry. This function
+     * will only return a valid span if the `sentry` feature is enabled,
+     * otherwise it will return a noop span.
+     */ fun `newBridgeSpan`(`target`: kotlin.String, `parentTraceId`: kotlin.String?): Span {
+            return FfiConverterTypeSpan.lift(
+    uniffiRustCall() { _status ->
+    UniffiLib.uniffi_matrix_sdk_ffi_fn_constructor_span_new_bridge_span(
+    
+        FfiConverterString.lower(`target`),FfiConverterOptionalString.lower(`parentTraceId`),_status)
 }
     )
     }
@@ -32572,6 +32789,8 @@ data class NotificationRoomInfo (
     var `isEncrypted`: kotlin.Boolean?
     , 
     var `isDirect`: kotlin.Boolean
+    , 
+    var `isSpace`: kotlin.Boolean
     
 ){
     
@@ -32594,6 +32813,7 @@ public object FfiConverterTypeNotificationRoomInfo: FfiConverterRustBuffer<Notif
             FfiConverterULong.read(buf),
             FfiConverterOptionalBoolean.read(buf),
             FfiConverterBoolean.read(buf),
+            FfiConverterBoolean.read(buf),
         )
     }
 
@@ -32605,7 +32825,8 @@ public object FfiConverterTypeNotificationRoomInfo: FfiConverterRustBuffer<Notif
             FfiConverterOptionalTypeJoinRule.allocationSize(value.`joinRule`) +
             FfiConverterULong.allocationSize(value.`joinedMembersCount`) +
             FfiConverterOptionalBoolean.allocationSize(value.`isEncrypted`) +
-            FfiConverterBoolean.allocationSize(value.`isDirect`)
+            FfiConverterBoolean.allocationSize(value.`isDirect`) +
+            FfiConverterBoolean.allocationSize(value.`isSpace`)
     )
 
     override fun write(value: NotificationRoomInfo, buf: ByteBuffer) {
@@ -32617,6 +32838,7 @@ public object FfiConverterTypeNotificationRoomInfo: FfiConverterRustBuffer<Notif
             FfiConverterULong.write(value.`joinedMembersCount`, buf)
             FfiConverterOptionalBoolean.write(value.`isEncrypted`, buf)
             FfiConverterBoolean.write(value.`isDirect`, buf)
+            FfiConverterBoolean.write(value.`isSpace`, buf)
     }
 }
 
@@ -35124,12 +35346,12 @@ data class TimelineConfiguration (
     , 
     /**
      * Should the read receipts and read markers be tracked for the timeline
-     * items in this instance?
+     * items in this instance and on which event types?
      *
      * As this has a non negligible performance impact, make sure to enable it
      * only when you need it.
      */
-    var `trackReadReceipts`: kotlin.Boolean
+    var `trackReadReceipts`: TimelineReadReceiptTracking
     , 
     /**
      * Whether this timeline instance should report UTDs through the client's
@@ -35167,7 +35389,7 @@ public object FfiConverterTypeTimelineConfiguration: FfiConverterRustBuffer<Time
             FfiConverterTypeTimelineFilter.read(buf),
             FfiConverterOptionalString.read(buf),
             FfiConverterTypeDateDividerMode.read(buf),
-            FfiConverterBoolean.read(buf),
+            FfiConverterTypeTimelineReadReceiptTracking.read(buf),
             FfiConverterBoolean.read(buf),
         )
     }
@@ -35177,7 +35399,7 @@ public object FfiConverterTypeTimelineConfiguration: FfiConverterRustBuffer<Time
             FfiConverterTypeTimelineFilter.allocationSize(value.`filter`) +
             FfiConverterOptionalString.allocationSize(value.`internalIdPrefix`) +
             FfiConverterTypeDateDividerMode.allocationSize(value.`dateDividerMode`) +
-            FfiConverterBoolean.allocationSize(value.`trackReadReceipts`) +
+            FfiConverterTypeTimelineReadReceiptTracking.allocationSize(value.`trackReadReceipts`) +
             FfiConverterBoolean.allocationSize(value.`reportUtds`)
     )
 
@@ -35186,7 +35408,7 @@ public object FfiConverterTypeTimelineConfiguration: FfiConverterRustBuffer<Time
             FfiConverterTypeTimelineFilter.write(value.`filter`, buf)
             FfiConverterOptionalString.write(value.`internalIdPrefix`, buf)
             FfiConverterTypeDateDividerMode.write(value.`dateDividerMode`, buf)
-            FfiConverterBoolean.write(value.`trackReadReceipts`, buf)
+            FfiConverterTypeTimelineReadReceiptTracking.write(value.`trackReadReceipts`, buf)
             FfiConverterBoolean.write(value.`reportUtds`, buf)
     }
 }
@@ -40947,6 +41169,11 @@ sealed class HumanQrGrantLoginException(message: String): kotlin.Exception(messa
         class MissingSecretsBackup(message: String) : HumanQrGrantLoginException(message)
         
     /**
+     * The rendezvous session was not found and might have expired.
+     */
+        class NotFound(message: String) : HumanQrGrantLoginException(message)
+        
+    /**
      * The device could not be created.
      */
         class UnableToCreateDevice(message: String) : HumanQrGrantLoginException(message)
@@ -40973,8 +41200,9 @@ public object FfiConverterTypeHumanQrGrantLoginError : FfiConverterRustBuffer<Hu
             2 -> HumanQrGrantLoginException.InvalidCheckCode(FfiConverterString.read(buf))
             3 -> HumanQrGrantLoginException.UnsupportedProtocol(FfiConverterString.read(buf))
             4 -> HumanQrGrantLoginException.MissingSecretsBackup(FfiConverterString.read(buf))
-            5 -> HumanQrGrantLoginException.UnableToCreateDevice(FfiConverterString.read(buf))
-            6 -> HumanQrGrantLoginException.Unknown(FfiConverterString.read(buf))
+            5 -> HumanQrGrantLoginException.NotFound(FfiConverterString.read(buf))
+            6 -> HumanQrGrantLoginException.UnableToCreateDevice(FfiConverterString.read(buf))
+            7 -> HumanQrGrantLoginException.Unknown(FfiConverterString.read(buf))
             else -> throw RuntimeException("invalid error enum value, something is very wrong!!")
         }
         
@@ -41002,12 +41230,16 @@ public object FfiConverterTypeHumanQrGrantLoginError : FfiConverterRustBuffer<Hu
                 buf.putInt(4)
                 Unit
             }
-            is HumanQrGrantLoginException.UnableToCreateDevice -> {
+            is HumanQrGrantLoginException.NotFound -> {
                 buf.putInt(5)
                 Unit
             }
-            is HumanQrGrantLoginException.Unknown -> {
+            is HumanQrGrantLoginException.UnableToCreateDevice -> {
                 buf.putInt(6)
+                Unit
+            }
+            is HumanQrGrantLoginException.Unknown -> {
+                buf.putInt(7)
                 Unit
             }
         }.let { /* this makes the `when` an expression, which ensures it is exhaustive */ }
@@ -41087,6 +41319,12 @@ sealed class HumanQrLoginException: kotlin.Exception() {
             get() = ""
     }
     
+    class NotFound(
+        ) : HumanQrLoginException() {
+        override val message
+            get() = ""
+    }
+    
 
     companion object ErrorHandler : UniffiRustCallStatusErrorHandler<HumanQrLoginException> {
         override fun lift(error_buf: RustBuffer.ByValue): HumanQrLoginException = FfiConverterTypeHumanQrLoginError.lift(error_buf)
@@ -41114,6 +41352,7 @@ public object FfiConverterTypeHumanQrLoginError : FfiConverterRustBuffer<HumanQr
             9 -> HumanQrLoginException.OtherDeviceNotSignedIn()
             10 -> HumanQrLoginException.CheckCodeAlreadySent()
             11 -> HumanQrLoginException.CheckCodeCannotBeSent()
+            12 -> HumanQrLoginException.NotFound()
             else -> throw RuntimeException("invalid error enum value, something is very wrong!!")
         }
     }
@@ -41164,6 +41403,10 @@ public object FfiConverterTypeHumanQrLoginError : FfiConverterRustBuffer<HumanQr
                 // Add the size for the Int that specifies the variant plus the size needed for all fields
                 4UL
             )
+            is HumanQrLoginException.NotFound -> (
+                // Add the size for the Int that specifies the variant plus the size needed for all fields
+                4UL
+            )
         }
     }
 
@@ -41211,6 +41454,10 @@ public object FfiConverterTypeHumanQrLoginError : FfiConverterRustBuffer<HumanQr
             }
             is HumanQrLoginException.CheckCodeCannotBeSent -> {
                 buf.putInt(11)
+                Unit
+            }
+            is HumanQrLoginException.NotFound -> {
+                buf.putInt(12)
                 Unit
             }
         }.let { /* this makes the `when` an expression, which ensures it is exhaustive */ }
@@ -41637,6 +41884,8 @@ sealed class LatestEventValue: Disposable  {
     
     data class Local(
         val `timestamp`: Timestamp, 
+        val `sender`: kotlin.String, 
+        val `profile`: ProfileDetails, 
         val `content`: TimelineItemContent, 
         val `isSending`: kotlin.Boolean) : LatestEventValue()
         
@@ -41668,6 +41917,8 @@ sealed class LatestEventValue: Disposable  {
                 
     Disposable.destroy(
         this.`timestamp`,
+        this.`sender`,
+        this.`profile`,
         this.`content`,
         this.`isSending`
     )
@@ -41695,6 +41946,8 @@ public object FfiConverterTypeLatestEventValue : FfiConverterRustBuffer<LatestEv
                 )
             3 -> LatestEventValue.Local(
                 FfiConverterTypeTimestamp.read(buf),
+                FfiConverterString.read(buf),
+                FfiConverterTypeProfileDetails.read(buf),
                 FfiConverterTypeTimelineItemContent.read(buf),
                 FfiConverterBoolean.read(buf),
                 )
@@ -41725,6 +41978,8 @@ public object FfiConverterTypeLatestEventValue : FfiConverterRustBuffer<LatestEv
             (
                 4UL
                 + FfiConverterTypeTimestamp.allocationSize(value.`timestamp`)
+                + FfiConverterString.allocationSize(value.`sender`)
+                + FfiConverterTypeProfileDetails.allocationSize(value.`profile`)
                 + FfiConverterTypeTimelineItemContent.allocationSize(value.`content`)
                 + FfiConverterBoolean.allocationSize(value.`isSending`)
             )
@@ -41749,6 +42004,8 @@ public object FfiConverterTypeLatestEventValue : FfiConverterRustBuffer<LatestEv
             is LatestEventValue.Local -> {
                 buf.putInt(3)
                 FfiConverterTypeTimestamp.write(value.`timestamp`, buf)
+                FfiConverterString.write(value.`sender`, buf)
+                FfiConverterTypeProfileDetails.write(value.`profile`, buf)
                 FfiConverterTypeTimelineItemContent.write(value.`content`, buf)
                 FfiConverterBoolean.write(value.`isSending`, buf)
                 Unit
@@ -58272,6 +58529,8 @@ public object FfiConverterMapTypeTagNameTypeTagInfo: FfiConverterRustBuffer<Map<
  */
 public typealias Timestamp = kotlin.ULong
 public typealias FfiConverterTypeTimestamp = FfiConverterULong
+
+
 
 
 
