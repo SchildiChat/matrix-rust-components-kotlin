@@ -1697,9 +1697,13 @@ external fun uniffi_matrix_sdk_ffi_checksum_func_message_event_content_from_html
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_func_message_event_content_from_html_as_emote(
 ): Short
+external fun uniffi_matrix_sdk_ffi_checksum_func_message_event_content_from_html_as_notice(
+): Short
 external fun uniffi_matrix_sdk_ffi_checksum_func_message_event_content_from_markdown(
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_func_message_event_content_from_markdown_as_emote(
+): Short
+external fun uniffi_matrix_sdk_ffi_checksum_func_message_event_content_from_markdown_as_notice(
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_func_message_event_content_new(
 ): Short
@@ -2549,6 +2553,8 @@ external fun uniffi_matrix_sdk_ffi_checksum_method_timeline_get_event_timeline_i
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_timeline_latest_event_id(
 ): Short
+external fun uniffi_matrix_sdk_ffi_checksum_method_timeline_latest_user_read_receipt_event_id(
+): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_timeline_load_reply_details(
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_timeline_mark_as_read(
@@ -2809,11 +2815,11 @@ internal object UniffiLib {
         uniffiCallbackInterfaceUnableToDecryptDelegate.register(this)
         uniffiCallbackInterfaceVerificationStateListener.register(this)
         uniffiCallbackInterfaceWidgetCapabilitiesProvider.register(this)
-        uniffi.matrix_sdk_base.uniffiEnsureInitialized()
-        uniffi.matrix_sdk_crypto.uniffiEnsureInitialized()
         uniffi.matrix_sdk_common.uniffiEnsureInitialized()
         uniffi.matrix_sdk.uniffiEnsureInitialized()
+        uniffi.matrix_sdk_crypto.uniffiEnsureInitialized()
         uniffi.matrix_sdk_ui.uniffiEnsureInitialized()
+        uniffi.matrix_sdk_base.uniffiEnsureInitialized()
         
     }
     external fun uniffi_matrix_sdk_ffi_fn_clone_checkcodesender(`handle`: Long,uniffi_out_err: UniffiRustCallStatus, 
@@ -3832,6 +3838,8 @@ external fun uniffi_matrix_sdk_ffi_fn_method_timeline_get_event_timeline_item_by
 ): Long
 external fun uniffi_matrix_sdk_ffi_fn_method_timeline_latest_event_id(`ptr`: Long,
 ): Long
+external fun uniffi_matrix_sdk_ffi_fn_method_timeline_latest_user_read_receipt_event_id(`ptr`: Long,`userId`: RustBuffer.ByValue,
+): Long
 external fun uniffi_matrix_sdk_ffi_fn_method_timeline_load_reply_details(`ptr`: Long,`eventIdStr`: RustBuffer.ByValue,
 ): Long
 external fun uniffi_matrix_sdk_ffi_fn_method_timeline_mark_as_read(`ptr`: Long,`receiptType`: RustBuffer.ByValue,
@@ -4060,9 +4068,13 @@ external fun uniffi_matrix_sdk_ffi_fn_func_message_event_content_from_html(`body
 ): Long
 external fun uniffi_matrix_sdk_ffi_fn_func_message_event_content_from_html_as_emote(`body`: RustBuffer.ByValue,`htmlBody`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
 ): Long
+external fun uniffi_matrix_sdk_ffi_fn_func_message_event_content_from_html_as_notice(`body`: RustBuffer.ByValue,`htmlBody`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
+): Long
 external fun uniffi_matrix_sdk_ffi_fn_func_message_event_content_from_markdown(`md`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
 ): Long
 external fun uniffi_matrix_sdk_ffi_fn_func_message_event_content_from_markdown_as_emote(`md`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
+): Long
+external fun uniffi_matrix_sdk_ffi_fn_func_message_event_content_from_markdown_as_notice(`md`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
 ): Long
 external fun uniffi_matrix_sdk_ffi_fn_func_message_event_content_new(`msgtype`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
 ): Long
@@ -4241,10 +4253,16 @@ private fun uniffiCheckApiChecksums(lib: IntegrityCheckingUniffiLib) {
     if (lib.uniffi_matrix_sdk_ffi_checksum_func_message_event_content_from_html_as_emote() != 8938.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
+    if (lib.uniffi_matrix_sdk_ffi_checksum_func_message_event_content_from_html_as_notice() != 34699.toShort()) {
+        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    }
     if (lib.uniffi_matrix_sdk_ffi_checksum_func_message_event_content_from_markdown() != 58385.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_matrix_sdk_ffi_checksum_func_message_event_content_from_markdown_as_emote() != 20152.toShort()) {
+        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    }
+    if (lib.uniffi_matrix_sdk_ffi_checksum_func_message_event_content_from_markdown_as_notice() != 39766.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_matrix_sdk_ffi_checksum_func_message_event_content_new() != 57839.toShort()) {
@@ -5517,6 +5535,9 @@ private fun uniffiCheckApiChecksums(lib: IntegrityCheckingUniffiLib) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_timeline_latest_event_id() != 18266.toShort()) {
+        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    }
+    if (lib.uniffi_matrix_sdk_ffi_checksum_method_timeline_latest_user_read_receipt_event_id() != 8653.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_timeline_load_reply_details() != 54225.toShort()) {
@@ -27576,6 +27597,11 @@ public interface TimelineInterface {
     suspend fun `latestEventId`(): kotlin.String?
     
     /**
+     * SC: get latest read receipt by user
+     */
+    suspend fun `latestUserReadReceiptEventId`(`userId`: kotlin.String): kotlin.String?
+    
+    /**
      * Load the reply details for the given event id.
      *
      * This will return an `InReplyToDetails` object that contains the details
@@ -28036,6 +28062,29 @@ open class Timeline: Disposable, AutoCloseable, TimelineInterface
             UniffiLib.uniffi_matrix_sdk_ffi_fn_method_timeline_latest_event_id(
                 uniffiHandle,
                 
+            )
+        },
+        { future, callback, continuation -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_poll_rust_buffer(future, callback, continuation) },
+        { future, continuation -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_complete_rust_buffer(future, continuation) },
+        { future -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_free_rust_buffer(future) },
+        // lift function
+        { FfiConverterOptionalString.lift(it) },
+        // Error FFI converter
+        UniffiNullRustCallStatusErrorHandler,
+    )
+    }
+
+    
+    /**
+     * SC: get latest read receipt by user
+     */
+    @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
+    override suspend fun `latestUserReadReceiptEventId`(`userId`: kotlin.String) : kotlin.String? {
+        return uniffiRustCallAsync(
+        callWithHandle { uniffiHandle ->
+            UniffiLib.uniffi_matrix_sdk_ffi_fn_method_timeline_latest_user_read_receipt_event_id(
+                uniffiHandle,
+                FfiConverterString.lower(`userId`),
             )
         },
         { future, callback, continuation -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_poll_rust_buffer(future, callback, continuation) },
@@ -50738,6 +50787,19 @@ sealed class TimelineFilter: Disposable  {
     
     
     /**
+     * SC: custom settings, e.g. hide redacted messages
+     */
+    data class ScSettings(
+        val `showRedactions`: kotlin.Boolean, 
+        val `filter`: TimelineEventTypeFilter?) : TimelineFilter()
+        
+    {
+        
+
+        companion object
+    }
+    
+    /**
      * Show only `m.room.messages` of the given room message types.
      */
     data class OnlyMessage(
@@ -50772,6 +50834,14 @@ sealed class TimelineFilter: Disposable  {
         when(this) {
             is TimelineFilter.All -> {// Nothing to destroy
             }
+            is TimelineFilter.ScSettings -> {
+                
+    Disposable.destroy(
+        this.`showRedactions`,
+        this.`filter`
+    )
+                
+            }
             is TimelineFilter.OnlyMessage -> {
                 
     Disposable.destroy(
@@ -50799,10 +50869,14 @@ public object FfiConverterTypeTimelineFilter : FfiConverterRustBuffer<TimelineFi
     override fun read(buf: ByteBuffer): TimelineFilter {
         return when(buf.getInt()) {
             1 -> TimelineFilter.All
-            2 -> TimelineFilter.OnlyMessage(
+            2 -> TimelineFilter.ScSettings(
+                FfiConverterBoolean.read(buf),
+                FfiConverterOptionalTypeTimelineEventTypeFilter.read(buf),
+                )
+            3 -> TimelineFilter.OnlyMessage(
                 FfiConverterSequenceTypeRoomMessageEventMessageType.read(buf),
                 )
-            3 -> TimelineFilter.EventTypeFilter(
+            4 -> TimelineFilter.EventTypeFilter(
                 FfiConverterTypeTimelineEventTypeFilter.read(buf),
                 )
             else -> throw RuntimeException("invalid enum value, something is very wrong!!")
@@ -50814,6 +50888,14 @@ public object FfiConverterTypeTimelineFilter : FfiConverterRustBuffer<TimelineFi
             // Add the size for the Int that specifies the variant plus the size needed for all fields
             (
                 4UL
+            )
+        }
+        is TimelineFilter.ScSettings -> {
+            // Add the size for the Int that specifies the variant plus the size needed for all fields
+            (
+                4UL
+                + FfiConverterBoolean.allocationSize(value.`showRedactions`)
+                + FfiConverterOptionalTypeTimelineEventTypeFilter.allocationSize(value.`filter`)
             )
         }
         is TimelineFilter.OnlyMessage -> {
@@ -50838,13 +50920,19 @@ public object FfiConverterTypeTimelineFilter : FfiConverterRustBuffer<TimelineFi
                 buf.putInt(1)
                 Unit
             }
-            is TimelineFilter.OnlyMessage -> {
+            is TimelineFilter.ScSettings -> {
                 buf.putInt(2)
+                FfiConverterBoolean.write(value.`showRedactions`, buf)
+                FfiConverterOptionalTypeTimelineEventTypeFilter.write(value.`filter`, buf)
+                Unit
+            }
+            is TimelineFilter.OnlyMessage -> {
+                buf.putInt(3)
                 FfiConverterSequenceTypeRoomMessageEventMessageType.write(value.`types`, buf)
                 Unit
             }
             is TimelineFilter.EventTypeFilter -> {
-                buf.putInt(3)
+                buf.putInt(4)
                 FfiConverterTypeTimelineEventTypeFilter.write(value.`filter`, buf)
                 Unit
             }
@@ -55190,6 +55278,38 @@ public object FfiConverterOptionalTypeThreadSummary: FfiConverterRustBuffer<Thre
 /**
  * @suppress
  */
+public object FfiConverterOptionalTypeTimelineEventTypeFilter: FfiConverterRustBuffer<TimelineEventTypeFilter?> {
+    override fun read(buf: ByteBuffer): TimelineEventTypeFilter? {
+        if (buf.get().toInt() == 0) {
+            return null
+        }
+        return FfiConverterTypeTimelineEventTypeFilter.read(buf)
+    }
+
+    override fun allocationSize(value: TimelineEventTypeFilter?): ULong {
+        if (value == null) {
+            return 1UL
+        } else {
+            return 1UL + FfiConverterTypeTimelineEventTypeFilter.allocationSize(value)
+        }
+    }
+
+    override fun write(value: TimelineEventTypeFilter?, buf: ByteBuffer) {
+        if (value == null) {
+            buf.put(0)
+        } else {
+            buf.put(1)
+            FfiConverterTypeTimelineEventTypeFilter.write(value, buf)
+        }
+    }
+}
+
+
+
+
+/**
+ * @suppress
+ */
 public object FfiConverterOptionalTypeUserIdentity: FfiConverterRustBuffer<UserIdentity?> {
     override fun read(buf: ByteBuffer): UserIdentity? {
         if (buf.get().toInt() == 0) {
@@ -58796,6 +58916,16 @@ public typealias FfiConverterTypeTimestamp = FfiConverterULong
     )
     }
     
+ fun `messageEventContentFromHtmlAsNotice`(`body`: kotlin.String, `htmlBody`: kotlin.String): RoomMessageEventContentWithoutRelation {
+            return FfiConverterTypeRoomMessageEventContentWithoutRelation.lift(
+    uniffiRustCall() { _status ->
+    UniffiLib.uniffi_matrix_sdk_ffi_fn_func_message_event_content_from_html_as_notice(
+    
+        FfiConverterString.lower(`body`),FfiConverterString.lower(`htmlBody`),_status)
+}
+    )
+    }
+    
  fun `messageEventContentFromMarkdown`(`md`: kotlin.String): RoomMessageEventContentWithoutRelation {
             return FfiConverterTypeRoomMessageEventContentWithoutRelation.lift(
     uniffiRustCall() { _status ->
@@ -58810,6 +58940,16 @@ public typealias FfiConverterTypeTimestamp = FfiConverterULong
             return FfiConverterTypeRoomMessageEventContentWithoutRelation.lift(
     uniffiRustCall() { _status ->
     UniffiLib.uniffi_matrix_sdk_ffi_fn_func_message_event_content_from_markdown_as_emote(
+    
+        FfiConverterString.lower(`md`),_status)
+}
+    )
+    }
+    
+ fun `messageEventContentFromMarkdownAsNotice`(`md`: kotlin.String): RoomMessageEventContentWithoutRelation {
+            return FfiConverterTypeRoomMessageEventContentWithoutRelation.lift(
+    uniffiRustCall() { _status ->
+    UniffiLib.uniffi_matrix_sdk_ffi_fn_func_message_event_content_from_markdown_as_notice(
     
         FfiConverterString.lower(`md`),_status)
 }
