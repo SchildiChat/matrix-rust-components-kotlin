@@ -281,8 +281,9 @@ internal inline fun<T> uniffiTraitInterfaceCall(
     try {
         writeReturn(makeCall())
     } catch(e: kotlin.Exception) {
+        val err = try { e.stackTraceToString() } catch(_: Throwable) { "" }
         callStatus.code = UNIFFI_CALL_UNEXPECTED_ERROR
-        callStatus.error_buf = FfiConverterString.lower(e.toString())
+        callStatus.error_buf = FfiConverterString.lower(err)
     }
 }
 
@@ -299,8 +300,9 @@ internal inline fun<T, reified E: Throwable> uniffiTraitInterfaceCallWithError(
             callStatus.code = UNIFFI_CALL_ERROR
             callStatus.error_buf = lowerError(e)
         } else {
+            val err = try { e.stackTraceToString() } catch(_: Throwable) { "" }
             callStatus.code = UNIFFI_CALL_UNEXPECTED_ERROR
-            callStatus.error_buf = FfiConverterString.lower(e.toString())
+            callStatus.error_buf = FfiConverterString.lower(err)
         }
     }
 }
@@ -962,6 +964,10 @@ enum class EventItemOrigin {
      * The event came from a cache.
      */
     CACHE;
+
+    
+
+
     companion object
 }
 
@@ -979,6 +985,41 @@ public object FfiConverterTypeEventItemOrigin: FfiConverterRustBuffer<EventItemO
     override fun allocationSize(value: EventItemOrigin) = 4UL
 
     override fun write(value: EventItemOrigin, buf: ByteBuffer) {
+        buf.putInt(value.ordinal + 1)
+    }
+}
+
+
+
+
+
+
+enum class LatestEventValueLocalState {
+    
+    IS_SENDING,
+    HAS_BEEN_SENT,
+    CANNOT_BE_SENT;
+
+    
+
+
+    companion object
+}
+
+
+/**
+ * @suppress
+ */
+public object FfiConverterTypeLatestEventValueLocalState: FfiConverterRustBuffer<LatestEventValueLocalState> {
+    override fun read(buf: ByteBuffer) = try {
+        LatestEventValueLocalState.values()[buf.getInt() - 1]
+    } catch (e: IndexOutOfBoundsException) {
+        throw RuntimeException("invalid enum value, something is very wrong!!", e)
+    }
+
+    override fun allocationSize(value: LatestEventValueLocalState) = 4UL
+
+    override fun write(value: LatestEventValueLocalState, buf: ByteBuffer) {
         buf.putInt(value.ordinal + 1)
     }
 }
@@ -1005,6 +1046,10 @@ enum class RoomPinnedEventsChange {
      * Some change other than only adding or only removing ids happened.
      */
     CHANGED;
+
+    
+
+
     companion object
 }
 
@@ -1046,6 +1091,11 @@ sealed class SpaceRoomListPaginationState {
     
 
     
+
+    
+    
+
+
     companion object
 }
 
@@ -1099,6 +1149,70 @@ public object FfiConverterTypeSpaceRoomListPaginationState : FfiConverterRustBuf
 
 
 /**
+ * Extends [`ShieldStateCode`] to allow for a `SentInClear` code.
+ */
+
+enum class TimelineEventShieldStateCode {
+    
+    /**
+     * Not enough information available to check the authenticity.
+     */
+    AUTHENTICITY_NOT_GUARANTEED,
+    /**
+     * The sending device isn't yet known by the Client.
+     */
+    UNKNOWN_DEVICE,
+    /**
+     * The sending device hasn't been verified by the sender.
+     */
+    UNSIGNED_DEVICE,
+    /**
+     * The sender hasn't been verified by the Client's user.
+     */
+    UNVERIFIED_IDENTITY,
+    /**
+     * The sender was previously verified but changed their identity.
+     */
+    VERIFICATION_VIOLATION,
+    /**
+     * The `sender` field on the event does not match the owner of the device
+     * that established the Megolm session.
+     */
+    MISMATCHED_SENDER,
+    /**
+     * An unencrypted event in an encrypted room.
+     */
+    SENT_IN_CLEAR;
+
+    
+
+
+    companion object
+}
+
+
+/**
+ * @suppress
+ */
+public object FfiConverterTypeTimelineEventShieldStateCode: FfiConverterRustBuffer<TimelineEventShieldStateCode> {
+    override fun read(buf: ByteBuffer) = try {
+        TimelineEventShieldStateCode.values()[buf.getInt() - 1]
+    } catch (e: IndexOutOfBoundsException) {
+        throw RuntimeException("invalid enum value, something is very wrong!!", e)
+    }
+
+    override fun allocationSize(value: TimelineEventShieldStateCode) = 4UL
+
+    override fun write(value: TimelineEventShieldStateCode, buf: ByteBuffer) {
+        buf.putInt(value.ordinal + 1)
+    }
+}
+
+
+
+
+
+/**
  * The level of read receipt tracking for the timeline.
  */
 
@@ -1116,6 +1230,10 @@ enum class TimelineReadReceiptTracking {
      * Disable read receipt tracking.
      */
     DISABLED;
+
+    
+
+
     companion object
 }
 
