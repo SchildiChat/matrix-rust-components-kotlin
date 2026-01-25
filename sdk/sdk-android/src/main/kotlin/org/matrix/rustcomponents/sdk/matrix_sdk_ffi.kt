@@ -2292,6 +2292,8 @@ external fun uniffi_matrix_sdk_ffi_checksum_method_room_send_raw(
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_room_send_state_event_raw(
 ): Short
+external fun uniffi_matrix_sdk_ffi_checksum_method_room_set_avatar_url(
+): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_room_set_is_favourite(
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_room_set_is_low_priority(
@@ -3487,6 +3489,8 @@ external fun uniffi_matrix_sdk_ffi_fn_method_room_send_live_location(`ptr`: Long
 external fun uniffi_matrix_sdk_ffi_fn_method_room_send_raw(`ptr`: Long,`eventType`: RustBuffer.ByValue,`content`: RustBuffer.ByValue,
 ): Long
 external fun uniffi_matrix_sdk_ffi_fn_method_room_send_state_event_raw(`ptr`: Long,`eventType`: RustBuffer.ByValue,`stateKey`: RustBuffer.ByValue,`content`: RustBuffer.ByValue,
+): Long
+external fun uniffi_matrix_sdk_ffi_fn_method_room_set_avatar_url(`ptr`: Long,`url`: RustBuffer.ByValue,`mediaInfo`: RustBuffer.ByValue,
 ): Long
 external fun uniffi_matrix_sdk_ffi_fn_method_room_set_is_favourite(`ptr`: Long,`isFavourite`: Byte,`tagOrder`: RustBuffer.ByValue,
 ): Long
@@ -5180,6 +5184,9 @@ private fun uniffiCheckApiChecksums(lib: IntegrityCheckingUniffiLib) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_room_send_state_event_raw() != 64536.toShort()) {
+        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    }
+    if (lib.uniffi_matrix_sdk_ffi_checksum_method_room_set_avatar_url() != 43341.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_matrix_sdk_ffi_checksum_method_room_set_is_favourite() != 1289.toShort()) {
@@ -16843,6 +16850,11 @@ public interface RoomInterface {
     
     suspend fun `sendStateEventRaw`(`eventType`: kotlin.String, `stateKey`: kotlin.String, `content`: kotlin.String)
     
+    /**
+     * SC: Set avatar URL
+     */
+    suspend fun `setAvatarUrl`(`url`: kotlin.String, `mediaInfo`: ImageInfo?)
+    
     suspend fun `setIsFavourite`(`isFavourite`: kotlin.Boolean, `tagOrder`: kotlin.Double?)
     
     suspend fun `setIsLowPriority`(`isLowPriority`: kotlin.Boolean, `tagOrder`: kotlin.Double?)
@@ -18835,6 +18847,31 @@ open class Room: Disposable, AutoCloseable, RoomInterface
             UniffiLib.uniffi_matrix_sdk_ffi_fn_method_room_send_state_event_raw(
                 uniffiHandle,
                 FfiConverterString.lower(`eventType`),FfiConverterString.lower(`stateKey`),FfiConverterString.lower(`content`),
+            )
+        },
+        { future, callback, continuation -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_poll_void(future, callback, continuation) },
+        { future, continuation -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_complete_void(future, continuation) },
+        { future -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_free_void(future) },
+        // lift function
+        { Unit },
+        
+        // Error FFI converter
+        ClientException.ErrorHandler,
+    )
+    }
+
+    
+    /**
+     * SC: Set avatar URL
+     */
+    @Throws(ClientException::class)
+    @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
+    override suspend fun `setAvatarUrl`(`url`: kotlin.String, `mediaInfo`: ImageInfo?) {
+        return uniffiRustCallAsync(
+        callWithHandle { uniffiHandle ->
+            UniffiLib.uniffi_matrix_sdk_ffi_fn_method_room_set_avatar_url(
+                uniffiHandle,
+                FfiConverterString.lower(`url`),FfiConverterOptionalTypeImageInfo.lower(`mediaInfo`),
             )
         },
         { future, callback, continuation -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_poll_void(future, callback, continuation) },
