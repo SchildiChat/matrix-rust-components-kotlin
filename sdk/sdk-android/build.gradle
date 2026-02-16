@@ -15,7 +15,6 @@ ext {
 apply from: "${rootDir}/scripts/publish-module-sc.gradle"
 
 android {
-
     namespace 'org.matrix.rustcomponents.sdk'
 
     compileSdk ConfigurationData.compileSdk
@@ -35,6 +34,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    packagingOptions {
+        doNotStrip("**/*.so")
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -43,8 +47,8 @@ android {
         jvmTarget = '1.8'
     }
 
-    // Keep NDK version in sync with rest of the build, https://github.com/SchildiChat/schildichat-android-next/issues/75
-    ndkVersion = "29.0.14206865"
+    // Use provided NDK version from the env vars or use a default one
+    ndkVersion = System.getenv("NDK_VERSION") ?: '29.0.14206865'
 }
 
 dependencies {
