@@ -706,6 +706,9 @@ internal interface UniffiCallbackInterfaceClientSessionDelegateMethod0 : com.sun
 internal interface UniffiCallbackInterfaceClientSessionDelegateMethod1 : com.sun.jna.Callback {
     fun callback(`uniffiHandle`: Long,`session`: RustBuffer.ByValue,`uniffiOutReturn`: Pointer,uniffiCallStatus: UniffiRustCallStatus,)
 }
+internal interface UniffiCallbackInterfaceDuplicateKeyUploadErrorListenerMethod0 : com.sun.jna.Callback {
+    fun callback(`uniffiHandle`: Long,`message`: RustBuffer.ByValue,`uniffiOutReturn`: Pointer,uniffiCallStatus: UniffiRustCallStatus,)
+}
 internal interface UniffiCallbackInterfaceIgnoredUsersListenerMethod0 : com.sun.jna.Callback {
     fun callback(`uniffiHandle`: Long,`ignoredUserIds`: RustBuffer.ByValue,`uniffiOutReturn`: Pointer,uniffiCallStatus: UniffiRustCallStatus,)
 }
@@ -904,6 +907,25 @@ internal open class UniffiVTableCallbackInterfaceClientSessionDelegate(
         `uniffiClone` = other.`uniffiClone`
         `retrieveSessionFromKeychain` = other.`retrieveSessionFromKeychain`
         `saveSessionInKeychain` = other.`saveSessionInKeychain`
+    }
+
+}
+@Structure.FieldOrder("uniffiFree", "uniffiClone", "onDuplicateKeyUploadError")
+internal open class UniffiVTableCallbackInterfaceDuplicateKeyUploadErrorListener(
+    @JvmField internal var `uniffiFree`: UniffiCallbackInterfaceFree? = null,
+    @JvmField internal var `uniffiClone`: UniffiCallbackInterfaceClone? = null,
+    @JvmField internal var `onDuplicateKeyUploadError`: UniffiCallbackInterfaceDuplicateKeyUploadErrorListenerMethod0? = null,
+) : Structure() {
+    class UniffiByValue(
+        `uniffiFree`: UniffiCallbackInterfaceFree? = null,
+        `uniffiClone`: UniffiCallbackInterfaceClone? = null,
+        `onDuplicateKeyUploadError`: UniffiCallbackInterfaceDuplicateKeyUploadErrorListenerMethod0? = null,
+    ): UniffiVTableCallbackInterfaceDuplicateKeyUploadErrorListener(`uniffiFree`,`uniffiClone`,`onDuplicateKeyUploadError`,), Structure.ByValue
+
+   internal fun uniffiSetValue(other: UniffiVTableCallbackInterfaceDuplicateKeyUploadErrorListener) {
+        `uniffiFree` = other.`uniffiFree`
+        `uniffiClone` = other.`uniffiClone`
+        `onDuplicateKeyUploadError` = other.`onDuplicateKeyUploadError`
     }
 
 }
@@ -1717,6 +1739,8 @@ external fun uniffi_matrix_sdk_ffi_checksum_func_init_platform(
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_func_reload_tracing_file_writer(
 ): Short
+external fun uniffi_matrix_sdk_ffi_checksum_func_log_event(
+): Short
 external fun uniffi_matrix_sdk_ffi_checksum_func_matrix_to_room_alias_permalink(
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_func_is_room_alias_format_valid(
@@ -1748,8 +1772,6 @@ external fun uniffi_matrix_sdk_ffi_checksum_func_message_event_content_new(
 external fun uniffi_matrix_sdk_ffi_checksum_func_parse_matrix_entity_from(
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_func_create_caption_edit(
-): Short
-external fun uniffi_matrix_sdk_ffi_checksum_func_log_event(
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_func_generate_webview_url(
 ): Short
@@ -1943,6 +1965,8 @@ external fun uniffi_matrix_sdk_ffi_checksum_method_client_space_service(
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_client_start_sso_login(
 ): Short
+external fun uniffi_matrix_sdk_ffi_checksum_method_client_subscribe_to_duplicate_key_upload_errors(
+): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_client_subscribe_to_ignored_users(
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_client_subscribe_to_media_preview_config(
@@ -1987,7 +2011,7 @@ external fun uniffi_matrix_sdk_ffi_checksum_method_clientbuilder_backup_download
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_clientbuilder_build(
 ): Short
-external fun uniffi_matrix_sdk_ffi_checksum_method_clientbuilder_cross_process_store_locks_holder_name(
+external fun uniffi_matrix_sdk_ffi_checksum_method_clientbuilder_cross_process_lock_config(
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_clientbuilder_decryption_settings(
 ): Short
@@ -2150,6 +2174,12 @@ external fun uniffi_matrix_sdk_ffi_checksum_method_notificationsettings_set_room
 external fun uniffi_matrix_sdk_ffi_checksum_method_notificationsettings_set_user_mention_enabled(
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_notificationsettings_unmute_room(
+): Short
+external fun uniffi_matrix_sdk_ffi_checksum_method_span_enter(
+): Short
+external fun uniffi_matrix_sdk_ffi_checksum_method_span_exit(
+): Short
+external fun uniffi_matrix_sdk_ffi_checksum_method_span_is_none(
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_checkcodesender_send(
 ): Short
@@ -2585,8 +2615,6 @@ external fun uniffi_matrix_sdk_ffi_checksum_method_syncservice_stop(
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_syncservicebuilder_finish(
 ): Short
-external fun uniffi_matrix_sdk_ffi_checksum_method_syncservicebuilder_with_cross_process_lock(
-): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_syncservicebuilder_with_offline_mode(
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_syncservicebuilder_with_share_pos(
@@ -2697,12 +2725,6 @@ external fun uniffi_matrix_sdk_ffi_checksum_method_inreplytodetails_event(
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_inreplytodetails_event_id(
 ): Short
-external fun uniffi_matrix_sdk_ffi_checksum_method_span_enter(
-): Short
-external fun uniffi_matrix_sdk_ffi_checksum_method_span_exit(
-): Short
-external fun uniffi_matrix_sdk_ffi_checksum_method_span_is_none(
-): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_widgetdriver_run(
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_widgetdriverhandle_recv(
@@ -2710,6 +2732,12 @@ external fun uniffi_matrix_sdk_ffi_checksum_method_widgetdriverhandle_recv(
 external fun uniffi_matrix_sdk_ffi_checksum_method_widgetdriverhandle_send(
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_constructor_clientbuilder_new(
+): Short
+external fun uniffi_matrix_sdk_ffi_checksum_constructor_span_current(
+): Short
+external fun uniffi_matrix_sdk_ffi_checksum_constructor_span_new(
+): Short
+external fun uniffi_matrix_sdk_ffi_checksum_constructor_span_new_bridge_span(
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_constructor_qrcodedata_from_bytes(
 ): Short
@@ -2727,12 +2755,6 @@ external fun uniffi_matrix_sdk_ffi_checksum_constructor_timelineeventfilter_incl
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_constructor_timelineeventfilter_include_event_types(
 ): Short
-external fun uniffi_matrix_sdk_ffi_checksum_constructor_span_current(
-): Short
-external fun uniffi_matrix_sdk_ffi_checksum_constructor_span_new(
-): Short
-external fun uniffi_matrix_sdk_ffi_checksum_constructor_span_new_bridge_span(
-): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_accountdatalistener_on_change(
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_clientdelegate_did_receive_auth_error(
@@ -2742,6 +2764,8 @@ external fun uniffi_matrix_sdk_ffi_checksum_method_clientdelegate_on_background_
 external fun uniffi_matrix_sdk_ffi_checksum_method_clientsessiondelegate_retrieve_session_from_keychain(
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_clientsessiondelegate_save_session_in_keychain(
+): Short
+external fun uniffi_matrix_sdk_ffi_checksum_method_duplicatekeyuploaderrorlistener_on_duplicate_key_upload_error(
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_ignoreduserslistener_call(
 ): Short
@@ -2857,6 +2881,7 @@ internal object UniffiLib {
         uniffiCallbackInterfaceCallDeclineListener.register(this)
         uniffiCallbackInterfaceClientDelegate.register(this)
         uniffiCallbackInterfaceClientSessionDelegate.register(this)
+        uniffiCallbackInterfaceDuplicateKeyUploadErrorListener.register(this)
         uniffiCallbackInterfaceEnableRecoveryProgressListener.register(this)
         uniffiCallbackInterfaceGeneratedQrLoginProgressListener.register(this)
         uniffiCallbackInterfaceGrantGeneratedQrLoginProgressListener.register(this)
@@ -3101,6 +3126,8 @@ external fun uniffi_matrix_sdk_ffi_fn_method_client_space_service(`ptr`: Long,
 ): Long
 external fun uniffi_matrix_sdk_ffi_fn_method_client_start_sso_login(`ptr`: Long,`redirectUrl`: RustBuffer.ByValue,`idpId`: RustBuffer.ByValue,
 ): Long
+external fun uniffi_matrix_sdk_ffi_fn_method_client_subscribe_to_duplicate_key_upload_errors(`ptr`: Long,`listener`: Long,uniffi_out_err: UniffiRustCallStatus, 
+): Long
 external fun uniffi_matrix_sdk_ffi_fn_method_client_subscribe_to_ignored_users(`ptr`: Long,`listener`: Long,uniffi_out_err: UniffiRustCallStatus, 
 ): Long
 external fun uniffi_matrix_sdk_ffi_fn_method_client_subscribe_to_media_preview_config(`ptr`: Long,`listener`: Long,
@@ -3155,7 +3182,7 @@ external fun uniffi_matrix_sdk_ffi_fn_method_clientbuilder_backup_download_strat
 ): Long
 external fun uniffi_matrix_sdk_ffi_fn_method_clientbuilder_build(`ptr`: Long,
 ): Long
-external fun uniffi_matrix_sdk_ffi_fn_method_clientbuilder_cross_process_store_locks_holder_name(`ptr`: Long,`holderName`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
+external fun uniffi_matrix_sdk_ffi_fn_method_clientbuilder_cross_process_lock_config(`ptr`: Long,`crossProcessLockConfig`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
 ): Long
 external fun uniffi_matrix_sdk_ffi_fn_method_clientbuilder_decryption_settings(`ptr`: Long,`decryptionSettings`: RustBufferDecryptionSettings.ByValue,uniffi_out_err: UniffiRustCallStatus, 
 ): Long
@@ -3343,6 +3370,22 @@ external fun uniffi_matrix_sdk_ffi_fn_method_notificationsettings_set_user_menti
 ): Long
 external fun uniffi_matrix_sdk_ffi_fn_method_notificationsettings_unmute_room(`ptr`: Long,`roomId`: RustBuffer.ByValue,`isEncrypted`: Byte,`isOneToOne`: Byte,
 ): Long
+external fun uniffi_matrix_sdk_ffi_fn_clone_span(`handle`: Long,uniffi_out_err: UniffiRustCallStatus, 
+): Long
+external fun uniffi_matrix_sdk_ffi_fn_free_span(`handle`: Long,uniffi_out_err: UniffiRustCallStatus, 
+): Unit
+external fun uniffi_matrix_sdk_ffi_fn_constructor_span_current(uniffi_out_err: UniffiRustCallStatus, 
+): Long
+external fun uniffi_matrix_sdk_ffi_fn_constructor_span_new(`file`: RustBuffer.ByValue,`line`: RustBuffer.ByValue,`level`: RustBuffer.ByValue,`target`: RustBuffer.ByValue,`name`: RustBuffer.ByValue,`bridgeTraceId`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
+): Long
+external fun uniffi_matrix_sdk_ffi_fn_constructor_span_new_bridge_span(`target`: RustBuffer.ByValue,`parentTraceId`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
+): Long
+external fun uniffi_matrix_sdk_ffi_fn_method_span_enter(`ptr`: Long,uniffi_out_err: UniffiRustCallStatus, 
+): Unit
+external fun uniffi_matrix_sdk_ffi_fn_method_span_exit(`ptr`: Long,uniffi_out_err: UniffiRustCallStatus, 
+): Unit
+external fun uniffi_matrix_sdk_ffi_fn_method_span_is_none(`ptr`: Long,uniffi_out_err: UniffiRustCallStatus, 
+): Byte
 external fun uniffi_matrix_sdk_ffi_fn_clone_checkcodesender(`handle`: Long,uniffi_out_err: UniffiRustCallStatus, 
 ): Long
 external fun uniffi_matrix_sdk_ffi_fn_free_checkcodesender(`handle`: Long,uniffi_out_err: UniffiRustCallStatus, 
@@ -3885,8 +3928,6 @@ external fun uniffi_matrix_sdk_ffi_fn_free_syncservicebuilder(`handle`: Long,uni
 ): Unit
 external fun uniffi_matrix_sdk_ffi_fn_method_syncservicebuilder_finish(`ptr`: Long,
 ): Long
-external fun uniffi_matrix_sdk_ffi_fn_method_syncservicebuilder_with_cross_process_lock(`ptr`: Long,uniffi_out_err: UniffiRustCallStatus, 
-): Long
 external fun uniffi_matrix_sdk_ffi_fn_method_syncservicebuilder_with_offline_mode(`ptr`: Long,uniffi_out_err: UniffiRustCallStatus, 
 ): Long
 external fun uniffi_matrix_sdk_ffi_fn_method_syncservicebuilder_with_share_pos(`ptr`: Long,`enable`: Byte,uniffi_out_err: UniffiRustCallStatus, 
@@ -4045,22 +4086,6 @@ external fun uniffi_matrix_sdk_ffi_fn_method_inreplytodetails_event(`ptr`: Long,
 ): RustBuffer.ByValue
 external fun uniffi_matrix_sdk_ffi_fn_method_inreplytodetails_event_id(`ptr`: Long,uniffi_out_err: UniffiRustCallStatus, 
 ): RustBuffer.ByValue
-external fun uniffi_matrix_sdk_ffi_fn_clone_span(`handle`: Long,uniffi_out_err: UniffiRustCallStatus, 
-): Long
-external fun uniffi_matrix_sdk_ffi_fn_free_span(`handle`: Long,uniffi_out_err: UniffiRustCallStatus, 
-): Unit
-external fun uniffi_matrix_sdk_ffi_fn_constructor_span_current(uniffi_out_err: UniffiRustCallStatus, 
-): Long
-external fun uniffi_matrix_sdk_ffi_fn_constructor_span_new(`file`: RustBuffer.ByValue,`line`: RustBuffer.ByValue,`level`: RustBuffer.ByValue,`target`: RustBuffer.ByValue,`name`: RustBuffer.ByValue,`bridgeTraceId`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
-): Long
-external fun uniffi_matrix_sdk_ffi_fn_constructor_span_new_bridge_span(`target`: RustBuffer.ByValue,`parentTraceId`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
-): Long
-external fun uniffi_matrix_sdk_ffi_fn_method_span_enter(`ptr`: Long,uniffi_out_err: UniffiRustCallStatus, 
-): Unit
-external fun uniffi_matrix_sdk_ffi_fn_method_span_exit(`ptr`: Long,uniffi_out_err: UniffiRustCallStatus, 
-): Unit
-external fun uniffi_matrix_sdk_ffi_fn_method_span_is_none(`ptr`: Long,uniffi_out_err: UniffiRustCallStatus, 
-): Byte
 external fun uniffi_matrix_sdk_ffi_fn_clone_widgetdriver(`handle`: Long,uniffi_out_err: UniffiRustCallStatus, 
 ): Long
 external fun uniffi_matrix_sdk_ffi_fn_free_widgetdriver(`handle`: Long,uniffi_out_err: UniffiRustCallStatus, 
@@ -4080,6 +4105,8 @@ external fun uniffi_matrix_sdk_ffi_fn_init_callback_vtable_accountdatalistener(`
 external fun uniffi_matrix_sdk_ffi_fn_init_callback_vtable_clientdelegate(`vtable`: UniffiVTableCallbackInterfaceClientDelegate,
 ): Unit
 external fun uniffi_matrix_sdk_ffi_fn_init_callback_vtable_clientsessiondelegate(`vtable`: UniffiVTableCallbackInterfaceClientSessionDelegate,
+): Unit
+external fun uniffi_matrix_sdk_ffi_fn_init_callback_vtable_duplicatekeyuploaderrorlistener(`vtable`: UniffiVTableCallbackInterfaceDuplicateKeyUploadErrorListener,
 ): Unit
 external fun uniffi_matrix_sdk_ffi_fn_init_callback_vtable_ignoreduserslistener(`vtable`: UniffiVTableCallbackInterfaceIgnoredUsersListener,
 ): Unit
@@ -4171,6 +4198,8 @@ external fun uniffi_matrix_sdk_ffi_fn_func_init_platform(`config`: RustBuffer.By
 ): Unit
 external fun uniffi_matrix_sdk_ffi_fn_func_reload_tracing_file_writer(`configuration`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
 ): Unit
+external fun uniffi_matrix_sdk_ffi_fn_func_log_event(`file`: RustBuffer.ByValue,`line`: RustBuffer.ByValue,`level`: RustBuffer.ByValue,`target`: RustBuffer.ByValue,`message`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
+): Unit
 external fun uniffi_matrix_sdk_ffi_fn_func_matrix_to_room_alias_permalink(`roomAlias`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
 ): RustBuffer.ByValue
 external fun uniffi_matrix_sdk_ffi_fn_func_is_room_alias_format_valid(`alias`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
@@ -4203,8 +4232,6 @@ external fun uniffi_matrix_sdk_ffi_fn_func_parse_matrix_entity_from(`uri`: RustB
 ): RustBuffer.ByValue
 external fun uniffi_matrix_sdk_ffi_fn_func_create_caption_edit(`caption`: RustBuffer.ByValue,`formattedCaption`: RustBuffer.ByValue,`mentions`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
 ): RustBuffer.ByValue
-external fun uniffi_matrix_sdk_ffi_fn_func_log_event(`file`: RustBuffer.ByValue,`line`: RustBuffer.ByValue,`level`: RustBuffer.ByValue,`target`: RustBuffer.ByValue,`message`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
-): Unit
 external fun uniffi_matrix_sdk_ffi_fn_func_generate_webview_url(`widgetSettings`: RustBuffer.ByValue,`room`: Long,`props`: RustBuffer.ByValue,
 ): Long
 external fun uniffi_matrix_sdk_ffi_fn_func_get_element_call_required_permissions(`ownUserId`: RustBuffer.ByValue,`ownDeviceId`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
@@ -5767,6 +5794,12 @@ public interface ClientInterface {
      * Returns a handler to start the SSO login process.
      */
     suspend fun `startSsoLogin`(`redirectUrl`: kotlin.String, `idpId`: kotlin.String?): SsoHandler
+    
+    /**
+     * Subscribe to duplicate key upload errors triggered by requests to
+     * /keys/upload.
+     */
+    fun `subscribeToDuplicateKeyUploadErrors`(`listener`: DuplicateKeyUploadErrorListener): TaskHandle
     
     fun `subscribeToIgnoredUsers`(`listener`: IgnoredUsersListener): TaskHandle
     
@@ -7940,6 +7973,23 @@ open class Client: Disposable, AutoCloseable, ClientInterface
     )
     }
 
+    
+    /**
+     * Subscribe to duplicate key upload errors triggered by requests to
+     * /keys/upload.
+     */override fun `subscribeToDuplicateKeyUploadErrors`(`listener`: DuplicateKeyUploadErrorListener): TaskHandle {
+            return FfiConverterTypeTaskHandle.lift(
+    callWithHandle {
+    uniffiRustCall() { _status ->
+    UniffiLib.uniffi_matrix_sdk_ffi_fn_method_client_subscribe_to_duplicate_key_upload_errors(
+        it,
+        FfiConverterTypeDuplicateKeyUploadErrorListener.lower(`listener`),_status)
+}
+    }
+    )
+    }
+    
+
     override fun `subscribeToIgnoredUsers`(`listener`: IgnoredUsersListener): TaskHandle {
             return FfiConverterTypeTaskHandle.lift(
     callWithHandle {
@@ -8451,7 +8501,7 @@ public interface ClientBuilderInterface {
     
     suspend fun `build`(): Client
     
-    fun `crossProcessStoreLocksHolderName`(`holderName`: kotlin.String): ClientBuilder
+    fun `crossProcessLockConfig`(`crossProcessLockConfig`: CrossProcessLockConfig): ClientBuilder
     
     /**
      * Set the trust requirement to be used when decrypting events.
@@ -8732,13 +8782,13 @@ open class ClientBuilder: Disposable, AutoCloseable, ClientBuilderInterface
     )
     }
 
-    override fun `crossProcessStoreLocksHolderName`(`holderName`: kotlin.String): ClientBuilder {
+    override fun `crossProcessLockConfig`(`crossProcessLockConfig`: CrossProcessLockConfig): ClientBuilder {
             return FfiConverterTypeClientBuilder.lift(
     callWithHandle {
     uniffiRustCall() { _status ->
-    UniffiLib.uniffi_matrix_sdk_ffi_fn_method_clientbuilder_cross_process_store_locks_holder_name(
+    UniffiLib.uniffi_matrix_sdk_ffi_fn_method_clientbuilder_cross_process_lock_config(
         it,
-        FfiConverterString.lower(`holderName`),_status)
+        FfiConverterTypeCrossProcessLockConfig.lower(`crossProcessLockConfig`),_status)
 }
     }
     )
@@ -25602,8 +25652,6 @@ public interface SyncServiceBuilderInterface {
     
     suspend fun `finish`(): SyncService
     
-    fun `withCrossProcessLock`(): SyncServiceBuilder
-    
     /**
      * Enable the "offline" mode for the [`SyncService`].
      */
@@ -25730,19 +25778,6 @@ open class SyncServiceBuilder: Disposable, AutoCloseable, SyncServiceBuilderInte
         ClientException.ErrorHandler,
     )
     }
-
-    override fun `withCrossProcessLock`(): SyncServiceBuilder {
-            return FfiConverterTypeSyncServiceBuilder.lift(
-    callWithHandle {
-    uniffiRustCall() { _status ->
-    UniffiLib.uniffi_matrix_sdk_ffi_fn_method_syncservicebuilder_with_cross_process_lock(
-        it,
-        _status)
-}
-    }
-    )
-    }
-    
 
     
     /**
@@ -30506,6 +30541,54 @@ public object FfiConverterTypeCreateRoomParameters: FfiConverterRustBuffer<Creat
 
 
 
+/**
+ * Information about the old and new key that caused a duplicate key upload
+ * error in /keys/upload.
+ */
+data class DuplicateOneTimeKeyErrorMessage (
+    /**
+     * The previously uploaded one-time key, encoded as unpadded base64.
+     */
+    var `oldKey`: kotlin.String
+    , 
+    /**
+     * The one-time key we attempted to upload, encoded as unpadded base64
+     */
+    var `newKey`: kotlin.String
+    
+){
+    
+
+    
+
+    
+    companion object
+}
+
+/**
+ * @suppress
+ */
+public object FfiConverterTypeDuplicateOneTimeKeyErrorMessage: FfiConverterRustBuffer<DuplicateOneTimeKeyErrorMessage> {
+    override fun read(buf: ByteBuffer): DuplicateOneTimeKeyErrorMessage {
+        return DuplicateOneTimeKeyErrorMessage(
+            FfiConverterString.read(buf),
+            FfiConverterString.read(buf),
+        )
+    }
+
+    override fun allocationSize(value: DuplicateOneTimeKeyErrorMessage) = (
+            FfiConverterString.allocationSize(value.`oldKey`) +
+            FfiConverterString.allocationSize(value.`newKey`)
+    )
+
+    override fun write(value: DuplicateOneTimeKeyErrorMessage, buf: ByteBuffer) {
+            FfiConverterString.write(value.`oldKey`, buf)
+            FfiConverterString.write(value.`newKey`, buf)
+    }
+}
+
+
+
 data class EmoteMessageContent (
     var `body`: kotlin.String
     , 
@@ -33342,6 +33425,8 @@ data class RoomInfo (
     , 
     var `joinedMembersCount`: kotlin.ULong
     , 
+    var `serviceMembers`: List<kotlin.String>
+    , 
     var `highlightCount`: kotlin.ULong
     , 
     var `notificationCount`: kotlin.ULong
@@ -33448,6 +33533,7 @@ data class RoomInfo (
         this.`activeMembersCount`,
         this.`invitedMembersCount`,
         this.`joinedMembersCount`,
+        this.`serviceMembers`,
         this.`highlightCount`,
         this.`notificationCount`,
         this.`unreadCount`,
@@ -33499,6 +33585,7 @@ public object FfiConverterTypeRoomInfo: FfiConverterRustBuffer<RoomInfo> {
             FfiConverterULong.read(buf),
             FfiConverterULong.read(buf),
             FfiConverterULong.read(buf),
+            FfiConverterSequenceString.read(buf),
             FfiConverterULong.read(buf),
             FfiConverterULong.read(buf),
             FfiConverterULong.read(buf),
@@ -33542,6 +33629,7 @@ public object FfiConverterTypeRoomInfo: FfiConverterRustBuffer<RoomInfo> {
             FfiConverterULong.allocationSize(value.`activeMembersCount`) +
             FfiConverterULong.allocationSize(value.`invitedMembersCount`) +
             FfiConverterULong.allocationSize(value.`joinedMembersCount`) +
+            FfiConverterSequenceString.allocationSize(value.`serviceMembers`) +
             FfiConverterULong.allocationSize(value.`highlightCount`) +
             FfiConverterULong.allocationSize(value.`notificationCount`) +
             FfiConverterULong.allocationSize(value.`unreadCount`) +
@@ -33584,6 +33672,7 @@ public object FfiConverterTypeRoomInfo: FfiConverterRustBuffer<RoomInfo> {
             FfiConverterULong.write(value.`activeMembersCount`, buf)
             FfiConverterULong.write(value.`invitedMembersCount`, buf)
             FfiConverterULong.write(value.`joinedMembersCount`, buf)
+            FfiConverterSequenceString.write(value.`serviceMembers`, buf)
             FfiConverterULong.write(value.`highlightCount`, buf)
             FfiConverterULong.write(value.`notificationCount`, buf)
             FfiConverterULong.write(value.`unreadCount`, buf)
@@ -35226,16 +35315,35 @@ data class TracingFileConfiguration (
     , 
     /**
      * Optional suffix for the log file's names.
+     *
+     * Default is ".log" if not specified.
      */
     var `fileSuffix`: kotlin.String?
     , 
     /**
-     * Maximum number of rotated files.
+     * Maximum total size of all log files combined in bytes.
      *
-     * If not set, there's no max limit, i.e. the number of log files is
-     * unlimited.
+     * When the total size of all log files with the configured prefix and
+     * suffix exceeds this limit, the oldest files will be removed until
+     * the total is below the limit.
+     *
+     * This is useful to prevent log files from consuming too much disk space
+     * over time, even with multiple rotated files.
+     *
+     * Default: 10MB (10 * 1024 * 1024 bytes) if not specified.
      */
-    var `maxFiles`: kotlin.ULong?
+    var `maxTotalSizeBytes`: kotlin.ULong?
+    , 
+    /**
+     * Maximum age of log files in seconds.
+     *
+     * Log files older than this age will be automatically removed during
+     * cleanup. This is checked when the writer is created and during
+     * rotation operations.
+     *
+     * Default: 1 week (7 * 24 * 60 * 60 seconds) if not specified.
+     */
+    var `maxAgeSeconds`: kotlin.ULong?
     
 ){
     
@@ -35256,6 +35364,7 @@ public object FfiConverterTypeTracingFileConfiguration: FfiConverterRustBuffer<T
             FfiConverterString.read(buf),
             FfiConverterOptionalString.read(buf),
             FfiConverterOptionalULong.read(buf),
+            FfiConverterOptionalULong.read(buf),
         )
     }
 
@@ -35263,14 +35372,16 @@ public object FfiConverterTypeTracingFileConfiguration: FfiConverterRustBuffer<T
             FfiConverterString.allocationSize(value.`path`) +
             FfiConverterString.allocationSize(value.`filePrefix`) +
             FfiConverterOptionalString.allocationSize(value.`fileSuffix`) +
-            FfiConverterOptionalULong.allocationSize(value.`maxFiles`)
+            FfiConverterOptionalULong.allocationSize(value.`maxTotalSizeBytes`) +
+            FfiConverterOptionalULong.allocationSize(value.`maxAgeSeconds`)
     )
 
     override fun write(value: TracingFileConfiguration, buf: ByteBuffer) {
             FfiConverterString.write(value.`path`, buf)
             FfiConverterString.write(value.`filePrefix`, buf)
             FfiConverterOptionalString.write(value.`fileSuffix`, buf)
-            FfiConverterOptionalULong.write(value.`maxFiles`, buf)
+            FfiConverterOptionalULong.write(value.`maxTotalSizeBytes`, buf)
+            FfiConverterOptionalULong.write(value.`maxAgeSeconds`, buf)
     }
 }
 
@@ -37424,6 +37535,92 @@ public object FfiConverterTypeComposerDraftType : FfiConverterRustBuffer<Compose
             is ComposerDraftType.Edit -> {
                 buf.putInt(3)
                 FfiConverterString.write(value.`eventId`, buf)
+                Unit
+            }
+        }.let { /* this makes the `when` an expression, which ensures it is exhaustive */ }
+    }
+}
+
+
+
+
+
+/**
+ * The cross-process lock config to use.
+ */
+sealed class CrossProcessLockConfig {
+    
+    /**
+     * The client will run using multiple processes.
+     */
+    data class MultiProcess(
+        /**
+         * The holder name to use for the lock.
+         */
+        val `holderName`: kotlin.String) : CrossProcessLockConfig()
+        
+    {
+        
+
+        companion object
+    }
+    
+    /**
+     * The client will run in a single process, there is no need for a
+     * cross-process lock.
+     */
+    object SingleProcess : CrossProcessLockConfig()
+    
+    
+
+    
+
+    
+    
+
+
+    companion object
+}
+
+/**
+ * @suppress
+ */
+public object FfiConverterTypeCrossProcessLockConfig : FfiConverterRustBuffer<CrossProcessLockConfig>{
+    override fun read(buf: ByteBuffer): CrossProcessLockConfig {
+        return when(buf.getInt()) {
+            1 -> CrossProcessLockConfig.MultiProcess(
+                FfiConverterString.read(buf),
+                )
+            2 -> CrossProcessLockConfig.SingleProcess
+            else -> throw RuntimeException("invalid enum value, something is very wrong!!")
+        }
+    }
+
+    override fun allocationSize(value: CrossProcessLockConfig) = when(value) {
+        is CrossProcessLockConfig.MultiProcess -> {
+            // Add the size for the Int that specifies the variant plus the size needed for all fields
+            (
+                4UL
+                + FfiConverterString.allocationSize(value.`holderName`)
+            )
+        }
+        is CrossProcessLockConfig.SingleProcess -> {
+            // Add the size for the Int that specifies the variant plus the size needed for all fields
+            (
+                4UL
+            )
+        }
+    }
+
+    override fun write(value: CrossProcessLockConfig, buf: ByteBuffer) {
+        when(value) {
+            is CrossProcessLockConfig.MultiProcess -> {
+                buf.putInt(1)
+                FfiConverterString.write(value.`holderName`, buf)
+                Unit
+            }
+            is CrossProcessLockConfig.SingleProcess -> {
+                buf.putInt(2)
                 Unit
             }
         }.let { /* this makes the `when` an expression, which ensures it is exhaustive */ }
@@ -53752,6 +53949,73 @@ public object FfiConverterTypeClientSessionDelegate: FfiConverterCallbackInterfa
 
 
 
+/**
+ * A listener for duplicate key upload errors triggered by requests to
+ * /keys/upload.
+ */
+public interface DuplicateKeyUploadErrorListener {
+    
+    /**
+     * Called once when uploading keys fails.
+     */
+    fun `onDuplicateKeyUploadError`(`message`: DuplicateOneTimeKeyErrorMessage?)
+    
+    companion object
+}
+
+
+
+// Put the implementation in an object so we don't pollute the top-level namespace
+internal object uniffiCallbackInterfaceDuplicateKeyUploadErrorListener {
+    internal object `onDuplicateKeyUploadError`: UniffiCallbackInterfaceDuplicateKeyUploadErrorListenerMethod0 {
+        override fun callback(`uniffiHandle`: Long,`message`: RustBuffer.ByValue,`uniffiOutReturn`: Pointer,uniffiCallStatus: UniffiRustCallStatus,) {
+            val uniffiObj = FfiConverterTypeDuplicateKeyUploadErrorListener.handleMap.get(uniffiHandle)
+            val makeCall = { ->
+                uniffiObj.`onDuplicateKeyUploadError`(
+                    FfiConverterOptionalTypeDuplicateOneTimeKeyErrorMessage.lift(`message`),
+                )
+            }
+            val writeReturn = { _: Unit -> Unit }
+            uniffiTraitInterfaceCall(uniffiCallStatus, makeCall, writeReturn)
+        }
+    }
+
+    internal object uniffiFree: UniffiCallbackInterfaceFree {
+        override fun callback(handle: Long) {
+            FfiConverterTypeDuplicateKeyUploadErrorListener.handleMap.remove(handle)
+        }
+    }
+
+    internal object uniffiClone: UniffiCallbackInterfaceClone {
+        override fun callback(handle: Long): Long {
+            return FfiConverterTypeDuplicateKeyUploadErrorListener.handleMap.clone(handle)
+        }
+    }
+
+    internal var vtable = UniffiVTableCallbackInterfaceDuplicateKeyUploadErrorListener.UniffiByValue(
+        uniffiFree,
+        uniffiClone,
+        `onDuplicateKeyUploadError`,
+    )
+
+    // Registers the foreign callback with the Rust side.
+    // This method is generated for each callback interface.
+    internal fun register(lib: UniffiLib) {
+        lib.uniffi_matrix_sdk_ffi_fn_init_callback_vtable_duplicatekeyuploaderrorlistener(vtable)
+    }
+}
+
+/**
+ * The ffiConverter which transforms the Callbacks in to handles to pass to Rust.
+ *
+ * @suppress
+ */
+public object FfiConverterTypeDuplicateKeyUploadErrorListener: FfiConverterCallbackInterface<DuplicateKeyUploadErrorListener>()
+
+
+
+
+
 public interface EnableRecoveryProgressListener {
     
     fun `onUpdate`(`status`: EnableRecoveryProgress)
@@ -56832,6 +57096,38 @@ public object FfiConverterOptionalTypeComposerDraft: FfiConverterRustBuffer<Comp
         } else {
             buf.put(1)
             FfiConverterTypeComposerDraft.write(value, buf)
+        }
+    }
+}
+
+
+
+
+/**
+ * @suppress
+ */
+public object FfiConverterOptionalTypeDuplicateOneTimeKeyErrorMessage: FfiConverterRustBuffer<DuplicateOneTimeKeyErrorMessage?> {
+    override fun read(buf: ByteBuffer): DuplicateOneTimeKeyErrorMessage? {
+        if (buf.get().toInt() == 0) {
+            return null
+        }
+        return FfiConverterTypeDuplicateOneTimeKeyErrorMessage.read(buf)
+    }
+
+    override fun allocationSize(value: DuplicateOneTimeKeyErrorMessage?): ULong {
+        if (value == null) {
+            return 1UL
+        } else {
+            return 1UL + FfiConverterTypeDuplicateOneTimeKeyErrorMessage.allocationSize(value)
+        }
+    }
+
+    override fun write(value: DuplicateOneTimeKeyErrorMessage?, buf: ByteBuffer) {
+        if (value == null) {
+            buf.put(0)
+        } else {
+            buf.put(1)
+            FfiConverterTypeDuplicateOneTimeKeyErrorMessage.write(value, buf)
         }
     }
 }
@@ -60395,6 +60691,29 @@ public typealias FfiConverterTypeTimestamp = FfiConverterULong
     
 
         /**
+         * Log an event.
+         *
+         * The target should be something like a module path, and can be referenced in
+         * the filter string given to `init_platform`. `level` and `target` for a
+         * callsite are fixed at the first `log_event` call for that callsite and can
+         * not be changed afterwards, i.e. the level and target passed for second and
+         * following `log_event`s with the same callsite will be ignored.
+         *
+         * This function leaks a little bit of memory for each unique (file + line +
+         * level + target) it is called with. Please make sure that the number of
+         * different combinations of those parameters this can be called with is
+         * constant in the final executable.
+         */ fun `logEvent`(`file`: kotlin.String, `line`: kotlin.UInt?, `level`: LogLevel, `target`: kotlin.String, `message`: kotlin.String)
+        = 
+    uniffiRustCall() { _status ->
+    UniffiLib.uniffi_matrix_sdk_ffi_fn_func_log_event(
+    
+        FfiConverterString.lower(`file`),FfiConverterOptionalUInt.lower(`line`),FfiConverterTypeLogLevel.lower(`level`),FfiConverterString.lower(`target`),FfiConverterString.lower(`message`),_status)
+}
+    
+    
+
+        /**
          * Generates a `matrix.to` permalink to the given room alias.
          */
     @Throws(ClientException::class) fun `matrixToRoomAliasPermalink`(`roomAlias`: kotlin.String): kotlin.String {
@@ -60599,29 +60918,6 @@ public typealias FfiConverterTypeTimestamp = FfiConverterULong
 }
     )
     }
-    
-
-        /**
-         * Log an event.
-         *
-         * The target should be something like a module path, and can be referenced in
-         * the filter string given to `init_platform`. `level` and `target` for a
-         * callsite are fixed at the first `log_event` call for that callsite and can
-         * not be changed afterwards, i.e. the level and target passed for second and
-         * following `log_event`s with the same callsite will be ignored.
-         *
-         * This function leaks a little bit of memory for each unique (file + line +
-         * level + target) it is called with. Please make sure that the number of
-         * different combinations of those parameters this can be called with is
-         * constant in the final executable.
-         */ fun `logEvent`(`file`: kotlin.String, `line`: kotlin.UInt?, `level`: LogLevel, `target`: kotlin.String, `message`: kotlin.String)
-        = 
-    uniffiRustCall() { _status ->
-    UniffiLib.uniffi_matrix_sdk_ffi_fn_func_log_event(
-    
-        FfiConverterString.lower(`file`),FfiConverterOptionalUInt.lower(`line`),FfiConverterTypeLogLevel.lower(`level`),FfiConverterString.lower(`target`),FfiConverterString.lower(`message`),_status)
-}
-    
     
 
         /**
