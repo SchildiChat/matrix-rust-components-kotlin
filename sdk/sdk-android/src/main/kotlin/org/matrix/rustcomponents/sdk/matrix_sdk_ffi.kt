@@ -1755,6 +1755,8 @@ external fun uniffi_matrix_sdk_ffi_checksum_func_suggested_role_for_power_level(
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_func_content_without_relation_from_message(
 ): Short
+external fun uniffi_matrix_sdk_ffi_checksum_func_markdown_to_html(
+): Short
 external fun uniffi_matrix_sdk_ffi_checksum_func_message_event_content_from_html(
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_func_message_event_content_from_html_as_emote(
@@ -1766,6 +1768,12 @@ external fun uniffi_matrix_sdk_ffi_checksum_func_message_event_content_from_mark
 external fun uniffi_matrix_sdk_ffi_checksum_func_message_event_content_from_markdown_as_emote(
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_func_message_event_content_from_markdown_as_notice(
+): Short
+external fun uniffi_matrix_sdk_ffi_checksum_func_message_event_content_from_plaintext(
+): Short
+external fun uniffi_matrix_sdk_ffi_checksum_func_message_event_content_from_plaintext_as_emote(
+): Short
+external fun uniffi_matrix_sdk_ffi_checksum_func_message_event_content_from_plaintext_as_notice(
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_func_message_event_content_new(
 ): Short
@@ -2074,6 +2082,8 @@ external fun uniffi_matrix_sdk_ffi_checksum_method_encryption_has_devices_to_ver
 external fun uniffi_matrix_sdk_ffi_checksum_method_encryption_is_last_device(
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_encryption_recover(
+): Short
+external fun uniffi_matrix_sdk_ffi_checksum_method_encryption_recover_and_fix_backup(
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_encryption_recover_and_reset(
 ): Short
@@ -3248,6 +3258,8 @@ external fun uniffi_matrix_sdk_ffi_fn_method_encryption_is_last_device(`ptr`: Lo
 ): Long
 external fun uniffi_matrix_sdk_ffi_fn_method_encryption_recover(`ptr`: Long,`recoveryKey`: RustBuffer.ByValue,
 ): Long
+external fun uniffi_matrix_sdk_ffi_fn_method_encryption_recover_and_fix_backup(`ptr`: Long,`recoveryKey`: RustBuffer.ByValue,
+): Long
 external fun uniffi_matrix_sdk_ffi_fn_method_encryption_recover_and_reset(`ptr`: Long,`oldRecoveryKey`: RustBuffer.ByValue,
 ): Long
 external fun uniffi_matrix_sdk_ffi_fn_method_encryption_recovery_state(`ptr`: Long,uniffi_out_err: UniffiRustCallStatus, 
@@ -3566,7 +3578,7 @@ external fun uniffi_matrix_sdk_ffi_fn_method_room_remove_room_alias_from_room_di
 ): Long
 external fun uniffi_matrix_sdk_ffi_fn_method_room_remove_space_child(`ptr`: Long,`childRoomId`: RustBuffer.ByValue,
 ): Long
-external fun uniffi_matrix_sdk_ffi_fn_method_room_report_content(`ptr`: Long,`eventId`: RustBuffer.ByValue,`score`: RustBuffer.ByValue,`reason`: RustBuffer.ByValue,
+external fun uniffi_matrix_sdk_ffi_fn_method_room_report_content(`ptr`: Long,`eventId`: RustBuffer.ByValue,`reason`: RustBuffer.ByValue,
 ): Long
 external fun uniffi_matrix_sdk_ffi_fn_method_room_report_room(`ptr`: Long,`reason`: RustBuffer.ByValue,
 ): Long
@@ -4210,6 +4222,8 @@ external fun uniffi_matrix_sdk_ffi_fn_func_suggested_role_for_power_level(`power
 ): RustBufferRoomMemberRole.ByValue
 external fun uniffi_matrix_sdk_ffi_fn_func_content_without_relation_from_message(`message`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
 ): Long
+external fun uniffi_matrix_sdk_ffi_fn_func_markdown_to_html(`markdown`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
+): RustBuffer.ByValue
 external fun uniffi_matrix_sdk_ffi_fn_func_message_event_content_from_html(`body`: RustBuffer.ByValue,`htmlBody`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
 ): Long
 external fun uniffi_matrix_sdk_ffi_fn_func_message_event_content_from_html_as_emote(`body`: RustBuffer.ByValue,`htmlBody`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
@@ -4221,6 +4235,12 @@ external fun uniffi_matrix_sdk_ffi_fn_func_message_event_content_from_markdown(`
 external fun uniffi_matrix_sdk_ffi_fn_func_message_event_content_from_markdown_as_emote(`md`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
 ): Long
 external fun uniffi_matrix_sdk_ffi_fn_func_message_event_content_from_markdown_as_notice(`md`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
+): Long
+external fun uniffi_matrix_sdk_ffi_fn_func_message_event_content_from_plaintext(`body`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
+): Long
+external fun uniffi_matrix_sdk_ffi_fn_func_message_event_content_from_plaintext_as_emote(`body`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
+): Long
+external fun uniffi_matrix_sdk_ffi_fn_func_message_event_content_from_plaintext_as_notice(`body`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
 ): Long
 external fun uniffi_matrix_sdk_ffi_fn_func_message_event_content_new(`msgtype`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
 ): Long
@@ -9279,7 +9299,23 @@ public interface EncryptionInterface {
     
     suspend fun `isLastDevice`(): kotlin.Boolean
     
+    /**
+     * Download identity and key backup information from Recovery
+     */
     suspend fun `recover`(`recoveryKey`: kotlin.String)
+    
+    /**
+     * Download identity and key backup information from Recovery, and, if the
+     * key backup information is inconsistent, create a new key backup.
+     *
+     * This will create a new key backup if:
+     *
+     * * Key backup is enabled and the backup decryption key is missing from
+     * Recovery, or
+     * * Key backup is enabled and the backup decryption key does not match the
+     * public key
+     */
+    suspend fun `recoverAndFixBackup`(`recoveryKey`: kotlin.String)
     
     suspend fun `recoverAndReset`(`oldRecoveryKey`: kotlin.String): kotlin.String
     
@@ -9649,12 +9685,48 @@ open class Encryption: Disposable, AutoCloseable, EncryptionInterface
     }
 
     
+    /**
+     * Download identity and key backup information from Recovery
+     */
     @Throws(RecoveryException::class)
     @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
     override suspend fun `recover`(`recoveryKey`: kotlin.String) {
         return uniffiRustCallAsync(
         callWithHandle { uniffiHandle ->
             UniffiLib.uniffi_matrix_sdk_ffi_fn_method_encryption_recover(
+                uniffiHandle,
+                FfiConverterString.lower(`recoveryKey`),
+            )
+        },
+        { future, callback, continuation -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_poll_void(future, callback, continuation) },
+        { future, continuation -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_complete_void(future, continuation) },
+        { future -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_free_void(future) },
+        // lift function
+        { Unit },
+        
+        // Error FFI converter
+        RecoveryException.ErrorHandler,
+    )
+    }
+
+    
+    /**
+     * Download identity and key backup information from Recovery, and, if the
+     * key backup information is inconsistent, create a new key backup.
+     *
+     * This will create a new key backup if:
+     *
+     * * Key backup is enabled and the backup decryption key is missing from
+     * Recovery, or
+     * * Key backup is enabled and the backup decryption key does not match the
+     * public key
+     */
+    @Throws(RecoveryException::class)
+    @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
+    override suspend fun `recoverAndFixBackup`(`recoveryKey`: kotlin.String) {
+        return uniffiRustCallAsync(
+        callWithHandle { uniffiHandle ->
+            UniffiLib.uniffi_matrix_sdk_ffi_fn_method_encryption_recover_and_fix_backup(
                 uniffiHandle,
                 FfiConverterString.lower(`recoveryKey`),
             )
@@ -15247,7 +15319,7 @@ public interface RoomInterface {
      * * `score` - The score to rate this content as where -100 is most
      * offensive and 0 is inoffensive (optional).
      */
-    suspend fun `reportContent`(`eventId`: kotlin.String, `score`: kotlin.Int?, `reason`: kotlin.String?)
+    suspend fun `reportContent`(`eventId`: kotlin.String, `reason`: kotlin.String?)
     
     /**
      * Reports a room as inappropriate to the server.
@@ -17115,12 +17187,12 @@ open class Room: Disposable, AutoCloseable, RoomInterface
      */
     @Throws(ClientException::class)
     @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
-    override suspend fun `reportContent`(`eventId`: kotlin.String, `score`: kotlin.Int?, `reason`: kotlin.String?) {
+    override suspend fun `reportContent`(`eventId`: kotlin.String, `reason`: kotlin.String?) {
         return uniffiRustCallAsync(
         callWithHandle { uniffiHandle ->
             UniffiLib.uniffi_matrix_sdk_ffi_fn_method_room_report_content(
                 uniffiHandle,
-                FfiConverterString.lower(`eventId`),FfiConverterOptionalInt.lower(`score`),FfiConverterOptionalString.lower(`reason`),
+                FfiConverterString.lower(`eventId`),FfiConverterOptionalString.lower(`reason`),
             )
         },
         { future, callback, continuation -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_poll_void(future, callback, continuation) },
@@ -30224,6 +30296,62 @@ public object FfiConverterTypeAuthDataPasswordDetails: FfiConverterRustBuffer<Au
 
 
 
+/**
+ * FFI representation of a single location update from a beacon event.
+ */
+data class BeaconInfo (
+    /**
+     * The geo URI carrying the user's coordinates
+     * (e.g. `"geo:51.5008,0.1247;u=35"`).
+     */
+    var `geoUri`: kotlin.String
+    , 
+    /**
+     * Timestamp (ms since Unix Epoch) of this location update.
+     */
+    var `ts`: Timestamp
+    , 
+    /**
+     * An optional human-readable description of the location.
+     */
+    var `description`: kotlin.String?
+    
+){
+    
+
+    
+
+    
+    companion object
+}
+
+/**
+ * @suppress
+ */
+public object FfiConverterTypeBeaconInfo: FfiConverterRustBuffer<BeaconInfo> {
+    override fun read(buf: ByteBuffer): BeaconInfo {
+        return BeaconInfo(
+            FfiConverterString.read(buf),
+            FfiConverterTypeTimestamp.read(buf),
+            FfiConverterOptionalString.read(buf),
+        )
+    }
+
+    override fun allocationSize(value: BeaconInfo) = (
+            FfiConverterString.allocationSize(value.`geoUri`) +
+            FfiConverterTypeTimestamp.allocationSize(value.`ts`) +
+            FfiConverterOptionalString.allocationSize(value.`description`)
+    )
+
+    override fun write(value: BeaconInfo, buf: ByteBuffer) {
+            FfiConverterString.write(value.`geoUri`, buf)
+            FfiConverterTypeTimestamp.write(value.`ts`, buf)
+            FfiConverterOptionalString.write(value.`description`, buf)
+    }
+}
+
+
+
 data class ClientProperties (
     /**
      * The client_id provides the widget with the option to behave differently
@@ -31614,6 +31742,81 @@ public object FfiConverterTypeListThreadsOptions: FfiConverterRustBuffer<ListThr
             FfiConverterTypeIncludeThreads.write(value.`includeThreads`, buf)
             FfiConverterOptionalString.write(value.`from`, buf)
             FfiConverterOptionalULong.write(value.`limit`, buf)
+    }
+}
+
+
+
+/**
+ * FFI representation of a live location sharing session (MSC3489).
+ *
+ * Corresponds to a `org.matrix.msc3672.beacon_info` state event in the
+ * timeline. Location updates are aggregated here as they arrive.
+ */
+data class LiveLocationContent (
+    /**
+     * Whether this sharing session is currently active.
+     */
+    var `isLive`: kotlin.Boolean
+    , 
+    /**
+     * An optional human-readable label for this sharing session.
+     */
+    var `description`: kotlin.String?
+    , 
+    /**
+     * Duration of the session in milliseconds.
+     */
+    var `timeoutMs`: kotlin.ULong
+    , 
+    /**
+     * The asset type of the beacon (e.g. `Sender` for the user's own
+     * location, `Pin` for a fixed point of interest).
+     */
+    var `assetType`: AssetType
+    , 
+    /**
+     * All location updates received so far, sorted oldest-first.
+     */
+    var `locations`: List<BeaconInfo>
+    
+){
+    
+
+    
+
+    
+    companion object
+}
+
+/**
+ * @suppress
+ */
+public object FfiConverterTypeLiveLocationContent: FfiConverterRustBuffer<LiveLocationContent> {
+    override fun read(buf: ByteBuffer): LiveLocationContent {
+        return LiveLocationContent(
+            FfiConverterBoolean.read(buf),
+            FfiConverterOptionalString.read(buf),
+            FfiConverterULong.read(buf),
+            FfiConverterTypeAssetType.read(buf),
+            FfiConverterSequenceTypeBeaconInfo.read(buf),
+        )
+    }
+
+    override fun allocationSize(value: LiveLocationContent) = (
+            FfiConverterBoolean.allocationSize(value.`isLive`) +
+            FfiConverterOptionalString.allocationSize(value.`description`) +
+            FfiConverterULong.allocationSize(value.`timeoutMs`) +
+            FfiConverterTypeAssetType.allocationSize(value.`assetType`) +
+            FfiConverterSequenceTypeBeaconInfo.allocationSize(value.`locations`)
+    )
+
+    override fun write(value: LiveLocationContent, buf: ByteBuffer) {
+            FfiConverterBoolean.write(value.`isLive`, buf)
+            FfiConverterOptionalString.write(value.`description`, buf)
+            FfiConverterULong.write(value.`timeoutMs`, buf)
+            FfiConverterTypeAssetType.write(value.`assetType`, buf)
+            FfiConverterSequenceTypeBeaconInfo.write(value.`locations`, buf)
     }
 }
 
@@ -36810,7 +37013,8 @@ public object FfiConverterTypeAllowRule : FfiConverterRustBuffer<AllowRule>{
 enum class AssetType {
     
     SENDER,
-    PIN;
+    PIN,
+    UNKNOWN;
 
     
 
@@ -52763,6 +52967,21 @@ sealed class TimelineItemContent: Disposable  {
         companion object
     }
     
+    /**
+     * A live location sharing session (MSC3489).
+     *
+     * Represents a `org.matrix.msc3672.beacon_info` state event with all
+     * aggregated location updates from `org.matrix.msc3672.beacon` events.
+     */
+    data class LiveLocation(
+        val `content`: org.matrix.rustcomponents.sdk.LiveLocationContent) : TimelineItemContent()
+        
+    {
+        
+
+        companion object
+    }
+    
 
     
     @Suppress("UNNECESSARY_SAFE_CALL") // codegen is much simpler if we unconditionally emit safe calls here
@@ -52824,6 +53043,13 @@ sealed class TimelineItemContent: Disposable  {
     )
                 
             }
+            is TimelineItemContent.LiveLocation -> {
+                
+    Disposable.destroy(
+        this.`content`
+    )
+                
+            }
         }.let { /* this makes the `when` an expression, which ensures it is exhaustive */ }
     }
     
@@ -52870,6 +53096,9 @@ public object FfiConverterTypeTimelineItemContent : FfiConverterRustBuffer<Timel
                 FfiConverterString.read(buf),
                 FfiConverterString.read(buf),
                 FfiConverterString.read(buf),
+                )
+            9 -> TimelineItemContent.LiveLocation(
+                FfiConverterTypeLiveLocationContent.read(buf),
                 )
             else -> throw RuntimeException("invalid enum value, something is very wrong!!")
         }
@@ -52940,6 +53169,13 @@ public object FfiConverterTypeTimelineItemContent : FfiConverterRustBuffer<Timel
                 + FfiConverterString.allocationSize(value.`error`)
             )
         }
+        is TimelineItemContent.LiveLocation -> {
+            // Add the size for the Int that specifies the variant plus the size needed for all fields
+            (
+                4UL
+                + FfiConverterTypeLiveLocationContent.allocationSize(value.`content`)
+            )
+        }
     }
 
     override fun write(value: TimelineItemContent, buf: ByteBuffer) {
@@ -52990,6 +53226,11 @@ public object FfiConverterTypeTimelineItemContent : FfiConverterRustBuffer<Timel
                 FfiConverterString.write(value.`eventType`, buf)
                 FfiConverterString.write(value.`stateKey`, buf)
                 FfiConverterString.write(value.`error`, buf)
+                Unit
+            }
+            is TimelineItemContent.LiveLocation -> {
+                buf.putInt(9)
+                FfiConverterTypeLiveLocationContent.write(value.`content`, buf)
                 Unit
             }
         }.let { /* this makes the `when` an expression, which ensures it is exhaustive */ }
@@ -59209,6 +59450,34 @@ public object FfiConverterSequenceTypeTimelineItem: FfiConverterRustBuffer<List<
 /**
  * @suppress
  */
+public object FfiConverterSequenceTypeBeaconInfo: FfiConverterRustBuffer<List<BeaconInfo>> {
+    override fun read(buf: ByteBuffer): List<BeaconInfo> {
+        val len = buf.getInt()
+        return List<BeaconInfo>(len) {
+            FfiConverterTypeBeaconInfo.read(buf)
+        }
+    }
+
+    override fun allocationSize(value: List<BeaconInfo>): ULong {
+        val sizeForLength = 4UL
+        val sizeForItems = value.map { FfiConverterTypeBeaconInfo.allocationSize(it) }.sum()
+        return sizeForLength + sizeForItems
+    }
+
+    override fun write(value: List<BeaconInfo>, buf: ByteBuffer) {
+        buf.putInt(value.size)
+        value.iterator().forEach {
+            FfiConverterTypeBeaconInfo.write(it, buf)
+        }
+    }
+}
+
+
+
+
+/**
+ * @suppress
+ */
 public object FfiConverterSequenceTypeConditionalPushRule: FfiConverterRustBuffer<List<ConditionalPushRule>> {
     override fun read(buf: ByteBuffer): List<ConditionalPushRule> {
         val len = buf.getInt()
@@ -60933,6 +61202,16 @@ public typealias FfiConverterTypeTimestamp = FfiConverterULong
     )
     }
     
+ fun `markdownToHtml`(`markdown`: kotlin.String): kotlin.String? {
+            return FfiConverterOptionalString.lift(
+    uniffiRustCall() { _status ->
+    UniffiLib.uniffi_matrix_sdk_ffi_fn_func_markdown_to_html(
+    
+        FfiConverterString.lower(`markdown`),_status)
+}
+    )
+    }
+    
  fun `messageEventContentFromHtml`(`body`: kotlin.String, `htmlBody`: kotlin.String): RoomMessageEventContentWithoutRelation {
             return FfiConverterTypeRoomMessageEventContentWithoutRelation.lift(
     uniffiRustCall() { _status ->
@@ -60989,6 +61268,36 @@ public typealias FfiConverterTypeTimestamp = FfiConverterULong
     UniffiLib.uniffi_matrix_sdk_ffi_fn_func_message_event_content_from_markdown_as_notice(
     
         FfiConverterString.lower(`md`),_status)
+}
+    )
+    }
+    
+ fun `messageEventContentFromPlaintext`(`body`: kotlin.String): RoomMessageEventContentWithoutRelation {
+            return FfiConverterTypeRoomMessageEventContentWithoutRelation.lift(
+    uniffiRustCall() { _status ->
+    UniffiLib.uniffi_matrix_sdk_ffi_fn_func_message_event_content_from_plaintext(
+    
+        FfiConverterString.lower(`body`),_status)
+}
+    )
+    }
+    
+ fun `messageEventContentFromPlaintextAsEmote`(`body`: kotlin.String): RoomMessageEventContentWithoutRelation {
+            return FfiConverterTypeRoomMessageEventContentWithoutRelation.lift(
+    uniffiRustCall() { _status ->
+    UniffiLib.uniffi_matrix_sdk_ffi_fn_func_message_event_content_from_plaintext_as_emote(
+    
+        FfiConverterString.lower(`body`),_status)
+}
+    )
+    }
+    
+ fun `messageEventContentFromPlaintextAsNotice`(`body`: kotlin.String): RoomMessageEventContentWithoutRelation {
+            return FfiConverterTypeRoomMessageEventContentWithoutRelation.lift(
+    uniffiRustCall() { _status ->
+    UniffiLib.uniffi_matrix_sdk_ffi_fn_func_message_event_content_from_plaintext_as_notice(
+    
+        FfiConverterString.lower(`body`),_status)
 }
     )
     }
