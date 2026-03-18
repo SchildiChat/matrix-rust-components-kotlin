@@ -1811,6 +1811,8 @@ external fun uniffi_matrix_sdk_ffi_checksum_method_client_abort_oidc_auth(
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_client_account_data(
 ): Short
+external fun uniffi_matrix_sdk_ffi_checksum_method_client_account_data_events(
+): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_client_account_url(
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_client_available_sliding_sync_versions(
@@ -1936,6 +1938,8 @@ external fun uniffi_matrix_sdk_ffi_checksum_method_client_restore_session(
 external fun uniffi_matrix_sdk_ffi_checksum_method_client_restore_session_with(
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_client_room_account_data(
+): Short
+external fun uniffi_matrix_sdk_ffi_checksum_method_client_room_account_data_events(
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_client_room_alias_exists(
 ): Short
@@ -2972,6 +2976,8 @@ external fun uniffi_matrix_sdk_ffi_fn_method_client_abort_oidc_auth(`ptr`: Long,
 ): Long
 external fun uniffi_matrix_sdk_ffi_fn_method_client_account_data(`ptr`: Long,`eventType`: RustBuffer.ByValue,
 ): Long
+external fun uniffi_matrix_sdk_ffi_fn_method_client_account_data_events(`ptr`: Long,
+): Long
 external fun uniffi_matrix_sdk_ffi_fn_method_client_account_url(`ptr`: Long,`action`: RustBuffer.ByValue,
 ): Long
 external fun uniffi_matrix_sdk_ffi_fn_method_client_available_sliding_sync_versions(`ptr`: Long,
@@ -3097,6 +3103,8 @@ external fun uniffi_matrix_sdk_ffi_fn_method_client_restore_session(`ptr`: Long,
 external fun uniffi_matrix_sdk_ffi_fn_method_client_restore_session_with(`ptr`: Long,`session`: RustBuffer.ByValue,`roomLoadSettings`: RustBuffer.ByValue,
 ): Long
 external fun uniffi_matrix_sdk_ffi_fn_method_client_room_account_data(`ptr`: Long,`roomId`: RustBuffer.ByValue,`eventType`: RustBuffer.ByValue,
+): Long
+external fun uniffi_matrix_sdk_ffi_fn_method_client_room_account_data_events(`ptr`: Long,`roomId`: RustBuffer.ByValue,
 ): Long
 external fun uniffi_matrix_sdk_ffi_fn_method_client_room_alias_exists(`ptr`: Long,`roomAlias`: RustBuffer.ByValue,
 ): Long
@@ -5321,6 +5329,11 @@ public interface ClientInterface {
      */
     suspend fun `accountData`(`eventType`: kotlin.String): kotlin.String?
     
+    /**
+     * SC: get all global account data
+     */
+    suspend fun `accountDataEvents`(): List<AccountDataRawEvent>
+    
     suspend fun `accountUrl`(`action`: AccountManagementAction?): kotlin.String?
     
     /**
@@ -5723,6 +5736,11 @@ public interface ClientInterface {
     suspend fun `roomAccountData`(`roomId`: kotlin.String, `eventType`: kotlin.String): kotlin.String?
     
     /**
+     * SC: get all account data for a room
+     */
+    suspend fun `roomAccountDataEvents`(`roomId`: kotlin.String): List<AccountDataRawEvent>
+    
+    /**
      * Checks if a room alias exists in the current homeserver.
      */
     suspend fun `roomAliasExists`(`roomAlias`: kotlin.String): kotlin.Boolean
@@ -6068,6 +6086,30 @@ open class Client: Disposable, AutoCloseable, ClientInterface
         { future -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_free_rust_buffer(future) },
         // lift function
         { FfiConverterOptionalString.lift(it) },
+        // Error FFI converter
+        ClientException.ErrorHandler,
+    )
+    }
+
+    
+    /**
+     * SC: get all global account data
+     */
+    @Throws(ClientException::class)
+    @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
+    override suspend fun `accountDataEvents`() : List<AccountDataRawEvent> {
+        return uniffiRustCallAsync(
+        callWithHandle { uniffiHandle ->
+            UniffiLib.uniffi_matrix_sdk_ffi_fn_method_client_account_data_events(
+                uniffiHandle,
+                
+            )
+        },
+        { future, callback, continuation -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_poll_rust_buffer(future, callback, continuation) },
+        { future, continuation -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_complete_rust_buffer(future, continuation) },
+        { future -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_free_rust_buffer(future) },
+        // lift function
+        { FfiConverterSequenceTypeAccountDataRawEvent.lift(it) },
         // Error FFI converter
         ClientException.ErrorHandler,
     )
@@ -7593,6 +7635,30 @@ open class Client: Disposable, AutoCloseable, ClientInterface
         { future -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_free_rust_buffer(future) },
         // lift function
         { FfiConverterOptionalString.lift(it) },
+        // Error FFI converter
+        ClientException.ErrorHandler,
+    )
+    }
+
+    
+    /**
+     * SC: get all account data for a room
+     */
+    @Throws(ClientException::class)
+    @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
+    override suspend fun `roomAccountDataEvents`(`roomId`: kotlin.String) : List<AccountDataRawEvent> {
+        return uniffiRustCallAsync(
+        callWithHandle { uniffiHandle ->
+            UniffiLib.uniffi_matrix_sdk_ffi_fn_method_client_room_account_data_events(
+                uniffiHandle,
+                FfiConverterString.lower(`roomId`),
+            )
+        },
+        { future, callback, continuation -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_poll_rust_buffer(future, callback, continuation) },
+        { future, continuation -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_complete_rust_buffer(future, continuation) },
+        { future -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_free_rust_buffer(future) },
+        // lift function
+        { FfiConverterSequenceTypeAccountDataRawEvent.lift(it) },
         // Error FFI converter
         ClientException.ErrorHandler,
     )
@@ -30129,6 +30195,47 @@ public object FfiConverterTypeAbstractProgress: FfiConverterRustBuffer<AbstractP
 
 
 
+/**
+ * SC
+ */
+data class AccountDataRawEvent (
+    var `eventType`: kotlin.String
+    , 
+    var `content`: kotlin.String
+    
+){
+    
+
+    
+
+    
+    companion object
+}
+
+/**
+ * @suppress
+ */
+public object FfiConverterTypeAccountDataRawEvent: FfiConverterRustBuffer<AccountDataRawEvent> {
+    override fun read(buf: ByteBuffer): AccountDataRawEvent {
+        return AccountDataRawEvent(
+            FfiConverterString.read(buf),
+            FfiConverterString.read(buf),
+        )
+    }
+
+    override fun allocationSize(value: AccountDataRawEvent) = (
+            FfiConverterString.allocationSize(value.`eventType`) +
+            FfiConverterString.allocationSize(value.`content`)
+    )
+
+    override fun write(value: AccountDataRawEvent, buf: ByteBuffer) {
+            FfiConverterString.write(value.`eventType`, buf)
+            FfiConverterString.write(value.`content`, buf)
+    }
+}
+
+
+
 data class AudioInfo (
     var `duration`: java.time.Duration?
     , 
@@ -30347,6 +30454,92 @@ public object FfiConverterTypeBeaconInfo: FfiConverterRustBuffer<BeaconInfo> {
             FfiConverterString.write(value.`geoUri`, buf)
             FfiConverterTypeTimestamp.write(value.`ts`, buf)
             FfiConverterOptionalString.write(value.`description`, buf)
+    }
+}
+
+
+
+data class BridgeState (
+    var `stateKey`: kotlin.String
+    , 
+    var `bridgeBotUserId`: kotlin.String?
+    , 
+    var `protocol`: BridgeStateProtocolInfo?
+    
+){
+    
+
+    
+
+    
+    companion object
+}
+
+/**
+ * @suppress
+ */
+public object FfiConverterTypeBridgeState: FfiConverterRustBuffer<BridgeState> {
+    override fun read(buf: ByteBuffer): BridgeState {
+        return BridgeState(
+            FfiConverterString.read(buf),
+            FfiConverterOptionalString.read(buf),
+            FfiConverterOptionalTypeBridgeStateProtocolInfo.read(buf),
+        )
+    }
+
+    override fun allocationSize(value: BridgeState) = (
+            FfiConverterString.allocationSize(value.`stateKey`) +
+            FfiConverterOptionalString.allocationSize(value.`bridgeBotUserId`) +
+            FfiConverterOptionalTypeBridgeStateProtocolInfo.allocationSize(value.`protocol`)
+    )
+
+    override fun write(value: BridgeState, buf: ByteBuffer) {
+            FfiConverterString.write(value.`stateKey`, buf)
+            FfiConverterOptionalString.write(value.`bridgeBotUserId`, buf)
+            FfiConverterOptionalTypeBridgeStateProtocolInfo.write(value.`protocol`, buf)
+    }
+}
+
+
+
+data class BridgeStateProtocolInfo (
+    var `id`: kotlin.String?
+    , 
+    var `displayName`: kotlin.String?
+    , 
+    var `avatarUrl`: kotlin.String?
+    
+){
+    
+
+    
+
+    
+    companion object
+}
+
+/**
+ * @suppress
+ */
+public object FfiConverterTypeBridgeStateProtocolInfo: FfiConverterRustBuffer<BridgeStateProtocolInfo> {
+    override fun read(buf: ByteBuffer): BridgeStateProtocolInfo {
+        return BridgeStateProtocolInfo(
+            FfiConverterOptionalString.read(buf),
+            FfiConverterOptionalString.read(buf),
+            FfiConverterOptionalString.read(buf),
+        )
+    }
+
+    override fun allocationSize(value: BridgeStateProtocolInfo) = (
+            FfiConverterOptionalString.allocationSize(value.`id`) +
+            FfiConverterOptionalString.allocationSize(value.`displayName`) +
+            FfiConverterOptionalString.allocationSize(value.`avatarUrl`)
+    )
+
+    override fun write(value: BridgeStateProtocolInfo, buf: ByteBuffer) {
+            FfiConverterOptionalString.write(value.`id`, buf)
+            FfiConverterOptionalString.write(value.`displayName`, buf)
+            FfiConverterOptionalString.write(value.`avatarUrl`, buf)
     }
 }
 
@@ -33685,6 +33878,11 @@ data class RoomInfo (
      * power level).
      */
     var `privilegedCreatorsRole`: kotlin.Boolean
+    , 
+    /**
+     * All `m.bridge` state events in the room.
+     */
+    var `bridgeStates`: List<BridgeState>
     
 ): Disposable{
     
@@ -33735,7 +33933,8 @@ data class RoomInfo (
         this.`historyVisibility`,
         this.`powerLevels`,
         this.`roomVersion`,
-        this.`privilegedCreatorsRole`
+        this.`privilegedCreatorsRole`,
+        this.`bridgeStates`
     )
     }
     
@@ -33788,6 +33987,7 @@ public object FfiConverterTypeRoomInfo: FfiConverterRustBuffer<RoomInfo> {
             FfiConverterOptionalTypeRoomPowerLevels.read(buf),
             FfiConverterOptionalString.read(buf),
             FfiConverterBoolean.read(buf),
+            FfiConverterSequenceTypeBridgeState.read(buf),
         )
     }
 
@@ -33831,7 +34031,8 @@ public object FfiConverterTypeRoomInfo: FfiConverterRustBuffer<RoomInfo> {
             FfiConverterTypeRoomHistoryVisibility.allocationSize(value.`historyVisibility`) +
             FfiConverterOptionalTypeRoomPowerLevels.allocationSize(value.`powerLevels`) +
             FfiConverterOptionalString.allocationSize(value.`roomVersion`) +
-            FfiConverterBoolean.allocationSize(value.`privilegedCreatorsRole`)
+            FfiConverterBoolean.allocationSize(value.`privilegedCreatorsRole`) +
+            FfiConverterSequenceTypeBridgeState.allocationSize(value.`bridgeStates`)
     )
 
     override fun write(value: RoomInfo, buf: ByteBuffer) {
@@ -33875,6 +34076,7 @@ public object FfiConverterTypeRoomInfo: FfiConverterRustBuffer<RoomInfo> {
             FfiConverterOptionalTypeRoomPowerLevels.write(value.`powerLevels`, buf)
             FfiConverterOptionalString.write(value.`roomVersion`, buf)
             FfiConverterBoolean.write(value.`privilegedCreatorsRole`, buf)
+            FfiConverterSequenceTypeBridgeState.write(value.`bridgeStates`, buf)
     }
 }
 
@@ -57398,6 +57600,38 @@ public object FfiConverterOptionalTypeAudioInfo: FfiConverterRustBuffer<AudioInf
 /**
  * @suppress
  */
+public object FfiConverterOptionalTypeBridgeStateProtocolInfo: FfiConverterRustBuffer<BridgeStateProtocolInfo?> {
+    override fun read(buf: ByteBuffer): BridgeStateProtocolInfo? {
+        if (buf.get().toInt() == 0) {
+            return null
+        }
+        return FfiConverterTypeBridgeStateProtocolInfo.read(buf)
+    }
+
+    override fun allocationSize(value: BridgeStateProtocolInfo?): ULong {
+        if (value == null) {
+            return 1UL
+        } else {
+            return 1UL + FfiConverterTypeBridgeStateProtocolInfo.allocationSize(value)
+        }
+    }
+
+    override fun write(value: BridgeStateProtocolInfo?, buf: ByteBuffer) {
+        if (value == null) {
+            buf.put(0)
+        } else {
+            buf.put(1)
+            FfiConverterTypeBridgeStateProtocolInfo.write(value, buf)
+        }
+    }
+}
+
+
+
+
+/**
+ * @suppress
+ */
 public object FfiConverterOptionalTypeComposerDraft: FfiConverterRustBuffer<ComposerDraft?> {
     override fun read(buf: ByteBuffer): ComposerDraft? {
         if (buf.get().toInt() == 0) {
@@ -59450,6 +59684,34 @@ public object FfiConverterSequenceTypeTimelineItem: FfiConverterRustBuffer<List<
 /**
  * @suppress
  */
+public object FfiConverterSequenceTypeAccountDataRawEvent: FfiConverterRustBuffer<List<AccountDataRawEvent>> {
+    override fun read(buf: ByteBuffer): List<AccountDataRawEvent> {
+        val len = buf.getInt()
+        return List<AccountDataRawEvent>(len) {
+            FfiConverterTypeAccountDataRawEvent.read(buf)
+        }
+    }
+
+    override fun allocationSize(value: List<AccountDataRawEvent>): ULong {
+        val sizeForLength = 4UL
+        val sizeForItems = value.map { FfiConverterTypeAccountDataRawEvent.allocationSize(it) }.sum()
+        return sizeForLength + sizeForItems
+    }
+
+    override fun write(value: List<AccountDataRawEvent>, buf: ByteBuffer) {
+        buf.putInt(value.size)
+        value.iterator().forEach {
+            FfiConverterTypeAccountDataRawEvent.write(it, buf)
+        }
+    }
+}
+
+
+
+
+/**
+ * @suppress
+ */
 public object FfiConverterSequenceTypeBeaconInfo: FfiConverterRustBuffer<List<BeaconInfo>> {
     override fun read(buf: ByteBuffer): List<BeaconInfo> {
         val len = buf.getInt()
@@ -59468,6 +59730,34 @@ public object FfiConverterSequenceTypeBeaconInfo: FfiConverterRustBuffer<List<Be
         buf.putInt(value.size)
         value.iterator().forEach {
             FfiConverterTypeBeaconInfo.write(it, buf)
+        }
+    }
+}
+
+
+
+
+/**
+ * @suppress
+ */
+public object FfiConverterSequenceTypeBridgeState: FfiConverterRustBuffer<List<BridgeState>> {
+    override fun read(buf: ByteBuffer): List<BridgeState> {
+        val len = buf.getInt()
+        return List<BridgeState>(len) {
+            FfiConverterTypeBridgeState.read(buf)
+        }
+    }
+
+    override fun allocationSize(value: List<BridgeState>): ULong {
+        val sizeForLength = 4UL
+        val sizeForItems = value.map { FfiConverterTypeBridgeState.allocationSize(it) }.sum()
+        return sizeForLength + sizeForItems
+    }
+
+    override fun write(value: List<BridgeState>, buf: ByteBuffer) {
+        buf.putInt(value.size)
+        value.iterator().forEach {
+            FfiConverterTypeBridgeState.write(it, buf)
         }
     }
 }
