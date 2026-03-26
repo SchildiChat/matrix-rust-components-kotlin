@@ -1774,6 +1774,13 @@ enum class CollectStrategy {
     
     /**
      * Share with all (unblacklisted) devices.
+     *
+     * Not recommended, per the guidance of [MSC4153].
+     *
+     * (Used by Element X and Element Web in the legacy, non-"exclude insecure
+     * devices" mode.)
+     *
+     * [MSC4153]: https://github.com/matrix-org/matrix-doc/pull/4153
      */
     ALL_DEVICES,
     /**
@@ -1791,12 +1798,24 @@ enum class CollectStrategy {
      *
      * Once the problematic devices are blacklisted or whitelisted the
      * caller can retry to share a second time.
+     *
+     * Not recommended, per the guidance of [MSC4153].
+     *
+     * [MSC4153]: https://github.com/matrix-org/matrix-doc/pull/4153
      */
     ERROR_ON_VERIFIED_USER_PROBLEM,
     /**
      * Share based on identity. Only distribute to devices signed by their
      * owner. If a user has no published identity he will not receive
      * any room keys.
+     *
+     * This is the recommended strategy: it is compliant with the guidance of
+     * [MSC4153].
+     *
+     * (Used by Element Web and Element X in the "exclude insecure devices"
+     * mode.)
+     *
+     * [MSC4153]: https://github.com/matrix-org/matrix-doc/pull/4153
      */
     IDENTITY_BASED_STRATEGY,
     /**
@@ -1807,6 +1826,14 @@ enum class CollectStrategy {
      * - It is signed by its owner identity, and this identity has been
      * trusted via interactive verification.
      * - It is the current own device of the user.
+     *
+     * This strategy is compliant with [MSC4153], but is probably too strict
+     * for normal use.
+     *
+     * (Used by Element Web when "only send messages to verified users" is
+     * enabled.)
+     *
+     * [MSC4153]: https://github.com/matrix-org/matrix-doc/pull/4153
      */
     ONLY_TRUSTED_DEVICES;
 
@@ -2060,6 +2087,57 @@ public object FfiConverterTypeLoginQrCodeDecodeError : FfiConverterRustBuffer<Lo
 
 
 /**
+ * The intent of the device that generated/displayed the QR code.
+ *
+ * The QR code login mechanism supports both, the new device, as well as the
+ * existing device to display the QR code.
+ *
+ * The different intents have an explicit one-byte identifier which gets added
+ * to the QR code data.
+ */
+
+enum class QrCodeIntent {
+    
+    /**
+     * Enum variant for the case where the new device is displaying the QR
+     * code.
+     */
+    LOGIN,
+    /**
+     * Enum variant for the case where the existing device is displaying the QR
+     * code.
+     */
+    RECIPROCATE;
+
+    
+
+
+    companion object
+}
+
+
+/**
+ * @suppress
+ */
+public object FfiConverterTypeQrCodeIntent: FfiConverterRustBuffer<QrCodeIntent> {
+    override fun read(buf: ByteBuffer) = try {
+        QrCodeIntent.values()[buf.getInt() - 1]
+    } catch (e: IndexOutOfBoundsException) {
+        throw RuntimeException("invalid enum value, something is very wrong!!", e)
+    }
+
+    override fun allocationSize(value: QrCodeIntent) = 4UL
+
+    override fun write(value: QrCodeIntent, buf: ByteBuffer) {
+        buf.putInt(value.ordinal + 1)
+    }
+}
+
+
+
+
+
+/**
  * The result of a signature check.
  */
 
@@ -2121,6 +2199,10 @@ enum class TrustRequirement {
     
     /**
      * Decrypt events from everyone regardless of trust.
+     *
+     * Not recommended, per the guidance of [MSC4153].
+     *
+     * [MSC4153]: https://github.com/matrix-org/matrix-doc/pull/4153
      */
     UNTRUSTED,
     /**
