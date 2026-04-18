@@ -35684,6 +35684,8 @@ data class RoomInfo (
     , 
     var `canUserManageSpaces`: kotlin.Boolean
     , 
+    var `hasIncompleteUnreadCount`: kotlin.Boolean
+    , 
     /**
      * SC end
      */
@@ -35790,6 +35792,7 @@ data class RoomInfo (
         this.`activeRoomCallParticipants`,
         this.`spaceChildren`,
         this.`canUserManageSpaces`,
+        this.`hasIncompleteUnreadCount`,
         this.`activeRoomCallConsensusIntent`,
         this.`isMarkedUnread`,
         this.`numUnreadMessages`,
@@ -35844,6 +35847,7 @@ public object FfiConverterTypeRoomInfo: FfiConverterRustBuffer<RoomInfo> {
             FfiConverterSequenceString.read(buf),
             FfiConverterSequenceTypeSpaceChildInfo.read(buf),
             FfiConverterBoolean.read(buf),
+            FfiConverterBoolean.read(buf),
             FfiConverterTypeRtcCallIntentConsensus.read(buf),
             FfiConverterBoolean.read(buf),
             FfiConverterULong.read(buf),
@@ -35890,6 +35894,7 @@ public object FfiConverterTypeRoomInfo: FfiConverterRustBuffer<RoomInfo> {
             FfiConverterSequenceString.allocationSize(value.`activeRoomCallParticipants`) +
             FfiConverterSequenceTypeSpaceChildInfo.allocationSize(value.`spaceChildren`) +
             FfiConverterBoolean.allocationSize(value.`canUserManageSpaces`) +
+            FfiConverterBoolean.allocationSize(value.`hasIncompleteUnreadCount`) +
             FfiConverterTypeRtcCallIntentConsensus.allocationSize(value.`activeRoomCallConsensusIntent`) +
             FfiConverterBoolean.allocationSize(value.`isMarkedUnread`) +
             FfiConverterULong.allocationSize(value.`numUnreadMessages`) +
@@ -35935,6 +35940,7 @@ public object FfiConverterTypeRoomInfo: FfiConverterRustBuffer<RoomInfo> {
             FfiConverterSequenceString.write(value.`activeRoomCallParticipants`, buf)
             FfiConverterSequenceTypeSpaceChildInfo.write(value.`spaceChildren`, buf)
             FfiConverterBoolean.write(value.`canUserManageSpaces`, buf)
+            FfiConverterBoolean.write(value.`hasIncompleteUnreadCount`, buf)
             FfiConverterTypeRtcCallIntentConsensus.write(value.`activeRoomCallConsensusIntent`, buf)
             FfiConverterBoolean.write(value.`isMarkedUnread`, buf)
             FfiConverterULong.write(value.`numUnreadMessages`, buf)
