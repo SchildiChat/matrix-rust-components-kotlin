@@ -2505,6 +2505,8 @@ external fun uniffi_matrix_sdk_ffi_checksum_method_room_set_unread_flag(
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_room_set_user_displayname(
 ): Short
+external fun uniffi_matrix_sdk_ffi_checksum_method_room_space_catch_all(
+): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_room_space_children(
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_room_start_live_location_share(
@@ -3833,6 +3835,8 @@ external fun uniffi_matrix_sdk_ffi_fn_method_room_set_unread_flag(`ptr`: Long,`n
 ): Long
 external fun uniffi_matrix_sdk_ffi_fn_method_room_set_user_displayname(`ptr`: Long,`displayname`: RustBuffer.ByValue,
 ): Long
+external fun uniffi_matrix_sdk_ffi_fn_method_room_space_catch_all(`ptr`: Long,uniffi_out_err: UniffiRustCallStatus, 
+): RustBuffer.ByValue
 external fun uniffi_matrix_sdk_ffi_fn_method_room_space_children(`ptr`: Long,uniffi_out_err: UniffiRustCallStatus, 
 ): RustBuffer.ByValue
 external fun uniffi_matrix_sdk_ffi_fn_method_room_start_live_location_share(`ptr`: Long,`durationMillis`: Long,
@@ -17106,6 +17110,8 @@ public interface RoomInterface {
     
     suspend fun `setUserDisplayname`(`displayname`: kotlin.String?)
     
+    fun `spaceCatchAll`(): SpaceCatchAllInfo?
+    
     fun `spaceChildren`(): List<SpaceChildInfo>
     
     /**
@@ -19349,6 +19355,19 @@ open class Room: Disposable, AutoCloseable, RoomInterface
         ClientException.ErrorHandler,
     )
     }
+
+    override fun `spaceCatchAll`(): SpaceCatchAllInfo? {
+            return FfiConverterOptionalTypeSpaceCatchAllInfo.lift(
+    callWithHandle {
+    uniffiRustCall() { _status ->
+    UniffiLib.uniffi_matrix_sdk_ffi_fn_method_room_space_catch_all(
+        it,
+        _status)
+}
+    }
+    )
+    }
+    
 
     override fun `spaceChildren`(): List<SpaceChildInfo> {
             return FfiConverterSequenceTypeSpaceChildInfo.lift(
@@ -36467,6 +36486,8 @@ data class RoomInfo (
      */
     var `spaceChildren`: List<SpaceChildInfo>
     , 
+    var `spaceCatchAll`: SpaceCatchAllInfo?
+    , 
     var `canUserManageSpaces`: kotlin.Boolean
     , 
     var `hasIncompleteUnreadCount`: kotlin.Boolean
@@ -36576,6 +36597,7 @@ data class RoomInfo (
         this.`hasRoomCall`,
         this.`activeRoomCallParticipants`,
         this.`spaceChildren`,
+        this.`spaceCatchAll`,
         this.`canUserManageSpaces`,
         this.`hasIncompleteUnreadCount`,
         this.`activeRoomCallConsensusIntent`,
@@ -36631,6 +36653,7 @@ public object FfiConverterTypeRoomInfo: FfiConverterRustBuffer<RoomInfo> {
             FfiConverterBoolean.read(buf),
             FfiConverterSequenceString.read(buf),
             FfiConverterSequenceTypeSpaceChildInfo.read(buf),
+            FfiConverterOptionalTypeSpaceCatchAllInfo.read(buf),
             FfiConverterBoolean.read(buf),
             FfiConverterBoolean.read(buf),
             FfiConverterTypeRtcCallIntentConsensus.read(buf),
@@ -36678,6 +36701,7 @@ public object FfiConverterTypeRoomInfo: FfiConverterRustBuffer<RoomInfo> {
             FfiConverterBoolean.allocationSize(value.`hasRoomCall`) +
             FfiConverterSequenceString.allocationSize(value.`activeRoomCallParticipants`) +
             FfiConverterSequenceTypeSpaceChildInfo.allocationSize(value.`spaceChildren`) +
+            FfiConverterOptionalTypeSpaceCatchAllInfo.allocationSize(value.`spaceCatchAll`) +
             FfiConverterBoolean.allocationSize(value.`canUserManageSpaces`) +
             FfiConverterBoolean.allocationSize(value.`hasIncompleteUnreadCount`) +
             FfiConverterTypeRtcCallIntentConsensus.allocationSize(value.`activeRoomCallConsensusIntent`) +
@@ -36724,6 +36748,7 @@ public object FfiConverterTypeRoomInfo: FfiConverterRustBuffer<RoomInfo> {
             FfiConverterBoolean.write(value.`hasRoomCall`, buf)
             FfiConverterSequenceString.write(value.`activeRoomCallParticipants`, buf)
             FfiConverterSequenceTypeSpaceChildInfo.write(value.`spaceChildren`, buf)
+            FfiConverterOptionalTypeSpaceCatchAllInfo.write(value.`spaceCatchAll`, buf)
             FfiConverterBoolean.write(value.`canUserManageSpaces`, buf)
             FfiConverterBoolean.write(value.`hasIncompleteUnreadCount`, buf)
             FfiConverterTypeRtcCallIntentConsensus.write(value.`activeRoomCallConsensusIntent`, buf)
@@ -37693,6 +37718,49 @@ public object FfiConverterTypeSimplePushRule: FfiConverterRustBuffer<SimplePushR
             FfiConverterBoolean.write(value.`default`, buf)
             FfiConverterBoolean.write(value.`enabled`, buf)
             FfiConverterString.write(value.`ruleId`, buf)
+    }
+}
+
+
+
+data class SpaceCatchAllInfo (
+    var `stateKey`: kotlin.String
+    , 
+    var `includeOrphans`: kotlin.Boolean
+    , 
+    var `filterIsDm`: kotlin.Boolean?
+    
+){
+    
+
+    
+
+    
+    companion object
+}
+
+/**
+ * @suppress
+ */
+public object FfiConverterTypeSpaceCatchAllInfo: FfiConverterRustBuffer<SpaceCatchAllInfo> {
+    override fun read(buf: ByteBuffer): SpaceCatchAllInfo {
+        return SpaceCatchAllInfo(
+            FfiConverterString.read(buf),
+            FfiConverterBoolean.read(buf),
+            FfiConverterOptionalBoolean.read(buf),
+        )
+    }
+
+    override fun allocationSize(value: SpaceCatchAllInfo) = (
+            FfiConverterString.allocationSize(value.`stateKey`) +
+            FfiConverterBoolean.allocationSize(value.`includeOrphans`) +
+            FfiConverterOptionalBoolean.allocationSize(value.`filterIsDm`)
+    )
+
+    override fun write(value: SpaceCatchAllInfo, buf: ByteBuffer) {
+            FfiConverterString.write(value.`stateKey`, buf)
+            FfiConverterBoolean.write(value.`includeOrphans`, buf)
+            FfiConverterOptionalBoolean.write(value.`filterIsDm`, buf)
     }
 }
 
@@ -55234,6 +55302,9 @@ sealed class StateEventContent {
     object SpaceChild : StateEventContent()
     
     
+    object SpaceCatchAll : StateEventContent()
+    
+    
     object SpaceParent : StateEventContent()
     
     
@@ -55277,7 +55348,8 @@ public object FfiConverterTypeStateEventContent : FfiConverterRustBuffer<StateEv
                 FfiConverterString.read(buf),
                 )
             19 -> StateEventContent.SpaceChild
-            20 -> StateEventContent.SpaceParent
+            20 -> StateEventContent.SpaceCatchAll
+            21 -> StateEventContent.SpaceParent
             else -> throw RuntimeException("invalid enum value, something is very wrong!!")
         }
     }
@@ -55400,6 +55472,12 @@ public object FfiConverterTypeStateEventContent : FfiConverterRustBuffer<StateEv
                 4UL
             )
         }
+        is StateEventContent.SpaceCatchAll -> {
+            // Add the size for the Int that specifies the variant plus the size needed for all fields
+            (
+                4UL
+            )
+        }
         is StateEventContent.SpaceParent -> {
             // Add the size for the Int that specifies the variant plus the size needed for all fields
             (
@@ -55489,8 +55567,12 @@ public object FfiConverterTypeStateEventContent : FfiConverterRustBuffer<StateEv
                 buf.putInt(19)
                 Unit
             }
-            is StateEventContent.SpaceParent -> {
+            is StateEventContent.SpaceCatchAll -> {
                 buf.putInt(20)
+                Unit
+            }
+            is StateEventContent.SpaceParent -> {
+                buf.putInt(21)
                 Unit
             }
         }.let { /* this makes the `when` an expression, which ensures it is exhaustive */ }
@@ -55575,6 +55657,9 @@ sealed class StateEventType {
     object SpaceChild : StateEventType()
     
     
+    object SpaceCatchAll : StateEventType()
+    
+    
     object SpaceParent : StateEventType()
     
     
@@ -55627,8 +55712,9 @@ public object FfiConverterTypeStateEventType : FfiConverterRustBuffer<StateEvent
             22 -> StateEventType.RoomTombstone
             23 -> StateEventType.RoomTopic
             24 -> StateEventType.SpaceChild
-            25 -> StateEventType.SpaceParent
-            26 -> StateEventType.Custom(
+            25 -> StateEventType.SpaceCatchAll
+            26 -> StateEventType.SpaceParent
+            27 -> StateEventType.Custom(
                 FfiConverterString.read(buf),
                 )
             else -> throw RuntimeException("invalid enum value, something is very wrong!!")
@@ -55780,6 +55866,12 @@ public object FfiConverterTypeStateEventType : FfiConverterRustBuffer<StateEvent
                 4UL
             )
         }
+        is StateEventType.SpaceCatchAll -> {
+            // Add the size for the Int that specifies the variant plus the size needed for all fields
+            (
+                4UL
+            )
+        }
         is StateEventType.SpaceParent -> {
             // Add the size for the Int that specifies the variant plus the size needed for all fields
             (
@@ -55893,12 +55985,16 @@ public object FfiConverterTypeStateEventType : FfiConverterRustBuffer<StateEvent
                 buf.putInt(24)
                 Unit
             }
-            is StateEventType.SpaceParent -> {
+            is StateEventType.SpaceCatchAll -> {
                 buf.putInt(25)
                 Unit
             }
-            is StateEventType.Custom -> {
+            is StateEventType.SpaceParent -> {
                 buf.putInt(26)
+                Unit
+            }
+            is StateEventType.Custom -> {
+                buf.putInt(27)
                 FfiConverterString.write(value.`value`, buf)
                 Unit
             }
@@ -62801,6 +62897,38 @@ public object FfiConverterOptionalTypeSentryConfig: FfiConverterRustBuffer<Sentr
         } else {
             buf.put(1)
             FfiConverterTypeSentryConfig.write(value, buf)
+        }
+    }
+}
+
+
+
+
+/**
+ * @suppress
+ */
+public object FfiConverterOptionalTypeSpaceCatchAllInfo: FfiConverterRustBuffer<SpaceCatchAllInfo?> {
+    override fun read(buf: ByteBuffer): SpaceCatchAllInfo? {
+        if (buf.get().toInt() == 0) {
+            return null
+        }
+        return FfiConverterTypeSpaceCatchAllInfo.read(buf)
+    }
+
+    override fun allocationSize(value: SpaceCatchAllInfo?): ULong {
+        if (value == null) {
+            return 1UL
+        } else {
+            return 1UL + FfiConverterTypeSpaceCatchAllInfo.allocationSize(value)
+        }
+    }
+
+    override fun write(value: SpaceCatchAllInfo?, buf: ByteBuffer) {
+        if (value == null) {
+            buf.put(0)
+        } else {
+            buf.put(1)
+            FfiConverterTypeSpaceCatchAllInfo.write(value, buf)
         }
     }
 }
