@@ -56,7 +56,9 @@ import uniffi.matrix_sdk.RoomPowerLevelChanges
 import uniffi.matrix_sdk.ServerVendorInfo
 import uniffi.matrix_sdk.VirtualElementCallWidgetConfig
 import uniffi.matrix_sdk.VirtualElementCallWidgetProperties
+import uniffi.matrix_sdk_base.DmRoomDefinition
 import uniffi.matrix_sdk_base.EncryptionState
+import uniffi.matrix_sdk_base.FfiConverterTypeDmRoomDefinition
 import uniffi.matrix_sdk_base.FfiConverterTypeEncryptionState
 import uniffi.matrix_sdk_base.FfiConverterTypeMediaRetentionPolicy
 import uniffi.matrix_sdk_base.MediaRetentionPolicy
@@ -96,6 +98,7 @@ import uniffi.matrix_sdk.RustBuffer as RustBufferRoomPowerLevelChanges
 import uniffi.matrix_sdk.RustBuffer as RustBufferServerVendorInfo
 import uniffi.matrix_sdk.RustBuffer as RustBufferVirtualElementCallWidgetConfig
 import uniffi.matrix_sdk.RustBuffer as RustBufferVirtualElementCallWidgetProperties
+import uniffi.matrix_sdk_base.RustBuffer as RustBufferDmRoomDefinition
 import uniffi.matrix_sdk_base.RustBuffer as RustBufferEncryptionState
 import uniffi.matrix_sdk_base.RustBuffer as RustBufferMediaRetentionPolicy
 import uniffi.matrix_sdk_common.RustBuffer as RustBufferBackgroundTaskFailureReason
@@ -2142,6 +2145,8 @@ external fun uniffi_matrix_sdk_ffi_checksum_method_clientbuilder_disable_built_i
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_clientbuilder_disable_ssl_verification(
 ): Short
+external fun uniffi_matrix_sdk_ffi_checksum_method_clientbuilder_dm_room_definition(
+): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_clientbuilder_enable_share_history_on_invite(
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_clientbuilder_homeserver_url(
@@ -3368,6 +3373,8 @@ external fun uniffi_matrix_sdk_ffi_fn_method_clientbuilder_disable_automatic_tok
 external fun uniffi_matrix_sdk_ffi_fn_method_clientbuilder_disable_built_in_root_certificates(`ptr`: Long,uniffi_out_err: UniffiRustCallStatus, 
 ): Long
 external fun uniffi_matrix_sdk_ffi_fn_method_clientbuilder_disable_ssl_verification(`ptr`: Long,uniffi_out_err: UniffiRustCallStatus, 
+): Long
+external fun uniffi_matrix_sdk_ffi_fn_method_clientbuilder_dm_room_definition(`ptr`: Long,`dmRoomDefinition`: RustBufferDmRoomDefinition.ByValue,uniffi_out_err: UniffiRustCallStatus, 
 ): Long
 external fun uniffi_matrix_sdk_ffi_fn_method_clientbuilder_enable_share_history_on_invite(`ptr`: Long,`enableShareHistoryOnInvite`: Byte,uniffi_out_err: UniffiRustCallStatus, 
 ): Long
@@ -8943,6 +8950,8 @@ public interface ClientBuilderInterface {
     
     fun `disableSslVerification`(): ClientBuilder
     
+    fun `dmRoomDefinition`(`dmRoomDefinition`: DmRoomDefinition): ClientBuilder
+    
     /**
      * Set whether to enable the experimental support for sending and receiving
      * encrypted room history on invite, per [MSC4268].
@@ -9286,6 +9295,19 @@ open class ClientBuilder: Disposable, AutoCloseable, ClientBuilderInterface
     UniffiLib.uniffi_matrix_sdk_ffi_fn_method_clientbuilder_disable_ssl_verification(
         it,
         _status)
+}
+    }
+    )
+    }
+    
+
+    override fun `dmRoomDefinition`(`dmRoomDefinition`: DmRoomDefinition): ClientBuilder {
+            return FfiConverterTypeClientBuilder.lift(
+    callWithHandle {
+    uniffiRustCall() { _status ->
+    UniffiLib.uniffi_matrix_sdk_ffi_fn_method_clientbuilder_dm_room_definition(
+        it,
+        FfiConverterTypeDmRoomDefinition.lower(`dmRoomDefinition`),_status)
 }
     }
     )
@@ -35869,6 +35891,8 @@ data class RoomInfo (
     , 
     var `isDirect`: kotlin.Boolean
     , 
+    var `isDm`: kotlin.Boolean
+    , 
     /**
      * Whether the room is public or not, based on the join rules.
      *
@@ -36001,6 +36025,7 @@ data class RoomInfo (
         this.`topic`,
         this.`avatarUrl`,
         this.`isDirect`,
+        this.`isDm`,
         this.`isPublic`,
         this.`isSpace`,
         this.`successorRoom`,
@@ -36052,6 +36077,7 @@ public object FfiConverterTypeRoomInfo: FfiConverterRustBuffer<RoomInfo> {
             FfiConverterOptionalString.read(buf),
             FfiConverterOptionalString.read(buf),
             FfiConverterBoolean.read(buf),
+            FfiConverterBoolean.read(buf),
             FfiConverterOptionalBoolean.read(buf),
             FfiConverterBoolean.read(buf),
             FfiConverterOptionalTypeSuccessorRoom.read(buf),
@@ -36095,6 +36121,7 @@ public object FfiConverterTypeRoomInfo: FfiConverterRustBuffer<RoomInfo> {
             FfiConverterOptionalString.allocationSize(value.`topic`) +
             FfiConverterOptionalString.allocationSize(value.`avatarUrl`) +
             FfiConverterBoolean.allocationSize(value.`isDirect`) +
+            FfiConverterBoolean.allocationSize(value.`isDm`) +
             FfiConverterOptionalBoolean.allocationSize(value.`isPublic`) +
             FfiConverterBoolean.allocationSize(value.`isSpace`) +
             FfiConverterOptionalTypeSuccessorRoom.allocationSize(value.`successorRoom`) +
@@ -36137,6 +36164,7 @@ public object FfiConverterTypeRoomInfo: FfiConverterRustBuffer<RoomInfo> {
             FfiConverterOptionalString.write(value.`topic`, buf)
             FfiConverterOptionalString.write(value.`avatarUrl`, buf)
             FfiConverterBoolean.write(value.`isDirect`, buf)
+            FfiConverterBoolean.write(value.`isDm`, buf)
             FfiConverterOptionalBoolean.write(value.`isPublic`, buf)
             FfiConverterBoolean.write(value.`isSpace`, buf)
             FfiConverterOptionalTypeSuccessorRoom.write(value.`successorRoom`, buf)
@@ -65416,6 +65444,8 @@ public object FfiConverterMapTypeTimelineEventTypeLong: FfiConverterRustBuffer<M
  */
 public typealias Timestamp = kotlin.ULong
 public typealias FfiConverterTypeTimestamp = FfiConverterULong
+
+
 
 
 
