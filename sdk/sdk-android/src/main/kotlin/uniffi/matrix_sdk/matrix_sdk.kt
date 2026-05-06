@@ -1386,6 +1386,16 @@ data class RoomPowerLevelChanges (
      * The level required to change the space's children.
      */
     var `spaceChild`: kotlin.Long? = null 
+    , 
+    /**
+     * The level required to send a beacon (live location) message event.
+     */
+    var `beacon`: kotlin.Long? = null 
+    , 
+    /**
+     * The level required to send a beacon info state event.
+     */
+    var `beaconInfo`: kotlin.Long? = null 
     
 ){
     
@@ -1413,6 +1423,8 @@ public object FfiConverterTypeRoomPowerLevelChanges: FfiConverterRustBuffer<Room
             FfiConverterOptionalLong.read(buf),
             FfiConverterOptionalLong.read(buf),
             FfiConverterOptionalLong.read(buf),
+            FfiConverterOptionalLong.read(buf),
+            FfiConverterOptionalLong.read(buf),
         )
     }
 
@@ -1427,7 +1439,9 @@ public object FfiConverterTypeRoomPowerLevelChanges: FfiConverterRustBuffer<Room
             FfiConverterOptionalLong.allocationSize(value.`roomName`) +
             FfiConverterOptionalLong.allocationSize(value.`roomAvatar`) +
             FfiConverterOptionalLong.allocationSize(value.`roomTopic`) +
-            FfiConverterOptionalLong.allocationSize(value.`spaceChild`)
+            FfiConverterOptionalLong.allocationSize(value.`spaceChild`) +
+            FfiConverterOptionalLong.allocationSize(value.`beacon`) +
+            FfiConverterOptionalLong.allocationSize(value.`beaconInfo`)
     )
 
     override fun write(value: RoomPowerLevelChanges, buf: ByteBuffer) {
@@ -1442,6 +1456,8 @@ public object FfiConverterTypeRoomPowerLevelChanges: FfiConverterRustBuffer<Room
             FfiConverterOptionalLong.write(value.`roomAvatar`, buf)
             FfiConverterOptionalLong.write(value.`roomTopic`, buf)
             FfiConverterOptionalLong.write(value.`spaceChild`, buf)
+            FfiConverterOptionalLong.write(value.`beacon`, buf)
+            FfiConverterOptionalLong.write(value.`beaconInfo`, buf)
     }
 }
 

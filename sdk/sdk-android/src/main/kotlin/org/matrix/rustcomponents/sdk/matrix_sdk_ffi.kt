@@ -36266,6 +36266,8 @@ data class RoomMember (
     var `suggestedRoleForPowerLevel`: RoomMemberRole
     , 
     var `membershipChangeReason`: kotlin.String?
+    , 
+    var `isServiceMember`: kotlin.Boolean
     
 ){
     
@@ -36291,6 +36293,7 @@ public object FfiConverterTypeRoomMember: FfiConverterRustBuffer<RoomMember> {
             FfiConverterBoolean.read(buf),
             FfiConverterTypeRoomMemberRole.read(buf),
             FfiConverterOptionalString.read(buf),
+            FfiConverterBoolean.read(buf),
         )
     }
 
@@ -36303,7 +36306,8 @@ public object FfiConverterTypeRoomMember: FfiConverterRustBuffer<RoomMember> {
             FfiConverterTypePowerLevel.allocationSize(value.`powerLevel`) +
             FfiConverterBoolean.allocationSize(value.`isIgnored`) +
             FfiConverterTypeRoomMemberRole.allocationSize(value.`suggestedRoleForPowerLevel`) +
-            FfiConverterOptionalString.allocationSize(value.`membershipChangeReason`)
+            FfiConverterOptionalString.allocationSize(value.`membershipChangeReason`) +
+            FfiConverterBoolean.allocationSize(value.`isServiceMember`)
     )
 
     override fun write(value: RoomMember, buf: ByteBuffer) {
@@ -36316,6 +36320,7 @@ public object FfiConverterTypeRoomMember: FfiConverterRustBuffer<RoomMember> {
             FfiConverterBoolean.write(value.`isIgnored`, buf)
             FfiConverterTypeRoomMemberRole.write(value.`suggestedRoleForPowerLevel`, buf)
             FfiConverterOptionalString.write(value.`membershipChangeReason`, buf)
+            FfiConverterBoolean.write(value.`isServiceMember`, buf)
     }
 }
 
@@ -36476,6 +36481,16 @@ data class RoomPowerLevelsValues (
      * The level required to change the space's children.
      */
     var `spaceChild`: kotlin.Long
+    , 
+    /**
+     * The level required to send a beacon (live location) message event.
+     */
+    var `beacon`: kotlin.Long
+    , 
+    /**
+     * The level required to send a beacon info state event.
+     */
+    var `beaconInfo`: kotlin.Long
     
 ){
     
@@ -36503,6 +36518,8 @@ public object FfiConverterTypeRoomPowerLevelsValues: FfiConverterRustBuffer<Room
             FfiConverterLong.read(buf),
             FfiConverterLong.read(buf),
             FfiConverterLong.read(buf),
+            FfiConverterLong.read(buf),
+            FfiConverterLong.read(buf),
         )
     }
 
@@ -36517,7 +36534,9 @@ public object FfiConverterTypeRoomPowerLevelsValues: FfiConverterRustBuffer<Room
             FfiConverterLong.allocationSize(value.`roomName`) +
             FfiConverterLong.allocationSize(value.`roomAvatar`) +
             FfiConverterLong.allocationSize(value.`roomTopic`) +
-            FfiConverterLong.allocationSize(value.`spaceChild`)
+            FfiConverterLong.allocationSize(value.`spaceChild`) +
+            FfiConverterLong.allocationSize(value.`beacon`) +
+            FfiConverterLong.allocationSize(value.`beaconInfo`)
     )
 
     override fun write(value: RoomPowerLevelsValues, buf: ByteBuffer) {
@@ -36532,6 +36551,8 @@ public object FfiConverterTypeRoomPowerLevelsValues: FfiConverterRustBuffer<Room
             FfiConverterLong.write(value.`roomAvatar`, buf)
             FfiConverterLong.write(value.`roomTopic`, buf)
             FfiConverterLong.write(value.`spaceChild`, buf)
+            FfiConverterLong.write(value.`beacon`, buf)
+            FfiConverterLong.write(value.`beaconInfo`, buf)
     }
 }
 
