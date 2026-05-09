@@ -1085,6 +1085,51 @@ public object FfiConverterTypeMediaRetentionPolicy: FfiConverterRustBuffer<Media
 
 
 /**
+ * An enum that defines what the [`BaseClient`] should consider a DM room.
+ */
+
+enum class DmRoomDefinition {
+    
+    /**
+     * Standard Matrix spec definition: a room linked to a user in an
+     * `m.direct` event.
+     */
+    MATRIX_SPEC,
+    /**
+     * A room that is direct, as per the spec but also contains at most 2
+     * active members.
+     */
+    TWO_MEMBERS;
+
+    
+
+
+    companion object
+}
+
+
+/**
+ * @suppress
+ */
+public object FfiConverterTypeDmRoomDefinition: FfiConverterRustBuffer<DmRoomDefinition> {
+    override fun read(buf: ByteBuffer) = try {
+        DmRoomDefinition.values()[buf.getInt() - 1]
+    } catch (e: IndexOutOfBoundsException) {
+        throw RuntimeException("invalid enum value, something is very wrong!!", e)
+    }
+
+    override fun allocationSize(value: DmRoomDefinition) = 4UL
+
+    override fun write(value: DmRoomDefinition, buf: ByteBuffer) {
+        buf.putInt(value.ordinal + 1)
+    }
+}
+
+
+
+
+
+/**
  * Represents the state of a room encryption.
  */
 
