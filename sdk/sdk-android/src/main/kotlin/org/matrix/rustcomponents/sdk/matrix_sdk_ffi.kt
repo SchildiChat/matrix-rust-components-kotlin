@@ -35495,6 +35495,8 @@ data class NotificationRoomInfo (
     var `isDirect`: kotlin.Boolean
     , 
     var `isSpace`: kotlin.Boolean
+    , 
+    var `isDm`: kotlin.Boolean
     
 ){
     
@@ -35522,6 +35524,7 @@ public object FfiConverterTypeNotificationRoomInfo: FfiConverterRustBuffer<Notif
             FfiConverterOptionalBoolean.read(buf),
             FfiConverterBoolean.read(buf),
             FfiConverterBoolean.read(buf),
+            FfiConverterBoolean.read(buf),
         )
     }
 
@@ -35536,7 +35539,8 @@ public object FfiConverterTypeNotificationRoomInfo: FfiConverterRustBuffer<Notif
             FfiConverterSequenceString.allocationSize(value.`serviceMembers`) +
             FfiConverterOptionalBoolean.allocationSize(value.`isEncrypted`) +
             FfiConverterBoolean.allocationSize(value.`isDirect`) +
-            FfiConverterBoolean.allocationSize(value.`isSpace`)
+            FfiConverterBoolean.allocationSize(value.`isSpace`) +
+            FfiConverterBoolean.allocationSize(value.`isDm`)
     )
 
     override fun write(value: NotificationRoomInfo, buf: ByteBuffer) {
@@ -35551,6 +35555,7 @@ public object FfiConverterTypeNotificationRoomInfo: FfiConverterRustBuffer<Notif
             FfiConverterOptionalBoolean.write(value.`isEncrypted`, buf)
             FfiConverterBoolean.write(value.`isDirect`, buf)
             FfiConverterBoolean.write(value.`isSpace`, buf)
+            FfiConverterBoolean.write(value.`isDm`, buf)
     }
 }
 
@@ -38218,6 +38223,13 @@ data class SpaceRoom (
      * The via parameters of the room.
      */
     var `via`: List<kotlin.String>
+    , 
+    /**
+     * Whether this room is a DM, if known.
+     * Note this value can be calculated following some assumptions and is not
+     * guaranteed to be accurate.
+     */
+    var `isDm`: kotlin.Boolean?
     
 ){
     
@@ -38250,6 +38262,7 @@ public object FfiConverterTypeSpaceRoom: FfiConverterRustBuffer<SpaceRoom> {
             FfiConverterOptionalTypeMembership.read(buf),
             FfiConverterOptionalSequenceTypeRoomHero.read(buf),
             FfiConverterSequenceString.read(buf),
+            FfiConverterOptionalBoolean.read(buf),
         )
     }
 
@@ -38269,7 +38282,8 @@ public object FfiConverterTypeSpaceRoom: FfiConverterRustBuffer<SpaceRoom> {
             FfiConverterULong.allocationSize(value.`childrenCount`) +
             FfiConverterOptionalTypeMembership.allocationSize(value.`state`) +
             FfiConverterOptionalSequenceTypeRoomHero.allocationSize(value.`heroes`) +
-            FfiConverterSequenceString.allocationSize(value.`via`)
+            FfiConverterSequenceString.allocationSize(value.`via`) +
+            FfiConverterOptionalBoolean.allocationSize(value.`isDm`)
     )
 
     override fun write(value: SpaceRoom, buf: ByteBuffer) {
@@ -38289,6 +38303,7 @@ public object FfiConverterTypeSpaceRoom: FfiConverterRustBuffer<SpaceRoom> {
             FfiConverterOptionalTypeMembership.write(value.`state`, buf)
             FfiConverterOptionalSequenceTypeRoomHero.write(value.`heroes`, buf)
             FfiConverterSequenceString.write(value.`via`, buf)
+            FfiConverterOptionalBoolean.write(value.`isDm`, buf)
     }
 }
 
