@@ -68,6 +68,8 @@ import uniffi.matrix_sdk_base.FfiConverterTypeMediaRetentionPolicy
 import uniffi.matrix_sdk_base.MediaRetentionPolicy
 import uniffi.matrix_sdk_common.BackgroundTaskFailureReason
 import uniffi.matrix_sdk_common.FfiConverterTypeBackgroundTaskFailureReason
+import uniffi.matrix_sdk_contentscanner.ErrorReason
+import uniffi.matrix_sdk_contentscanner.FfiConverterTypeErrorReason
 import uniffi.matrix_sdk_crypto.CollectStrategy
 import uniffi.matrix_sdk_crypto.DecryptionSettings
 import uniffi.matrix_sdk_crypto.FfiConverterTypeCollectStrategy
@@ -81,6 +83,7 @@ import uniffi.matrix_sdk_crypto.UtdCause
 import uniffi.matrix_sdk_ui.EventItemOrigin
 import uniffi.matrix_sdk_ui.FfiConverterTypeEventItemOrigin
 import uniffi.matrix_sdk_ui.FfiConverterTypeLatestEventValueLocalState
+import uniffi.matrix_sdk_ui.FfiConverterTypeMembershipChangeFilter
 import uniffi.matrix_sdk_ui.FfiConverterTypeRoomPinnedEventsChange
 import uniffi.matrix_sdk_ui.FfiConverterTypeSpaceRoomListPaginationState
 import uniffi.matrix_sdk_ui.FfiConverterTypeThreadListPaginationState
@@ -88,6 +91,7 @@ import uniffi.matrix_sdk_ui.FfiConverterTypeTimelineEventFocusThreadMode
 import uniffi.matrix_sdk_ui.FfiConverterTypeTimelineEventShieldStateCode
 import uniffi.matrix_sdk_ui.FfiConverterTypeTimelineReadReceiptTracking
 import uniffi.matrix_sdk_ui.LatestEventValueLocalState
+import uniffi.matrix_sdk_ui.MembershipChangeFilter
 import uniffi.matrix_sdk_ui.RoomPinnedEventsChange
 import uniffi.matrix_sdk_ui.SpaceRoomListPaginationState
 import uniffi.matrix_sdk_ui.ThreadListPaginationState
@@ -108,6 +112,7 @@ import uniffi.matrix_sdk_base.RustBuffer as RustBufferDmRoomDefinition
 import uniffi.matrix_sdk_base.RustBuffer as RustBufferEncryptionState
 import uniffi.matrix_sdk_base.RustBuffer as RustBufferMediaRetentionPolicy
 import uniffi.matrix_sdk_common.RustBuffer as RustBufferBackgroundTaskFailureReason
+import uniffi.matrix_sdk_contentscanner.RustBuffer as RustBufferErrorReason
 import uniffi.matrix_sdk_crypto.RustBuffer as RustBufferCollectStrategy
 import uniffi.matrix_sdk_crypto.RustBuffer as RustBufferDecryptionSettings
 import uniffi.matrix_sdk_crypto.RustBuffer as RustBufferIdentityState
@@ -115,6 +120,7 @@ import uniffi.matrix_sdk_crypto.RustBuffer as RustBufferQrCodeIntent
 import uniffi.matrix_sdk_crypto.RustBuffer as RustBufferUtdCause
 import uniffi.matrix_sdk_ui.RustBuffer as RustBufferEventItemOrigin
 import uniffi.matrix_sdk_ui.RustBuffer as RustBufferLatestEventValueLocalState
+import uniffi.matrix_sdk_ui.RustBuffer as RustBufferMembershipChangeFilter
 import uniffi.matrix_sdk_ui.RustBuffer as RustBufferRoomPinnedEventsChange
 import uniffi.matrix_sdk_ui.RustBuffer as RustBufferSpaceRoomListPaginationState
 import uniffi.matrix_sdk_ui.RustBuffer as RustBufferThreadListPaginationState
@@ -2183,6 +2189,8 @@ external fun uniffi_matrix_sdk_ffi_checksum_method_clientbuilder_disable_ssl_ver
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_clientbuilder_dm_room_definition(
 ): Short
+external fun uniffi_matrix_sdk_ffi_checksum_method_clientbuilder_enable_content_scanner(
+): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_clientbuilder_enable_share_history_on_invite(
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_clientbuilder_homeserver_url(
@@ -3138,6 +3146,7 @@ internal object UniffiLib {
         uniffi.matrix_sdk.uniffiEnsureInitialized()
         uniffi.matrix_sdk_base.uniffiEnsureInitialized()
         uniffi.matrix_sdk_common.uniffiEnsureInitialized()
+        uniffi.matrix_sdk_contentscanner.uniffiEnsureInitialized()
         uniffi.matrix_sdk_crypto.uniffiEnsureInitialized()
         uniffi.matrix_sdk_ui.uniffiEnsureInitialized()
         
@@ -3461,6 +3470,8 @@ external fun uniffi_matrix_sdk_ffi_fn_method_clientbuilder_disable_built_in_root
 external fun uniffi_matrix_sdk_ffi_fn_method_clientbuilder_disable_ssl_verification(`ptr`: Long,uniffi_out_err: UniffiRustCallStatus, 
 ): Long
 external fun uniffi_matrix_sdk_ffi_fn_method_clientbuilder_dm_room_definition(`ptr`: Long,`dmRoomDefinition`: RustBufferDmRoomDefinition.ByValue,uniffi_out_err: UniffiRustCallStatus, 
+): Long
+external fun uniffi_matrix_sdk_ffi_fn_method_clientbuilder_enable_content_scanner(`ptr`: Long,`scannerUrl`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
 ): Long
 external fun uniffi_matrix_sdk_ffi_fn_method_clientbuilder_enable_share_history_on_invite(`ptr`: Long,`enableShareHistoryOnInvite`: Byte,uniffi_out_err: UniffiRustCallStatus, 
 ): Long
@@ -9418,6 +9429,8 @@ public interface ClientBuilderInterface {
     
     fun `dmRoomDefinition`(`dmRoomDefinition`: DmRoomDefinition): ClientBuilder
     
+    fun `enableContentScanner`(`scannerUrl`: kotlin.String): ClientBuilder
+    
     /**
      * Set whether to enable the experimental support for sending and receiving
      * encrypted room history on invite, per [MSC4268].
@@ -9774,6 +9787,19 @@ open class ClientBuilder: Disposable, AutoCloseable, ClientBuilderInterface
     UniffiLib.uniffi_matrix_sdk_ffi_fn_method_clientbuilder_dm_room_definition(
         it,
         FfiConverterTypeDmRoomDefinition.lower(`dmRoomDefinition`),_status)
+}
+    }
+    )
+    }
+    
+
+    override fun `enableContentScanner`(`scannerUrl`: kotlin.String): ClientBuilder {
+            return FfiConverterTypeClientBuilder.lift(
+    callWithHandle {
+    uniffiRustCall() { _status ->
+    UniffiLib.uniffi_matrix_sdk_ffi_fn_method_clientbuilder_enable_content_scanner(
+        it,
+        FfiConverterString.lower(`scannerUrl`),_status)
 }
     }
     )
@@ -41597,6 +41623,16 @@ sealed class ClientException: kotlin.Exception() {
             get() = "kind=${ `kind` }, code=${ `code` }, msg=${ `msg` }, details=${ `details` }"
     }
     
+    class ContentScanner(
+        
+        val `reason`: ErrorReason, 
+        
+        val `info`: kotlin.String
+        ) : ClientException() {
+        override val message
+            get() = "reason=${ `reason` }, info=${ `info` }"
+    }
+    
 
     
 
@@ -41626,6 +41662,10 @@ public object FfiConverterTypeClientError : FfiConverterRustBuffer<ClientExcepti
                 FfiConverterString.read(buf),
                 FfiConverterOptionalString.read(buf),
                 )
+            3 -> ClientException.ContentScanner(
+                FfiConverterTypeErrorReason.read(buf),
+                FfiConverterString.read(buf),
+                )
             else -> throw RuntimeException("invalid error enum value, something is very wrong!!")
         }
     }
@@ -41646,6 +41686,12 @@ public object FfiConverterTypeClientError : FfiConverterRustBuffer<ClientExcepti
                 + FfiConverterString.allocationSize(value.`msg`)
                 + FfiConverterOptionalString.allocationSize(value.`details`)
             )
+            is ClientException.ContentScanner -> (
+                // Add the size for the Int that specifies the variant plus the size needed for all fields
+                4UL
+                + FfiConverterTypeErrorReason.allocationSize(value.`reason`)
+                + FfiConverterString.allocationSize(value.`info`)
+            )
         }
     }
 
@@ -41663,6 +41709,12 @@ public object FfiConverterTypeClientError : FfiConverterRustBuffer<ClientExcepti
                 FfiConverterString.write(value.`code`, buf)
                 FfiConverterString.write(value.`msg`, buf)
                 FfiConverterOptionalString.write(value.`details`, buf)
+                Unit
+            }
+            is ClientException.ContentScanner -> {
+                buf.putInt(3)
+                FfiConverterTypeErrorReason.write(value.`reason`, buf)
+                FfiConverterString.write(value.`info`, buf)
                 Unit
             }
         }.let { /* this makes the `when` an expression, which ensures it is exhaustive */ }
@@ -44218,8 +44270,14 @@ sealed class FilterTimelineEventCondition {
      * The event is an `m.room.member` event that represents a membership
      * change (join, leave, etc.).
      */
-    object MembershipChange : FilterTimelineEventCondition()
-    
+    data class MembershipChange(
+        val `filter`: uniffi.matrix_sdk_ui.MembershipChangeFilter) : FilterTimelineEventCondition()
+        
+    {
+        
+
+        companion object
+    }
     
     /**
      * The event is an `m.room.member` event that represents a profile
@@ -44247,7 +44305,9 @@ public object FfiConverterTypeFilterTimelineEventCondition : FfiConverterRustBuf
             1 -> FilterTimelineEventCondition.EventType(
                 FfiConverterTypeFilterTimelineEventType.read(buf),
                 )
-            2 -> FilterTimelineEventCondition.MembershipChange
+            2 -> FilterTimelineEventCondition.MembershipChange(
+                FfiConverterTypeMembershipChangeFilter.read(buf),
+                )
             3 -> FilterTimelineEventCondition.ProfileChange
             else -> throw RuntimeException("invalid enum value, something is very wrong!!")
         }
@@ -44265,6 +44325,7 @@ public object FfiConverterTypeFilterTimelineEventCondition : FfiConverterRustBuf
             // Add the size for the Int that specifies the variant plus the size needed for all fields
             (
                 4UL
+                + FfiConverterTypeMembershipChangeFilter.allocationSize(value.`filter`)
             )
         }
         is FilterTimelineEventCondition.ProfileChange -> {
@@ -44284,6 +44345,7 @@ public object FfiConverterTypeFilterTimelineEventCondition : FfiConverterRustBuf
             }
             is FilterTimelineEventCondition.MembershipChange -> {
                 buf.putInt(2)
+                FfiConverterTypeMembershipChangeFilter.write(value.`filter`, buf)
                 Unit
             }
             is FilterTimelineEventCondition.ProfileChange -> {
@@ -66977,6 +67039,8 @@ public object FfiConverterMapTypeTimelineEventTypeLong: FfiConverterRustBuffer<M
  */
 public typealias Timestamp = kotlin.ULong
 public typealias FfiConverterTypeTimestamp = FfiConverterULong
+
+
 
 
 
