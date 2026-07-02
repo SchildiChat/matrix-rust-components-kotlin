@@ -70,6 +70,8 @@ import uniffi.matrix_sdk_common.BackgroundTaskFailureReason
 import uniffi.matrix_sdk_common.FfiConverterTypeBackgroundTaskFailureReason
 import uniffi.matrix_sdk_contentscanner.ErrorReason
 import uniffi.matrix_sdk_contentscanner.FfiConverterTypeErrorReason
+import uniffi.matrix_sdk_contentscanner.FfiConverterTypeMediaScanResponse
+import uniffi.matrix_sdk_contentscanner.MediaScanResponse
 import uniffi.matrix_sdk_crypto.CollectStrategy
 import uniffi.matrix_sdk_crypto.DecryptionSettings
 import uniffi.matrix_sdk_crypto.FfiConverterTypeCollectStrategy
@@ -98,6 +100,12 @@ import uniffi.matrix_sdk_ui.ThreadListPaginationState
 import uniffi.matrix_sdk_ui.TimelineEventFocusThreadMode
 import uniffi.matrix_sdk_ui.TimelineEventShieldStateCode
 import uniffi.matrix_sdk_ui.TimelineReadReceiptTracking
+import uniffi.ruma_events.FfiConverterTypeMessageLikeEventType
+import uniffi.ruma_events.FfiConverterTypeRoomAccountDataEventType
+import uniffi.ruma_events.FfiConverterTypeStateEventType
+import uniffi.ruma_events.MessageLikeEventType
+import uniffi.ruma_events.RoomAccountDataEventType
+import uniffi.ruma_events.StateEventType
 import uniffi.matrix_sdk.RustBuffer as RustBufferBackupDownloadStrategy
 import uniffi.matrix_sdk.RustBuffer as RustBufferOAuthAuthorizationData
 import uniffi.matrix_sdk.RustBuffer as RustBufferPaginationStatus
@@ -113,6 +121,7 @@ import uniffi.matrix_sdk_base.RustBuffer as RustBufferEncryptionState
 import uniffi.matrix_sdk_base.RustBuffer as RustBufferMediaRetentionPolicy
 import uniffi.matrix_sdk_common.RustBuffer as RustBufferBackgroundTaskFailureReason
 import uniffi.matrix_sdk_contentscanner.RustBuffer as RustBufferErrorReason
+import uniffi.matrix_sdk_contentscanner.RustBuffer as RustBufferMediaScanResponse
 import uniffi.matrix_sdk_crypto.RustBuffer as RustBufferCollectStrategy
 import uniffi.matrix_sdk_crypto.RustBuffer as RustBufferDecryptionSettings
 import uniffi.matrix_sdk_crypto.RustBuffer as RustBufferIdentityState
@@ -127,6 +136,9 @@ import uniffi.matrix_sdk_ui.RustBuffer as RustBufferThreadListPaginationState
 import uniffi.matrix_sdk_ui.RustBuffer as RustBufferTimelineEventFocusThreadMode
 import uniffi.matrix_sdk_ui.RustBuffer as RustBufferTimelineEventShieldStateCode
 import uniffi.matrix_sdk_ui.RustBuffer as RustBufferTimelineReadReceiptTracking
+import uniffi.ruma_events.RustBuffer as RustBufferMessageLikeEventType
+import uniffi.ruma_events.RustBuffer as RustBufferRoomAccountDataEventType
+import uniffi.ruma_events.RustBuffer as RustBufferStateEventType
 
 // This is a helper for safely working with byte buffers returned from the Rust code.
 // A rust-owned buffer is represented by its capacity, its current length, and a
@@ -1961,6 +1973,8 @@ external fun uniffi_matrix_sdk_ffi_checksum_method_client_can_deactivate_account
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_client_clear_caches(
 ): Short
+external fun uniffi_matrix_sdk_ffi_checksum_method_client_content_scanner(
+): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_client_create_room(
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_client_custom_login_with_jwt(
@@ -2107,6 +2121,8 @@ external fun uniffi_matrix_sdk_ffi_checksum_method_client_set_account_data(
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_client_set_avatar_url(
 ): Short
+external fun uniffi_matrix_sdk_ffi_checksum_method_client_set_content_scanner(
+): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_client_set_delegate(
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_client_set_display_name(
@@ -2116,6 +2132,8 @@ external fun uniffi_matrix_sdk_ffi_checksum_method_client_set_invite_avatars_dis
 external fun uniffi_matrix_sdk_ffi_checksum_method_client_set_media_preview_display_policy(
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_client_set_media_retention_policy(
+): Short
+external fun uniffi_matrix_sdk_ffi_checksum_method_client_set_presence(
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_client_set_pusher(
 ): Short
@@ -2215,8 +2233,6 @@ external fun uniffi_matrix_sdk_ffi_checksum_method_clientbuilder_disable_ssl_ver
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_clientbuilder_dm_room_definition(
 ): Short
-external fun uniffi_matrix_sdk_ffi_checksum_method_clientbuilder_enable_content_scanner(
-): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_clientbuilder_enable_share_history_on_invite(
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_clientbuilder_homeserver_url(
@@ -2250,6 +2266,8 @@ external fun uniffi_matrix_sdk_ffi_checksum_method_clientbuilder_user_agent(
 external fun uniffi_matrix_sdk_ffi_checksum_method_clientbuilder_username(
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_clientbuilder_with_search_index_store(
+): Short
+external fun uniffi_matrix_sdk_ffi_checksum_method_contentscanner_scan(
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_encryption_backup_exists_on_server(
 ): Short
@@ -2430,8 +2448,6 @@ external fun uniffi_matrix_sdk_ffi_checksum_method_room_ban_user(
 external fun uniffi_matrix_sdk_ffi_checksum_method_room_canonical_alias(
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_room_clear_composer_draft(
-): Short
-external fun uniffi_matrix_sdk_ffi_checksum_method_room_clear_event_cache_storage(
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_room_decline_call(
 ): Short
@@ -2971,6 +2987,8 @@ external fun uniffi_matrix_sdk_ffi_checksum_method_widgetdriverhandle_send(
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_constructor_clientbuilder_new(
 ): Short
+external fun uniffi_matrix_sdk_ffi_checksum_constructor_contentscanner_new(
+): Short
 external fun uniffi_matrix_sdk_ffi_checksum_constructor_secretsbundlewithuserid_from_database(
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_constructor_secretsbundlewithuserid_from_str(
@@ -3182,6 +3200,7 @@ internal object UniffiLib {
         uniffi.matrix_sdk_contentscanner.uniffiEnsureInitialized()
         uniffi.matrix_sdk_crypto.uniffiEnsureInitialized()
         uniffi.matrix_sdk_ui.uniffiEnsureInitialized()
+        uniffi.ruma_events.uniffiEnsureInitialized()
         
     }
     external fun uniffi_matrix_sdk_ffi_fn_clone_roommessageeventcontentwithoutrelation(`handle`: Long,uniffi_out_err: UniffiRustCallStatus, 
@@ -3237,6 +3256,8 @@ external fun uniffi_matrix_sdk_ffi_fn_method_client_cached_avatar_url(`ptr`: Lon
 external fun uniffi_matrix_sdk_ffi_fn_method_client_can_deactivate_account(`ptr`: Long,uniffi_out_err: UniffiRustCallStatus, 
 ): Byte
 external fun uniffi_matrix_sdk_ffi_fn_method_client_clear_caches(`ptr`: Long,`syncService`: RustBuffer.ByValue,
+): Long
+external fun uniffi_matrix_sdk_ffi_fn_method_client_content_scanner(`ptr`: Long,
 ): Long
 external fun uniffi_matrix_sdk_ffi_fn_method_client_create_room(`ptr`: Long,`request`: RustBuffer.ByValue,
 ): Long
@@ -3338,7 +3359,7 @@ external fun uniffi_matrix_sdk_ffi_fn_method_client_notification_client(`ptr`: L
 ): Long
 external fun uniffi_matrix_sdk_ffi_fn_method_client_observe_account_data_event(`ptr`: Long,`eventType`: RustBuffer.ByValue,`listener`: Long,uniffi_out_err: UniffiRustCallStatus, 
 ): Long
-external fun uniffi_matrix_sdk_ffi_fn_method_client_observe_room_account_data_event(`ptr`: Long,`roomId`: RustBuffer.ByValue,`eventType`: RustBuffer.ByValue,`listener`: Long,uniffi_out_err: UniffiRustCallStatus, 
+external fun uniffi_matrix_sdk_ffi_fn_method_client_observe_room_account_data_event(`ptr`: Long,`roomId`: RustBuffer.ByValue,`eventType`: RustBufferRoomAccountDataEventType.ByValue,`listener`: Long,uniffi_out_err: UniffiRustCallStatus, 
 ): Long
 external fun uniffi_matrix_sdk_ffi_fn_method_client_optimize_stores(`ptr`: Long,
 ): Long
@@ -3384,6 +3405,8 @@ external fun uniffi_matrix_sdk_ffi_fn_method_client_set_account_data(`ptr`: Long
 ): Long
 external fun uniffi_matrix_sdk_ffi_fn_method_client_set_avatar_url(`ptr`: Long,`url`: RustBuffer.ByValue,
 ): Long
+external fun uniffi_matrix_sdk_ffi_fn_method_client_set_content_scanner(`ptr`: Long,`contentScanner`: RustBuffer.ByValue,
+): Long
 external fun uniffi_matrix_sdk_ffi_fn_method_client_set_delegate(`ptr`: Long,`delegate`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
 ): RustBuffer.ByValue
 external fun uniffi_matrix_sdk_ffi_fn_method_client_set_display_name(`ptr`: Long,`name`: RustBuffer.ByValue,
@@ -3393,6 +3416,8 @@ external fun uniffi_matrix_sdk_ffi_fn_method_client_set_invite_avatars_display_p
 external fun uniffi_matrix_sdk_ffi_fn_method_client_set_media_preview_display_policy(`ptr`: Long,`policy`: RustBuffer.ByValue,
 ): Long
 external fun uniffi_matrix_sdk_ffi_fn_method_client_set_media_retention_policy(`ptr`: Long,`policy`: RustBufferMediaRetentionPolicy.ByValue,
+): Long
+external fun uniffi_matrix_sdk_ffi_fn_method_client_set_presence(`ptr`: Long,`presence`: RustBuffer.ByValue,`immediate`: Byte,
 ): Long
 external fun uniffi_matrix_sdk_ffi_fn_method_client_set_pusher(`ptr`: Long,`identifiers`: RustBuffer.ByValue,`kind`: RustBuffer.ByValue,`appDisplayName`: RustBuffer.ByValue,`deviceDisplayName`: RustBuffer.ByValue,`profileTag`: RustBuffer.ByValue,`lang`: RustBuffer.ByValue,`append`: Byte,
 ): Long
@@ -3448,7 +3473,7 @@ external fun uniffi_matrix_sdk_ffi_fn_method_client_add_recent_emoji(`ptr`: Long
 ): Long
 external fun uniffi_matrix_sdk_ffi_fn_method_client_get_recent_emojis(`ptr`: Long,
 ): Long
-external fun uniffi_matrix_sdk_ffi_fn_method_client_search_messages(`ptr`: Long,`query`: RustBuffer.ByValue,`filter`: RustBuffer.ByValue,`numResultsPerBatch`: Int,
+external fun uniffi_matrix_sdk_ffi_fn_method_client_search_messages(`ptr`: Long,`query`: RustBuffer.ByValue,`filter`: RustBuffer.ByValue,
 ): Long
 external fun uniffi_matrix_sdk_ffi_fn_clone_homeservercapabilities(`handle`: Long,uniffi_out_err: UniffiRustCallStatus, 
 ): Long
@@ -3506,8 +3531,6 @@ external fun uniffi_matrix_sdk_ffi_fn_method_clientbuilder_disable_ssl_verificat
 ): Long
 external fun uniffi_matrix_sdk_ffi_fn_method_clientbuilder_dm_room_definition(`ptr`: Long,`dmRoomDefinition`: RustBufferDmRoomDefinition.ByValue,uniffi_out_err: UniffiRustCallStatus, 
 ): Long
-external fun uniffi_matrix_sdk_ffi_fn_method_clientbuilder_enable_content_scanner(`ptr`: Long,`scannerUrl`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
-): Long
 external fun uniffi_matrix_sdk_ffi_fn_method_clientbuilder_enable_share_history_on_invite(`ptr`: Long,`enableShareHistoryOnInvite`: Byte,uniffi_out_err: UniffiRustCallStatus, 
 ): Long
 external fun uniffi_matrix_sdk_ffi_fn_method_clientbuilder_homeserver_url(`ptr`: Long,`url`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
@@ -3541,6 +3564,14 @@ external fun uniffi_matrix_sdk_ffi_fn_method_clientbuilder_user_agent(`ptr`: Lon
 external fun uniffi_matrix_sdk_ffi_fn_method_clientbuilder_username(`ptr`: Long,`username`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
 ): Long
 external fun uniffi_matrix_sdk_ffi_fn_method_clientbuilder_with_search_index_store(`ptr`: Long,`path`: RustBuffer.ByValue,`password`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
+): Long
+external fun uniffi_matrix_sdk_ffi_fn_clone_contentscanner(`handle`: Long,uniffi_out_err: UniffiRustCallStatus, 
+): Long
+external fun uniffi_matrix_sdk_ffi_fn_free_contentscanner(`handle`: Long,uniffi_out_err: UniffiRustCallStatus, 
+): Unit
+external fun uniffi_matrix_sdk_ffi_fn_constructor_contentscanner_new(`scannerUrl`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
+): Long
+external fun uniffi_matrix_sdk_ffi_fn_method_contentscanner_scan(`ptr`: Long,`client`: Long,`mediaSource`: Long,
 ): Long
 external fun uniffi_matrix_sdk_ffi_fn_clone_encryption(`handle`: Long,uniffi_out_err: UniffiRustCallStatus, 
 ): Long
@@ -3794,8 +3825,6 @@ external fun uniffi_matrix_sdk_ffi_fn_method_room_canonical_alias(`ptr`: Long,un
 ): RustBuffer.ByValue
 external fun uniffi_matrix_sdk_ffi_fn_method_room_clear_composer_draft(`ptr`: Long,`threadRoot`: RustBuffer.ByValue,
 ): Long
-external fun uniffi_matrix_sdk_ffi_fn_method_room_clear_event_cache_storage(`ptr`: Long,
-): Long
 external fun uniffi_matrix_sdk_ffi_fn_method_room_decline_call(`ptr`: Long,`rtcNotificationEventId`: RustBuffer.ByValue,
 ): Long
 external fun uniffi_matrix_sdk_ffi_fn_method_room_discard_room_key(`ptr`: Long,
@@ -3996,7 +4025,7 @@ external fun uniffi_matrix_sdk_ffi_fn_method_room_upload_avatar(`ptr`: Long,`mim
 ): Long
 external fun uniffi_matrix_sdk_ffi_fn_method_room_withdraw_verification_and_resend(`ptr`: Long,`userIds`: RustBuffer.ByValue,`sendHandle`: Long,
 ): Long
-external fun uniffi_matrix_sdk_ffi_fn_method_room_search_messages(`ptr`: Long,`query`: RustBuffer.ByValue,`numResultsPerBatch`: Int,uniffi_out_err: UniffiRustCallStatus, 
+external fun uniffi_matrix_sdk_ffi_fn_method_room_search_messages(`ptr`: Long,`query`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
 ): Long
 external fun uniffi_matrix_sdk_ffi_fn_clone_roommembersiterator(`handle`: Long,uniffi_out_err: UniffiRustCallStatus, 
 ): Long
@@ -4022,9 +4051,9 @@ external fun uniffi_matrix_sdk_ffi_fn_method_roompowerlevels_can_own_user_redact
 ): Byte
 external fun uniffi_matrix_sdk_ffi_fn_method_roompowerlevels_can_own_user_redact_own(`ptr`: Long,uniffi_out_err: UniffiRustCallStatus, 
 ): Byte
-external fun uniffi_matrix_sdk_ffi_fn_method_roompowerlevels_can_own_user_send_message(`ptr`: Long,`message`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
+external fun uniffi_matrix_sdk_ffi_fn_method_roompowerlevels_can_own_user_send_message(`ptr`: Long,`message`: RustBufferMessageLikeEventType.ByValue,uniffi_out_err: UniffiRustCallStatus, 
 ): Byte
-external fun uniffi_matrix_sdk_ffi_fn_method_roompowerlevels_can_own_user_send_state(`ptr`: Long,`stateEvent`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
+external fun uniffi_matrix_sdk_ffi_fn_method_roompowerlevels_can_own_user_send_state(`ptr`: Long,`stateEvent`: RustBufferStateEventType.ByValue,uniffi_out_err: UniffiRustCallStatus, 
 ): Byte
 external fun uniffi_matrix_sdk_ffi_fn_method_roompowerlevels_can_own_user_trigger_room_notification(`ptr`: Long,uniffi_out_err: UniffiRustCallStatus, 
 ): Byte
@@ -4040,9 +4069,9 @@ external fun uniffi_matrix_sdk_ffi_fn_method_roompowerlevels_can_user_redact_oth
 ): Byte
 external fun uniffi_matrix_sdk_ffi_fn_method_roompowerlevels_can_user_redact_own(`ptr`: Long,`userId`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
 ): Byte
-external fun uniffi_matrix_sdk_ffi_fn_method_roompowerlevels_can_user_send_message(`ptr`: Long,`userId`: RustBuffer.ByValue,`message`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
+external fun uniffi_matrix_sdk_ffi_fn_method_roompowerlevels_can_user_send_message(`ptr`: Long,`userId`: RustBuffer.ByValue,`message`: RustBufferMessageLikeEventType.ByValue,uniffi_out_err: UniffiRustCallStatus, 
 ): Byte
-external fun uniffi_matrix_sdk_ffi_fn_method_roompowerlevels_can_user_send_state(`ptr`: Long,`userId`: RustBuffer.ByValue,`stateEvent`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
+external fun uniffi_matrix_sdk_ffi_fn_method_roompowerlevels_can_user_send_state(`ptr`: Long,`userId`: RustBuffer.ByValue,`stateEvent`: RustBufferStateEventType.ByValue,uniffi_out_err: UniffiRustCallStatus, 
 ): Byte
 external fun uniffi_matrix_sdk_ffi_fn_method_roompowerlevels_can_user_trigger_room_notification(`ptr`: Long,`userId`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
 ): Byte
@@ -4580,11 +4609,11 @@ external fun uniffi_matrix_sdk_ffi_fn_init_callback_vtable_unabletodecryptdelega
 ): Unit
 external fun uniffi_matrix_sdk_ffi_fn_init_callback_vtable_widgetcapabilitiesprovider(`vtable`: UniffiVTableCallbackInterfaceWidgetCapabilitiesProvider,
 ): Unit
-external fun uniffi_matrix_sdk_ffi_fn_method_timelineeventtype_uniffi_trait_eq_eq(`ptr`: RustBuffer.ByValue,`other`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
+external fun uniffi_matrix_sdk_ffi_fn_method_ffitimelineeventtype_uniffi_trait_eq_eq(`ptr`: RustBuffer.ByValue,`other`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
 ): Byte
-external fun uniffi_matrix_sdk_ffi_fn_method_timelineeventtype_uniffi_trait_eq_ne(`ptr`: RustBuffer.ByValue,`other`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
+external fun uniffi_matrix_sdk_ffi_fn_method_ffitimelineeventtype_uniffi_trait_eq_ne(`ptr`: RustBuffer.ByValue,`other`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
 ): Byte
-external fun uniffi_matrix_sdk_ffi_fn_method_timelineeventtype_uniffi_trait_hash(`ptr`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
+external fun uniffi_matrix_sdk_ffi_fn_method_ffitimelineeventtype_uniffi_trait_hash(`ptr`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
 ): Long
 external fun uniffi_matrix_sdk_ffi_fn_method_tagname_uniffi_trait_eq_eq(`ptr`: RustBuffer.ByValue,`other`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
 ): Byte
@@ -5793,6 +5822,11 @@ public interface ClientInterface {
      */
     suspend fun `clearCaches`(`syncService`: SyncService?)
     
+    /**
+     * Returns the currently used [`ContentScanner`] instance, if any.
+     */
+    suspend fun `contentScanner`(): ContentScanner?
+    
     suspend fun `createRoom`(`request`: CreateRoomParameters): kotlin.String
     
     /**
@@ -6251,6 +6285,12 @@ public interface ClientInterface {
     suspend fun `setAvatarUrl`(`url`: kotlin.String)
     
     /**
+     * Enables or disables the content scanner feature using the provided
+     * [`ContentScanner`] instance.
+     */
+    suspend fun `setContentScanner`(`contentScanner`: ContentScanner?)
+    
+    /**
      * Sets the [ClientDelegate] which will inform about authentication errors.
      * Returns an error if the delegate was already set.
      */
@@ -6272,6 +6312,16 @@ public interface ClientInterface {
      * Set the media retention policy.
      */
     suspend fun `setMediaRetentionPolicy`(`policy`: MediaRetentionPolicy)
+    
+    /**
+     * Set the presence state for the current user.
+     *
+     * This updates the presence state used by future generated sync requests,
+     * regardless of `immediate`. The initial default is `Unavailable`. If
+     * `immediate` is `true`, it also sends an immediate presence update to the
+     * homeserver.
+     */
+    suspend fun `setPresence`(`presence`: PresenceState, `immediate`: kotlin.Boolean)
     
     /**
      * Registers a pusher with given parameters
@@ -6461,7 +6511,7 @@ public interface ClientInterface {
      * Search across all all rooms for the given query, returning an iterator
      * over the results.
      */
-    suspend fun `searchMessages`(`query`: kotlin.String, `filter`: SearchRoomFilter, `numResultsPerBatch`: kotlin.UInt): GlobalSearchIterator
+    suspend fun `searchMessages`(`query`: kotlin.String, `filter`: SearchRoomFilter): GlobalSearchIterator
     
     companion object
 }
@@ -6825,6 +6875,29 @@ open class Client: Disposable, AutoCloseable, ClientInterface
         
         // Error FFI converter
         ClientException.ErrorHandler,
+    )
+    }
+
+    
+    /**
+     * Returns the currently used [`ContentScanner`] instance, if any.
+     */
+    @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
+    override suspend fun `contentScanner`() : ContentScanner? {
+        return uniffiRustCallAsync(
+        callWithHandle { uniffiHandle ->
+            UniffiLib.uniffi_matrix_sdk_ffi_fn_method_client_content_scanner(
+                uniffiHandle,
+                
+            )
+        },
+        { future, callback, continuation -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_poll_rust_buffer(future, callback, continuation) },
+        { future, continuation -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_complete_rust_buffer(future, continuation) },
+        { future -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_free_rust_buffer(future) },
+        // lift function
+        { FfiConverterOptionalTypeContentScanner.lift(it) },
+        // Error FFI converter
+        UniffiNullRustCallStatusErrorHandler,
     )
     }
 
@@ -8559,6 +8632,31 @@ open class Client: Disposable, AutoCloseable, ClientInterface
 
     
     /**
+     * Enables or disables the content scanner feature using the provided
+     * [`ContentScanner`] instance.
+     */
+    @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
+    override suspend fun `setContentScanner`(`contentScanner`: ContentScanner?) {
+        return uniffiRustCallAsync(
+        callWithHandle { uniffiHandle ->
+            UniffiLib.uniffi_matrix_sdk_ffi_fn_method_client_set_content_scanner(
+                uniffiHandle,
+                FfiConverterOptionalTypeContentScanner.lower(`contentScanner`),
+            )
+        },
+        { future, callback, continuation -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_poll_void(future, callback, continuation) },
+        { future, continuation -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_complete_void(future, continuation) },
+        { future -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_free_void(future) },
+        // lift function
+        { Unit },
+        
+        // Error FFI converter
+        UniffiNullRustCallStatusErrorHandler,
+    )
+    }
+
+    
+    /**
      * Sets the [ClientDelegate] which will inform about authentication errors.
      * Returns an error if the delegate was already set.
      */
@@ -8659,6 +8757,36 @@ open class Client: Disposable, AutoCloseable, ClientInterface
             UniffiLib.uniffi_matrix_sdk_ffi_fn_method_client_set_media_retention_policy(
                 uniffiHandle,
                 FfiConverterTypeMediaRetentionPolicy.lower(`policy`),
+            )
+        },
+        { future, callback, continuation -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_poll_void(future, callback, continuation) },
+        { future, continuation -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_complete_void(future, continuation) },
+        { future -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_free_void(future) },
+        // lift function
+        { Unit },
+        
+        // Error FFI converter
+        ClientException.ErrorHandler,
+    )
+    }
+
+    
+    /**
+     * Set the presence state for the current user.
+     *
+     * This updates the presence state used by future generated sync requests,
+     * regardless of `immediate`. The initial default is `Unavailable`. If
+     * `immediate` is `true`, it also sends an immediate presence update to the
+     * homeserver.
+     */
+    @Throws(ClientException::class)
+    @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
+    override suspend fun `setPresence`(`presence`: PresenceState, `immediate`: kotlin.Boolean) {
+        return uniffiRustCallAsync(
+        callWithHandle { uniffiHandle ->
+            UniffiLib.uniffi_matrix_sdk_ffi_fn_method_client_set_presence(
+                uniffiHandle,
+                FfiConverterTypePresenceState.lower(`presence`),FfiConverterBoolean.lower(`immediate`),
             )
         },
         { future, callback, continuation -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_poll_void(future, callback, continuation) },
@@ -9305,12 +9433,12 @@ open class Client: Disposable, AutoCloseable, ClientInterface
      */
     @Throws(ClientException::class)
     @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
-    override suspend fun `searchMessages`(`query`: kotlin.String, `filter`: SearchRoomFilter, `numResultsPerBatch`: kotlin.UInt) : GlobalSearchIterator {
+    override suspend fun `searchMessages`(`query`: kotlin.String, `filter`: SearchRoomFilter) : GlobalSearchIterator {
         return uniffiRustCallAsync(
         callWithHandle { uniffiHandle ->
             UniffiLib.uniffi_matrix_sdk_ffi_fn_method_client_search_messages(
                 uniffiHandle,
-                FfiConverterString.lower(`query`),FfiConverterTypeSearchRoomFilter.lower(`filter`),FfiConverterUInt.lower(`numResultsPerBatch`),
+                FfiConverterString.lower(`query`),FfiConverterTypeSearchRoomFilter.lower(`filter`),
             )
         },
         { future, callback, continuation -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_poll_u64(future, callback, continuation) },
@@ -9497,8 +9625,6 @@ public interface ClientBuilderInterface {
     fun `disableSslVerification`(): ClientBuilder
     
     fun `dmRoomDefinition`(`dmRoomDefinition`: DmRoomDefinition): ClientBuilder
-    
-    fun `enableContentScanner`(`scannerUrl`: kotlin.String): ClientBuilder
     
     /**
      * Set whether to enable the experimental support for sending and receiving
@@ -9862,19 +9988,6 @@ open class ClientBuilder: Disposable, AutoCloseable, ClientBuilderInterface
     }
     
 
-    override fun `enableContentScanner`(`scannerUrl`: kotlin.String): ClientBuilder {
-            return FfiConverterTypeClientBuilder.lift(
-    callWithHandle {
-    uniffiRustCall() { _status ->
-    UniffiLib.uniffi_matrix_sdk_ffi_fn_method_clientbuilder_enable_content_scanner(
-        it,
-        FfiConverterString.lower(`scannerUrl`),_status)
-}
-    }
-    )
-    }
-    
-
     
     /**
      * Set whether to enable the experimental support for sending and receiving
@@ -10183,6 +10296,283 @@ public object FfiConverterTypeClientBuilder: FfiConverter<ClientBuilder, Long> {
     override fun allocationSize(value: ClientBuilder) = 8UL
 
     override fun write(value: ClientBuilder, buf: ByteBuffer) {
+        buf.putLong(lower(value))
+    }
+}
+
+
+// This template implements a class for working with a Rust struct via a handle
+// to the live Rust struct on the other side of the FFI.
+//
+// There's some subtlety here, because we have to be careful not to operate on a Rust
+// struct after it has been dropped, and because we must expose a public API for freeing
+// theq Kotlin wrapper object in lieu of reliable finalizers. The core requirements are:
+//
+//   * Each instance holds an opaque handle to the underlying Rust struct.
+//     Method calls need to read this handle from the object's state and pass it in to
+//     the Rust FFI.
+//
+//   * When an instance is no longer needed, its handle should be passed to a
+//     special destructor function provided by the Rust FFI, which will drop the
+//     underlying Rust struct.
+//
+//   * Given an instance, calling code is expected to call the special
+//     `destroy` method in order to free it after use, either by calling it explicitly
+//     or by using a higher-level helper like the `use` method. Failing to do so risks
+//     leaking the underlying Rust struct.
+//
+//   * We can't assume that calling code will do the right thing, and must be prepared
+//     to handle Kotlin method calls executing concurrently with or even after a call to
+//     `destroy`, and to handle multiple (possibly concurrent!) calls to `destroy`.
+//
+//   * We must never allow Rust code to operate on the underlying Rust struct after
+//     the destructor has been called, and must never call the destructor more than once.
+//     Doing so may trigger memory unsafety.
+//
+//   * To mitigate many of the risks of leaking memory and use-after-free unsafety, a `Cleaner`
+//     is implemented to call the destructor when the Kotlin object becomes unreachable.
+//     This is done in a background thread. This is not a panacea, and client code should be aware that
+//      1. the thread may starve if some there are objects that have poorly performing
+//     `drop` methods or do significant work in their `drop` methods.
+//      2. the thread is shared across the whole library. This can be tuned by using `android_cleaner = true`,
+//         or `android = true` in the [`kotlin` section of the `uniffi.toml` file](https://mozilla.github.io/uniffi-rs/kotlin/configuration.html).
+//
+// If we try to implement this with mutual exclusion on access to the handle, there is the
+// possibility of a race between a method call and a concurrent call to `destroy`:
+//
+//    * Thread A starts a method call, reads the value of the handle, but is interrupted
+//      before it can pass the handle over the FFI to Rust.
+//    * Thread B calls `destroy` and frees the underlying Rust struct.
+//    * Thread A resumes, passing the already-read handle value to Rust and triggering
+//      a use-after-free.
+//
+// One possible solution would be to use a `ReadWriteLock`, with each method call taking
+// a read lock (and thus allowed to run concurrently) and the special `destroy` method
+// taking a write lock (and thus blocking on live method calls). However, we aim not to
+// generate methods with any hidden blocking semantics, and a `destroy` method that might
+// block if called incorrectly seems to meet that bar.
+//
+// So, we achieve our goals by giving each instance an associated `AtomicLong` counter to track
+// the number of in-flight method calls, and an `AtomicBoolean` flag to indicate whether `destroy`
+// has been called. These are updated according to the following rules:
+//
+//    * The initial value of the counter is 1, indicating a live object with no in-flight calls.
+//      The initial value for the flag is false.
+//
+//    * At the start of each method call, we atomically check the counter.
+//      If it is 0 then the underlying Rust struct has already been destroyed and the call is aborted.
+//      If it is nonzero them we atomically increment it by 1 and proceed with the method call.
+//
+//    * At the end of each method call, we atomically decrement and check the counter.
+//      If it has reached zero then we destroy the underlying Rust struct.
+//
+//    * When `destroy` is called, we atomically flip the flag from false to true.
+//      If the flag was already true we silently fail.
+//      Otherwise we atomically decrement and check the counter.
+//      If it has reached zero then we destroy the underlying Rust struct.
+//
+// Astute readers may observe that this all sounds very similar to the way that Rust's `Arc<T>` works,
+// and indeed it is, with the addition of a flag to guard against multiple calls to `destroy`.
+//
+// The overall effect is that the underlying Rust struct is destroyed only when `destroy` has been
+// called *and* all in-flight method calls have completed, avoiding violating any of the expectations
+// of the underlying Rust code.
+//
+// This makes a cleaner a better alternative to _not_ calling `destroy()` as
+// and when the object is finished with, but the abstraction is not perfect: if the Rust object's `drop`
+// method is slow, and/or there are many objects to cleanup, and it's on a low end Android device, then the cleaner
+// thread may be starved, and the app will leak memory.
+//
+// In this case, `destroy`ing manually may be a better solution.
+//
+// The cleaner can live side by side with the manual calling of `destroy`. In the order of responsiveness, uniffi objects
+// with Rust peers are reclaimed:
+//
+// 1. By calling the `destroy` method of the object, which calls `rustObject.free()`. If that doesn't happen:
+// 2. When the object becomes unreachable, AND the Cleaner thread gets to call `rustObject.free()`. If the thread is starved then:
+// 3. The memory is reclaimed when the process terminates.
+//
+// [1] https://stackoverflow.com/questions/24376768/can-java-finalize-an-object-when-it-is-still-in-scope/24380219
+//
+
+
+public interface ContentScannerInterface {
+    
+    /**
+     * Scan a media source, returning a [`MediaScanResponse`] with the scan
+     * result, or an error if something failed when trying to scan the media.
+     */
+    suspend fun `scan`(`client`: Client, `mediaSource`: MediaSource): MediaScanResponse
+    
+    companion object
+}
+
+open class ContentScanner: Disposable, AutoCloseable, ContentScannerInterface
+{
+
+    @Suppress("UNUSED_PARAMETER")
+    /**
+     * @suppress
+     */
+    constructor(withHandle: UniffiWithHandle, handle: Long) {
+        this.handle = handle
+        this.cleanable = UniffiLib.CLEANER.register(this, UniffiCleanAction(handle))
+    }
+
+    /**
+     * @suppress
+     *
+     * This constructor can be used to instantiate a fake object. Only used for tests. Any
+     * attempt to actually use an object constructed this way will fail as there is no
+     * connected Rust object.
+     */
+    @Suppress("UNUSED_PARAMETER")
+    constructor(noHandle: NoHandle) {
+        this.handle = 0
+        this.cleanable = null
+    }
+    /**
+     * Instantiate a new [`ContentScanner`] using the `scanner_url`.
+     */
+    constructor(`scannerUrl`: kotlin.String) :
+        this(UniffiWithHandle, 
+    uniffiRustCall() { _status ->
+    UniffiLib.uniffi_matrix_sdk_ffi_fn_constructor_contentscanner_new(
+    
+        FfiConverterString.lower(`scannerUrl`),_status)
+}
+    )
+
+    protected val handle: Long
+    protected val cleanable: UniffiCleaner.Cleanable?
+
+    private val wasDestroyed = AtomicBoolean(false)
+    private val callCounter = AtomicLong(1)
+
+    override fun destroy() {
+        // Only allow a single call to this method.
+        // TODO: maybe we should log a warning if called more than once?
+        if (this.wasDestroyed.compareAndSet(false, true)) {
+            // This decrement always matches the initial count of 1 given at creation time.
+            if (this.callCounter.decrementAndGet() == 0L) {
+                cleanable?.clean()
+            }
+        }
+    }
+
+    @Synchronized
+    override fun close() {
+        this.destroy()
+    }
+
+    internal inline fun <R> callWithHandle(block: (handle: Long) -> R): R {
+        // Check and increment the call counter, to keep the object alive.
+        // This needs a compare-and-set retry loop in case of concurrent updates.
+        do {
+            val c = this.callCounter.get()
+            if (c == 0L) {
+                throw IllegalStateException("${this.javaClass.simpleName} object has already been destroyed")
+            }
+            if (c == Long.MAX_VALUE) {
+                throw IllegalStateException("${this.javaClass.simpleName} call counter would overflow")
+            }
+        } while (! this.callCounter.compareAndSet(c, c + 1L))
+        // Now we can safely do the method call without the handle being freed concurrently.
+        try {
+            return block(this.uniffiCloneHandle())
+        } finally {
+            // This decrement always matches the increment we performed above.
+            if (this.callCounter.decrementAndGet() == 0L) {
+                cleanable?.clean()
+            }
+        }
+    }
+
+    // Use a static inner class instead of a closure so as not to accidentally
+    // capture `this` as part of the cleanable's action.
+    private class UniffiCleanAction(private val handle: Long) : Runnable {
+        override fun run() {
+            if (handle == 0.toLong()) {
+                // Fake object created with `NoHandle`, don't try to free.
+                return;
+            }
+            uniffiRustCall { status ->
+                UniffiLib.uniffi_matrix_sdk_ffi_fn_free_contentscanner(handle, status)
+            }
+        }
+    }
+
+    /**
+     * @suppress
+     */
+    fun uniffiCloneHandle(): Long {
+        if (handle == 0.toLong()) {
+            throw InternalException("uniffiCloneHandle() called on NoHandle object");
+        }
+        return uniffiRustCall() { status ->
+            UniffiLib.uniffi_matrix_sdk_ffi_fn_clone_contentscanner(handle, status)
+        }
+    }
+
+    
+    /**
+     * Scan a media source, returning a [`MediaScanResponse`] with the scan
+     * result, or an error if something failed when trying to scan the media.
+     */
+    @Throws(ClientException::class)
+    @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
+    override suspend fun `scan`(`client`: Client, `mediaSource`: MediaSource) : MediaScanResponse {
+        return uniffiRustCallAsync(
+        callWithHandle { uniffiHandle ->
+            UniffiLib.uniffi_matrix_sdk_ffi_fn_method_contentscanner_scan(
+                uniffiHandle,
+                FfiConverterTypeClient.lower(`client`),FfiConverterTypeMediaSource.lower(`mediaSource`),
+            )
+        },
+        { future, callback, continuation -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_poll_rust_buffer(future, callback, continuation) },
+        { future, continuation -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_complete_rust_buffer(future, continuation).let { RustBufferMediaScanResponse.create(it.capacity.toULong(), it.len.toULong(), it.data) } },
+        { future -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_free_rust_buffer(future) },
+        // lift function
+        { FfiConverterTypeMediaScanResponse.lift(it) },
+        // Error FFI converter
+        ClientException.ErrorHandler,
+    )
+    }
+
+    
+
+    
+
+
+    
+    
+    /**
+     * @suppress
+     */
+    companion object
+    
+}
+
+
+/**
+ * @suppress
+ */
+public object FfiConverterTypeContentScanner: FfiConverter<ContentScanner, Long> {
+    override fun lower(value: ContentScanner): Long {
+        return value.uniffiCloneHandle()
+    }
+
+    override fun lift(value: Long): ContentScanner {
+        return ContentScanner(UniffiWithHandle, value)
+    }
+
+    override fun read(buf: ByteBuffer): ContentScanner {
+        return lift(buf.getLong())
+    }
+
+    override fun allocationSize(value: ContentScanner) = 8UL
+
+    override fun write(value: ContentScanner, buf: ByteBuffer) {
         buf.putLong(lower(value))
     }
 }
@@ -11170,8 +11560,8 @@ public object FfiConverterTypeEncryption: FfiConverter<Encryption, Long> {
 public interface GlobalSearchIteratorInterface {
     
     /**
-     * Return a list of events for the next batch of search results, or `None`
-     * if there are no more results.
+     * Return the next page of search results, or `None` if there are no more
+     * results.
      */
     suspend fun `nextEvents`(): List<GlobalSearchResult>?
     
@@ -11276,8 +11666,8 @@ open class GlobalSearchIterator: Disposable, AutoCloseable, GlobalSearchIterator
 
     
     /**
-     * Return a list of events for the next batch of search results, or `None`
-     * if there are no more results.
+     * Return the next page of search results, or `None` if there are no more
+     * results.
      */
     @Throws(SearchException::class)
     @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
@@ -17117,14 +17507,6 @@ public interface RoomInterface {
     suspend fun `clearComposerDraft`(`threadRoot`: kotlin.String?)
     
     /**
-     * Clear the event cache storage for the current room.
-     *
-     * This will remove all the information related to the event cache, in
-     * memory and in the persisted storage, if enabled.
-     */
-    suspend fun `clearEventCacheStorage`()
-    
-    /**
      * Declines a call (and stop ringing).
      *
      * # Arguments
@@ -17711,10 +18093,9 @@ public interface RoomInterface {
     
     /**
      * Search for messages in this room matching the given query, returning an
-     * iterator over the results that yields `num_results_per_batch` results at
-     * a time.
+     * iterator that yields one page of results at a time.
      */
-    fun `searchMessages`(`query`: kotlin.String, `numResultsPerBatch`: kotlin.UInt): RoomSearchIterator
+    fun `searchMessages`(`query`: kotlin.String): RoomSearchIterator
     
     companion object
 }
@@ -17998,34 +18379,6 @@ open class Room: Disposable, AutoCloseable, RoomInterface
             UniffiLib.uniffi_matrix_sdk_ffi_fn_method_room_clear_composer_draft(
                 uniffiHandle,
                 FfiConverterOptionalString.lower(`threadRoot`),
-            )
-        },
-        { future, callback, continuation -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_poll_void(future, callback, continuation) },
-        { future, continuation -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_complete_void(future, continuation) },
-        { future -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_free_void(future) },
-        // lift function
-        { Unit },
-        
-        // Error FFI converter
-        ClientException.ErrorHandler,
-    )
-    }
-
-    
-    /**
-     * Clear the event cache storage for the current room.
-     *
-     * This will remove all the information related to the event cache, in
-     * memory and in the persisted storage, if enabled.
-     */
-    @Throws(ClientException::class)
-    @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
-    override suspend fun `clearEventCacheStorage`() {
-        return uniffiRustCallAsync(
-        callWithHandle { uniffiHandle ->
-            UniffiLib.uniffi_matrix_sdk_ffi_fn_method_room_clear_event_cache_storage(
-                uniffiHandle,
-                
             )
         },
         { future, callback, continuation -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_poll_void(future, callback, continuation) },
@@ -20380,15 +20733,14 @@ open class Room: Disposable, AutoCloseable, RoomInterface
     
     /**
      * Search for messages in this room matching the given query, returning an
-     * iterator over the results that yields `num_results_per_batch` results at
-     * a time.
-     */override fun `searchMessages`(`query`: kotlin.String, `numResultsPerBatch`: kotlin.UInt): RoomSearchIterator {
+     * iterator that yields one page of results at a time.
+     */override fun `searchMessages`(`query`: kotlin.String): RoomSearchIterator {
             return FfiConverterTypeRoomSearchIterator.lift(
     callWithHandle {
     uniffiRustCall() { _status ->
     UniffiLib.uniffi_matrix_sdk_ffi_fn_method_room_search_messages(
         it,
-        FfiConverterString.lower(`query`),FfiConverterUInt.lower(`numResultsPerBatch`),_status)
+        FfiConverterString.lower(`query`),_status)
 }
     }
     )
@@ -22753,7 +23105,7 @@ public interface RoomPowerLevelsInterface {
      */
     fun `canUserTriggerRoomNotification`(`userId`: kotlin.String): kotlin.Boolean
     
-    fun `events`(): Map<TimelineEventType, kotlin.Long>
+    fun `events`(): Map<FfiTimelineEventType, kotlin.Long>
     
     /**
      * Gets a map with the `UserId` of users with power levels other than `0`
@@ -23192,8 +23544,8 @@ open class RoomPowerLevels: Disposable, AutoCloseable, RoomPowerLevelsInterface
     }
     
 
-    override fun `events`(): Map<TimelineEventType, kotlin.Long> {
-            return FfiConverterMapTypeTimelineEventTypeLong.lift(
+    override fun `events`(): Map<FfiTimelineEventType, kotlin.Long> {
+            return FfiConverterMapTypeFfiTimelineEventTypeLong.lift(
     callWithHandle {
     uniffiRustCall() { _status ->
     UniffiLib.uniffi_matrix_sdk_ffi_fn_method_roompowerlevels_events(
@@ -23764,8 +24116,8 @@ public object FfiConverterTypeRoomPreview: FfiConverter<RoomPreview, Long> {
 public interface RoomSearchIteratorInterface {
     
     /**
-     * Return a list of events for the next batch of search results, or `None`
-     * if there are no more results.
+     * Return the next page of search results, or `None` if there are no more
+     * results.
      */
     suspend fun `nextEvents`(): List<RoomSearchResult>?
     
@@ -23870,8 +24222,8 @@ open class RoomSearchIterator: Disposable, AutoCloseable, RoomSearchIteratorInte
 
     
     /**
-     * Return a list of events for the next batch of search results, or `None`
-     * if there are no more results.
+     * Return the next page of search results, or `None` if there are no more
+     * results.
      */
     @Throws(SearchException::class)
     @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
@@ -44655,6 +45007,156 @@ public object FfiConverterTypeEventSendState : FfiConverterRustBuffer<EventSendS
 
 
 /**
+ * The timeline event type.
+ */
+sealed class FfiTimelineEventType {
+    
+    /**
+     * The event is a message-like one and should be displayed as such.
+     */
+    data class MessageLike(
+        val `value`: uniffi.ruma_events.MessageLikeEventType) : FfiTimelineEventType()
+        
+    {
+        
+
+    // The local Rust `Eq` implementation - only `eq` is used.
+    override fun equals(other: Any?): Boolean {
+        if (other !is FfiTimelineEventType) return false
+        return FfiConverterBoolean.lift(
+    uniffiRustCall() { _status ->
+    UniffiLib.uniffi_matrix_sdk_ffi_fn_method_ffitimelineeventtype_uniffi_trait_eq_eq(FfiConverterTypeFfiTimelineEventType.lower(this),
+        FfiConverterTypeFfiTimelineEventType.lower(`other`),_status)
+}
+    )
+    }
+    // The local Rust `Hash` implementation
+    override fun hashCode(): Int {
+        return FfiConverterULong.lift(
+    uniffiRustCall() { _status ->
+    UniffiLib.uniffi_matrix_sdk_ffi_fn_method_ffitimelineeventtype_uniffi_trait_hash(FfiConverterTypeFfiTimelineEventType.lower(this),
+        _status)
+}
+    ).toInt()
+    }
+        companion object
+    }
+    
+    /**
+     * The event is a state event, and may or may not be displayed in the
+     * timeline.
+     */
+    data class State(
+        val `value`: uniffi.ruma_events.StateEventType) : FfiTimelineEventType()
+        
+    {
+        
+
+    // The local Rust `Eq` implementation - only `eq` is used.
+    override fun equals(other: Any?): Boolean {
+        if (other !is FfiTimelineEventType) return false
+        return FfiConverterBoolean.lift(
+    uniffiRustCall() { _status ->
+    UniffiLib.uniffi_matrix_sdk_ffi_fn_method_ffitimelineeventtype_uniffi_trait_eq_eq(FfiConverterTypeFfiTimelineEventType.lower(this),
+        FfiConverterTypeFfiTimelineEventType.lower(`other`),_status)
+}
+    )
+    }
+    // The local Rust `Hash` implementation
+    override fun hashCode(): Int {
+        return FfiConverterULong.lift(
+    uniffiRustCall() { _status ->
+    UniffiLib.uniffi_matrix_sdk_ffi_fn_method_ffitimelineeventtype_uniffi_trait_hash(FfiConverterTypeFfiTimelineEventType.lower(this),
+        _status)
+}
+    ).toInt()
+    }
+        companion object
+    }
+    
+
+    
+
+    
+    
+
+    // The local Rust `Eq` implementation - only `eq` is used.
+    override fun equals(other: Any?): Boolean {
+        if (other !is FfiTimelineEventType) return false
+        return FfiConverterBoolean.lift(
+    uniffiRustCall() { _status ->
+    UniffiLib.uniffi_matrix_sdk_ffi_fn_method_ffitimelineeventtype_uniffi_trait_eq_eq(FfiConverterTypeFfiTimelineEventType.lower(this),
+        FfiConverterTypeFfiTimelineEventType.lower(`other`),_status)
+}
+    )
+    }
+    // The local Rust `Hash` implementation
+    override fun hashCode(): Int {
+        return FfiConverterULong.lift(
+    uniffiRustCall() { _status ->
+    UniffiLib.uniffi_matrix_sdk_ffi_fn_method_ffitimelineeventtype_uniffi_trait_hash(FfiConverterTypeFfiTimelineEventType.lower(this),
+        _status)
+}
+    ).toInt()
+    }
+
+    companion object
+}
+
+/**
+ * @suppress
+ */
+public object FfiConverterTypeFfiTimelineEventType : FfiConverterRustBuffer<FfiTimelineEventType>{
+    override fun read(buf: ByteBuffer): FfiTimelineEventType {
+        return when(buf.getInt()) {
+            1 -> FfiTimelineEventType.MessageLike(
+                FfiConverterTypeMessageLikeEventType.read(buf),
+                )
+            2 -> FfiTimelineEventType.State(
+                FfiConverterTypeStateEventType.read(buf),
+                )
+            else -> throw RuntimeException("invalid enum value, something is very wrong!!")
+        }
+    }
+
+    override fun allocationSize(value: FfiTimelineEventType) = when(value) {
+        is FfiTimelineEventType.MessageLike -> {
+            // Add the size for the Int that specifies the variant plus the size needed for all fields
+            (
+                4UL
+                + FfiConverterTypeMessageLikeEventType.allocationSize(value.`value`)
+            )
+        }
+        is FfiTimelineEventType.State -> {
+            // Add the size for the Int that specifies the variant plus the size needed for all fields
+            (
+                4UL
+                + FfiConverterTypeStateEventType.allocationSize(value.`value`)
+            )
+        }
+    }
+
+    override fun write(value: FfiTimelineEventType, buf: ByteBuffer) {
+        when(value) {
+            is FfiTimelineEventType.MessageLike -> {
+                buf.putInt(1)
+                FfiConverterTypeMessageLikeEventType.write(value.`value`, buf)
+                Unit
+            }
+            is FfiTimelineEventType.State -> {
+                buf.putInt(2)
+                FfiConverterTypeStateEventType.write(value.`value`, buf)
+                Unit
+            }
+        }.let { /* this makes the `when` an expression, which ensures it is exhaustive */ }
+    }
+}
+
+
+
+
+
+/**
  * A condition that matches on an event's type or content.
  */
 sealed class FilterTimelineEventCondition {
@@ -44768,7 +45270,7 @@ public object FfiConverterTypeFilterTimelineEventCondition : FfiConverterRustBuf
 sealed class FilterTimelineEventType {
     
     data class MessageLike(
-        val `eventType`: org.matrix.rustcomponents.sdk.MessageLikeEventType) : FilterTimelineEventType()
+        val `eventType`: uniffi.ruma_events.MessageLikeEventType) : FilterTimelineEventType()
         
     {
         
@@ -44777,7 +45279,7 @@ sealed class FilterTimelineEventType {
     }
     
     data class State(
-        val `eventType`: org.matrix.rustcomponents.sdk.StateEventType) : FilterTimelineEventType()
+        val `eventType`: uniffi.ruma_events.StateEventType) : FilterTimelineEventType()
         
     {
         
@@ -48580,611 +49082,6 @@ public object FfiConverterTypeMessageLikeEventContent : FfiConverterRustBuffer<M
 
 
 
-sealed class MessageLikeEventType {
-    
-    object Audio : MessageLikeEventType()
-    
-    
-    object Beacon : MessageLikeEventType()
-    
-    
-    object CallAnswer : MessageLikeEventType()
-    
-    
-    object CallCandidates : MessageLikeEventType()
-    
-    
-    object CallHangup : MessageLikeEventType()
-    
-    
-    object CallInvite : MessageLikeEventType()
-    
-    
-    object CallNegotiate : MessageLikeEventType()
-    
-    
-    object CallNotify : MessageLikeEventType()
-    
-    
-    object CallReject : MessageLikeEventType()
-    
-    
-    object CallSdpStreamMetadataChanged : MessageLikeEventType()
-    
-    
-    object CallSelectAnswer : MessageLikeEventType()
-    
-    
-    object Emote : MessageLikeEventType()
-    
-    
-    object Encrypted : MessageLikeEventType()
-    
-    
-    object File : MessageLikeEventType()
-    
-    
-    object Image : MessageLikeEventType()
-    
-    
-    object KeyVerificationAccept : MessageLikeEventType()
-    
-    
-    object KeyVerificationCancel : MessageLikeEventType()
-    
-    
-    object KeyVerificationDone : MessageLikeEventType()
-    
-    
-    object KeyVerificationKey : MessageLikeEventType()
-    
-    
-    object KeyVerificationMac : MessageLikeEventType()
-    
-    
-    object KeyVerificationReady : MessageLikeEventType()
-    
-    
-    object KeyVerificationStart : MessageLikeEventType()
-    
-    
-    object Location : MessageLikeEventType()
-    
-    
-    object Message : MessageLikeEventType()
-    
-    
-    object PollEnd : MessageLikeEventType()
-    
-    
-    object PollResponse : MessageLikeEventType()
-    
-    
-    object PollStart : MessageLikeEventType()
-    
-    
-    object Reaction : MessageLikeEventType()
-    
-    
-    object RoomEncrypted : MessageLikeEventType()
-    
-    
-    object RoomMessage : MessageLikeEventType()
-    
-    
-    object RoomRedaction : MessageLikeEventType()
-    
-    
-    object RtcDecline : MessageLikeEventType()
-    
-    
-    object RtcNotification : MessageLikeEventType()
-    
-    
-    object Sticker : MessageLikeEventType()
-    
-    
-    object UnstablePollEnd : MessageLikeEventType()
-    
-    
-    object UnstablePollResponse : MessageLikeEventType()
-    
-    
-    object UnstablePollStart : MessageLikeEventType()
-    
-    
-    object Video : MessageLikeEventType()
-    
-    
-    object Voice : MessageLikeEventType()
-    
-    
-    data class Other(
-        val v1: kotlin.String) : MessageLikeEventType()
-        
-    {
-        
-
-        companion object
-    }
-    
-
-    
-
-    
-    
-
-
-    companion object
-}
-
-/**
- * @suppress
- */
-public object FfiConverterTypeMessageLikeEventType : FfiConverterRustBuffer<MessageLikeEventType>{
-    override fun read(buf: ByteBuffer): MessageLikeEventType {
-        return when(buf.getInt()) {
-            1 -> MessageLikeEventType.Audio
-            2 -> MessageLikeEventType.Beacon
-            3 -> MessageLikeEventType.CallAnswer
-            4 -> MessageLikeEventType.CallCandidates
-            5 -> MessageLikeEventType.CallHangup
-            6 -> MessageLikeEventType.CallInvite
-            7 -> MessageLikeEventType.CallNegotiate
-            8 -> MessageLikeEventType.CallNotify
-            9 -> MessageLikeEventType.CallReject
-            10 -> MessageLikeEventType.CallSdpStreamMetadataChanged
-            11 -> MessageLikeEventType.CallSelectAnswer
-            12 -> MessageLikeEventType.Emote
-            13 -> MessageLikeEventType.Encrypted
-            14 -> MessageLikeEventType.File
-            15 -> MessageLikeEventType.Image
-            16 -> MessageLikeEventType.KeyVerificationAccept
-            17 -> MessageLikeEventType.KeyVerificationCancel
-            18 -> MessageLikeEventType.KeyVerificationDone
-            19 -> MessageLikeEventType.KeyVerificationKey
-            20 -> MessageLikeEventType.KeyVerificationMac
-            21 -> MessageLikeEventType.KeyVerificationReady
-            22 -> MessageLikeEventType.KeyVerificationStart
-            23 -> MessageLikeEventType.Location
-            24 -> MessageLikeEventType.Message
-            25 -> MessageLikeEventType.PollEnd
-            26 -> MessageLikeEventType.PollResponse
-            27 -> MessageLikeEventType.PollStart
-            28 -> MessageLikeEventType.Reaction
-            29 -> MessageLikeEventType.RoomEncrypted
-            30 -> MessageLikeEventType.RoomMessage
-            31 -> MessageLikeEventType.RoomRedaction
-            32 -> MessageLikeEventType.RtcDecline
-            33 -> MessageLikeEventType.RtcNotification
-            34 -> MessageLikeEventType.Sticker
-            35 -> MessageLikeEventType.UnstablePollEnd
-            36 -> MessageLikeEventType.UnstablePollResponse
-            37 -> MessageLikeEventType.UnstablePollStart
-            38 -> MessageLikeEventType.Video
-            39 -> MessageLikeEventType.Voice
-            40 -> MessageLikeEventType.Other(
-                FfiConverterString.read(buf),
-                )
-            else -> throw RuntimeException("invalid enum value, something is very wrong!!")
-        }
-    }
-
-    override fun allocationSize(value: MessageLikeEventType) = when(value) {
-        is MessageLikeEventType.Audio -> {
-            // Add the size for the Int that specifies the variant plus the size needed for all fields
-            (
-                4UL
-            )
-        }
-        is MessageLikeEventType.Beacon -> {
-            // Add the size for the Int that specifies the variant plus the size needed for all fields
-            (
-                4UL
-            )
-        }
-        is MessageLikeEventType.CallAnswer -> {
-            // Add the size for the Int that specifies the variant plus the size needed for all fields
-            (
-                4UL
-            )
-        }
-        is MessageLikeEventType.CallCandidates -> {
-            // Add the size for the Int that specifies the variant plus the size needed for all fields
-            (
-                4UL
-            )
-        }
-        is MessageLikeEventType.CallHangup -> {
-            // Add the size for the Int that specifies the variant plus the size needed for all fields
-            (
-                4UL
-            )
-        }
-        is MessageLikeEventType.CallInvite -> {
-            // Add the size for the Int that specifies the variant plus the size needed for all fields
-            (
-                4UL
-            )
-        }
-        is MessageLikeEventType.CallNegotiate -> {
-            // Add the size for the Int that specifies the variant plus the size needed for all fields
-            (
-                4UL
-            )
-        }
-        is MessageLikeEventType.CallNotify -> {
-            // Add the size for the Int that specifies the variant plus the size needed for all fields
-            (
-                4UL
-            )
-        }
-        is MessageLikeEventType.CallReject -> {
-            // Add the size for the Int that specifies the variant plus the size needed for all fields
-            (
-                4UL
-            )
-        }
-        is MessageLikeEventType.CallSdpStreamMetadataChanged -> {
-            // Add the size for the Int that specifies the variant plus the size needed for all fields
-            (
-                4UL
-            )
-        }
-        is MessageLikeEventType.CallSelectAnswer -> {
-            // Add the size for the Int that specifies the variant plus the size needed for all fields
-            (
-                4UL
-            )
-        }
-        is MessageLikeEventType.Emote -> {
-            // Add the size for the Int that specifies the variant plus the size needed for all fields
-            (
-                4UL
-            )
-        }
-        is MessageLikeEventType.Encrypted -> {
-            // Add the size for the Int that specifies the variant plus the size needed for all fields
-            (
-                4UL
-            )
-        }
-        is MessageLikeEventType.File -> {
-            // Add the size for the Int that specifies the variant plus the size needed for all fields
-            (
-                4UL
-            )
-        }
-        is MessageLikeEventType.Image -> {
-            // Add the size for the Int that specifies the variant plus the size needed for all fields
-            (
-                4UL
-            )
-        }
-        is MessageLikeEventType.KeyVerificationAccept -> {
-            // Add the size for the Int that specifies the variant plus the size needed for all fields
-            (
-                4UL
-            )
-        }
-        is MessageLikeEventType.KeyVerificationCancel -> {
-            // Add the size for the Int that specifies the variant plus the size needed for all fields
-            (
-                4UL
-            )
-        }
-        is MessageLikeEventType.KeyVerificationDone -> {
-            // Add the size for the Int that specifies the variant plus the size needed for all fields
-            (
-                4UL
-            )
-        }
-        is MessageLikeEventType.KeyVerificationKey -> {
-            // Add the size for the Int that specifies the variant plus the size needed for all fields
-            (
-                4UL
-            )
-        }
-        is MessageLikeEventType.KeyVerificationMac -> {
-            // Add the size for the Int that specifies the variant plus the size needed for all fields
-            (
-                4UL
-            )
-        }
-        is MessageLikeEventType.KeyVerificationReady -> {
-            // Add the size for the Int that specifies the variant plus the size needed for all fields
-            (
-                4UL
-            )
-        }
-        is MessageLikeEventType.KeyVerificationStart -> {
-            // Add the size for the Int that specifies the variant plus the size needed for all fields
-            (
-                4UL
-            )
-        }
-        is MessageLikeEventType.Location -> {
-            // Add the size for the Int that specifies the variant plus the size needed for all fields
-            (
-                4UL
-            )
-        }
-        is MessageLikeEventType.Message -> {
-            // Add the size for the Int that specifies the variant plus the size needed for all fields
-            (
-                4UL
-            )
-        }
-        is MessageLikeEventType.PollEnd -> {
-            // Add the size for the Int that specifies the variant plus the size needed for all fields
-            (
-                4UL
-            )
-        }
-        is MessageLikeEventType.PollResponse -> {
-            // Add the size for the Int that specifies the variant plus the size needed for all fields
-            (
-                4UL
-            )
-        }
-        is MessageLikeEventType.PollStart -> {
-            // Add the size for the Int that specifies the variant plus the size needed for all fields
-            (
-                4UL
-            )
-        }
-        is MessageLikeEventType.Reaction -> {
-            // Add the size for the Int that specifies the variant plus the size needed for all fields
-            (
-                4UL
-            )
-        }
-        is MessageLikeEventType.RoomEncrypted -> {
-            // Add the size for the Int that specifies the variant plus the size needed for all fields
-            (
-                4UL
-            )
-        }
-        is MessageLikeEventType.RoomMessage -> {
-            // Add the size for the Int that specifies the variant plus the size needed for all fields
-            (
-                4UL
-            )
-        }
-        is MessageLikeEventType.RoomRedaction -> {
-            // Add the size for the Int that specifies the variant plus the size needed for all fields
-            (
-                4UL
-            )
-        }
-        is MessageLikeEventType.RtcDecline -> {
-            // Add the size for the Int that specifies the variant plus the size needed for all fields
-            (
-                4UL
-            )
-        }
-        is MessageLikeEventType.RtcNotification -> {
-            // Add the size for the Int that specifies the variant plus the size needed for all fields
-            (
-                4UL
-            )
-        }
-        is MessageLikeEventType.Sticker -> {
-            // Add the size for the Int that specifies the variant plus the size needed for all fields
-            (
-                4UL
-            )
-        }
-        is MessageLikeEventType.UnstablePollEnd -> {
-            // Add the size for the Int that specifies the variant plus the size needed for all fields
-            (
-                4UL
-            )
-        }
-        is MessageLikeEventType.UnstablePollResponse -> {
-            // Add the size for the Int that specifies the variant plus the size needed for all fields
-            (
-                4UL
-            )
-        }
-        is MessageLikeEventType.UnstablePollStart -> {
-            // Add the size for the Int that specifies the variant plus the size needed for all fields
-            (
-                4UL
-            )
-        }
-        is MessageLikeEventType.Video -> {
-            // Add the size for the Int that specifies the variant plus the size needed for all fields
-            (
-                4UL
-            )
-        }
-        is MessageLikeEventType.Voice -> {
-            // Add the size for the Int that specifies the variant plus the size needed for all fields
-            (
-                4UL
-            )
-        }
-        is MessageLikeEventType.Other -> {
-            // Add the size for the Int that specifies the variant plus the size needed for all fields
-            (
-                4UL
-                + FfiConverterString.allocationSize(value.v1)
-            )
-        }
-    }
-
-    override fun write(value: MessageLikeEventType, buf: ByteBuffer) {
-        when(value) {
-            is MessageLikeEventType.Audio -> {
-                buf.putInt(1)
-                Unit
-            }
-            is MessageLikeEventType.Beacon -> {
-                buf.putInt(2)
-                Unit
-            }
-            is MessageLikeEventType.CallAnswer -> {
-                buf.putInt(3)
-                Unit
-            }
-            is MessageLikeEventType.CallCandidates -> {
-                buf.putInt(4)
-                Unit
-            }
-            is MessageLikeEventType.CallHangup -> {
-                buf.putInt(5)
-                Unit
-            }
-            is MessageLikeEventType.CallInvite -> {
-                buf.putInt(6)
-                Unit
-            }
-            is MessageLikeEventType.CallNegotiate -> {
-                buf.putInt(7)
-                Unit
-            }
-            is MessageLikeEventType.CallNotify -> {
-                buf.putInt(8)
-                Unit
-            }
-            is MessageLikeEventType.CallReject -> {
-                buf.putInt(9)
-                Unit
-            }
-            is MessageLikeEventType.CallSdpStreamMetadataChanged -> {
-                buf.putInt(10)
-                Unit
-            }
-            is MessageLikeEventType.CallSelectAnswer -> {
-                buf.putInt(11)
-                Unit
-            }
-            is MessageLikeEventType.Emote -> {
-                buf.putInt(12)
-                Unit
-            }
-            is MessageLikeEventType.Encrypted -> {
-                buf.putInt(13)
-                Unit
-            }
-            is MessageLikeEventType.File -> {
-                buf.putInt(14)
-                Unit
-            }
-            is MessageLikeEventType.Image -> {
-                buf.putInt(15)
-                Unit
-            }
-            is MessageLikeEventType.KeyVerificationAccept -> {
-                buf.putInt(16)
-                Unit
-            }
-            is MessageLikeEventType.KeyVerificationCancel -> {
-                buf.putInt(17)
-                Unit
-            }
-            is MessageLikeEventType.KeyVerificationDone -> {
-                buf.putInt(18)
-                Unit
-            }
-            is MessageLikeEventType.KeyVerificationKey -> {
-                buf.putInt(19)
-                Unit
-            }
-            is MessageLikeEventType.KeyVerificationMac -> {
-                buf.putInt(20)
-                Unit
-            }
-            is MessageLikeEventType.KeyVerificationReady -> {
-                buf.putInt(21)
-                Unit
-            }
-            is MessageLikeEventType.KeyVerificationStart -> {
-                buf.putInt(22)
-                Unit
-            }
-            is MessageLikeEventType.Location -> {
-                buf.putInt(23)
-                Unit
-            }
-            is MessageLikeEventType.Message -> {
-                buf.putInt(24)
-                Unit
-            }
-            is MessageLikeEventType.PollEnd -> {
-                buf.putInt(25)
-                Unit
-            }
-            is MessageLikeEventType.PollResponse -> {
-                buf.putInt(26)
-                Unit
-            }
-            is MessageLikeEventType.PollStart -> {
-                buf.putInt(27)
-                Unit
-            }
-            is MessageLikeEventType.Reaction -> {
-                buf.putInt(28)
-                Unit
-            }
-            is MessageLikeEventType.RoomEncrypted -> {
-                buf.putInt(29)
-                Unit
-            }
-            is MessageLikeEventType.RoomMessage -> {
-                buf.putInt(30)
-                Unit
-            }
-            is MessageLikeEventType.RoomRedaction -> {
-                buf.putInt(31)
-                Unit
-            }
-            is MessageLikeEventType.RtcDecline -> {
-                buf.putInt(32)
-                Unit
-            }
-            is MessageLikeEventType.RtcNotification -> {
-                buf.putInt(33)
-                Unit
-            }
-            is MessageLikeEventType.Sticker -> {
-                buf.putInt(34)
-                Unit
-            }
-            is MessageLikeEventType.UnstablePollEnd -> {
-                buf.putInt(35)
-                Unit
-            }
-            is MessageLikeEventType.UnstablePollResponse -> {
-                buf.putInt(36)
-                Unit
-            }
-            is MessageLikeEventType.UnstablePollStart -> {
-                buf.putInt(37)
-                Unit
-            }
-            is MessageLikeEventType.Video -> {
-                buf.putInt(38)
-                Unit
-            }
-            is MessageLikeEventType.Voice -> {
-                buf.putInt(39)
-                Unit
-            }
-            is MessageLikeEventType.Other -> {
-                buf.putInt(40)
-                FfiConverterString.write(value.v1, buf)
-                Unit
-            }
-        }.let { /* this makes the `when` an expression, which ensures it is exhaustive */ }
-    }
-}
-
-
-
-
-
 sealed class MessageType: Disposable  {
     
     data class Emote(
@@ -49609,7 +49506,7 @@ sealed class MsgLikeKind: Disposable  {
      * A custom message like event.
      */
     data class Other(
-        val `eventType`: org.matrix.rustcomponents.sdk.MessageLikeEventType) : MsgLikeKind()
+        val `eventType`: uniffi.ruma_events.MessageLikeEventType) : MsgLikeKind()
         
     {
         
@@ -50642,8 +50539,8 @@ sealed class OtherState {
     }
     
     data class RoomPowerLevels(
-        val `events`: Map<org.matrix.rustcomponents.sdk.TimelineEventType, kotlin.Long>, 
-        val `previousEvents`: Map<org.matrix.rustcomponents.sdk.TimelineEventType, kotlin.Long>?, 
+        val `events`: Map<org.matrix.rustcomponents.sdk.FfiTimelineEventType, kotlin.Long>, 
+        val `previousEvents`: Map<org.matrix.rustcomponents.sdk.FfiTimelineEventType, kotlin.Long>?, 
         val `users`: Map<kotlin.String, kotlin.Long>, 
         val `previousUsers`: Map<kotlin.String, kotlin.Long>?, 
         val `thresholds`: org.matrix.rustcomponents.sdk.PowerLevelChanges, 
@@ -50735,8 +50632,8 @@ public object FfiConverterTypeOtherState : FfiConverterRustBuffer<OtherState>{
                 FfiConverterTypeRoomPinnedEventsChange.read(buf),
                 )
             13 -> OtherState.RoomPowerLevels(
-                FfiConverterMapTypeTimelineEventTypeLong.read(buf),
-                FfiConverterOptionalMapTypeTimelineEventTypeLong.read(buf),
+                FfiConverterMapTypeFfiTimelineEventTypeLong.read(buf),
+                FfiConverterOptionalMapTypeFfiTimelineEventTypeLong.read(buf),
                 FfiConverterMapStringLong.read(buf),
                 FfiConverterOptionalMapStringLong.read(buf),
                 FfiConverterTypePowerLevelChanges.read(buf),
@@ -50842,8 +50739,8 @@ public object FfiConverterTypeOtherState : FfiConverterRustBuffer<OtherState>{
             // Add the size for the Int that specifies the variant plus the size needed for all fields
             (
                 4UL
-                + FfiConverterMapTypeTimelineEventTypeLong.allocationSize(value.`events`)
-                + FfiConverterOptionalMapTypeTimelineEventTypeLong.allocationSize(value.`previousEvents`)
+                + FfiConverterMapTypeFfiTimelineEventTypeLong.allocationSize(value.`events`)
+                + FfiConverterOptionalMapTypeFfiTimelineEventTypeLong.allocationSize(value.`previousEvents`)
                 + FfiConverterMapStringLong.allocationSize(value.`users`)
                 + FfiConverterOptionalMapStringLong.allocationSize(value.`previousUsers`)
                 + FfiConverterTypePowerLevelChanges.allocationSize(value.`thresholds`)
@@ -50955,8 +50852,8 @@ public object FfiConverterTypeOtherState : FfiConverterRustBuffer<OtherState>{
             }
             is OtherState.RoomPowerLevels -> {
                 buf.putInt(13)
-                FfiConverterMapTypeTimelineEventTypeLong.write(value.`events`, buf)
-                FfiConverterOptionalMapTypeTimelineEventTypeLong.write(value.`previousEvents`, buf)
+                FfiConverterMapTypeFfiTimelineEventTypeLong.write(value.`events`, buf)
+                FfiConverterOptionalMapTypeFfiTimelineEventTypeLong.write(value.`previousEvents`, buf)
                 FfiConverterMapStringLong.write(value.`users`, buf)
                 FfiConverterOptionalMapStringLong.write(value.`previousUsers`, buf)
                 FfiConverterTypePowerLevelChanges.write(value.`thresholds`, buf)
@@ -51222,6 +51119,41 @@ public object FfiConverterTypePowerLevel : FfiConverterRustBuffer<PowerLevel>{
                 Unit
             }
         }.let { /* this makes the `when` an expression, which ensures it is exhaustive */ }
+    }
+}
+
+
+
+
+
+
+enum class PresenceState {
+    
+    ONLINE,
+    OFFLINE,
+    UNAVAILABLE;
+
+    
+
+
+    companion object
+}
+
+
+/**
+ * @suppress
+ */
+public object FfiConverterTypePresenceState: FfiConverterRustBuffer<PresenceState> {
+    override fun read(buf: ByteBuffer) = try {
+        PresenceState.values()[buf.getInt() - 1]
+    } catch (e: IndexOutOfBoundsException) {
+        throw RuntimeException("invalid enum value, something is very wrong!!", e)
+    }
+
+    override fun allocationSize(value: PresenceState) = 4UL
+
+    override fun write(value: PresenceState, buf: ByteBuffer) {
+        buf.putInt(value.ordinal + 1)
     }
 }
 
@@ -52485,57 +52417,6 @@ public object FfiConverterTypeRoomAccountDataEvent : FfiConverterRustBuffer<Room
                 Unit
             }
         }.let { /* this makes the `when` an expression, which ensures it is exhaustive */ }
-    }
-}
-
-
-
-
-
-/**
- * Types of room account data events.
- */
-
-enum class RoomAccountDataEventType {
-    
-    /**
-     * m.fully_read
-     */
-    FULLY_READ,
-    /**
-     * m.marked_unread
-     */
-    MARKED_UNREAD,
-    /**
-     * m.tag
-     */
-    TAG,
-    /**
-     * com.famedly.marked_unread
-     */
-    UNSTABLE_MARKED_UNREAD;
-
-    
-
-
-    companion object
-}
-
-
-/**
- * @suppress
- */
-public object FfiConverterTypeRoomAccountDataEventType: FfiConverterRustBuffer<RoomAccountDataEventType> {
-    override fun read(buf: ByteBuffer) = try {
-        RoomAccountDataEventType.values()[buf.getInt() - 1]
-    } catch (e: IndexOutOfBoundsException) {
-        throw RuntimeException("invalid enum value, something is very wrong!!", e)
-    }
-
-    override fun allocationSize(value: RoomAccountDataEventType) = 4UL
-
-    override fun write(value: RoomAccountDataEventType, buf: ByteBuffer) {
-        buf.putInt(value.ordinal + 1)
     }
 }
 
@@ -56683,429 +56564,6 @@ public object FfiConverterTypeStateEventContent : FfiConverterRustBuffer<StateEv
 
 
 
-sealed class StateEventType {
-    
-    object BeaconInfo : StateEventType()
-    
-    
-    object CallMember : StateEventType()
-    
-    
-    object MemberHints : StateEventType()
-    
-    
-    object PolicyRuleRoom : StateEventType()
-    
-    
-    object PolicyRuleServer : StateEventType()
-    
-    
-    object PolicyRuleUser : StateEventType()
-    
-    
-    object RoomAvatar : StateEventType()
-    
-    
-    object RoomCanonicalAlias : StateEventType()
-    
-    
-    object RoomCreate : StateEventType()
-    
-    
-    object RoomEncryption : StateEventType()
-    
-    
-    object RoomGuestAccess : StateEventType()
-    
-    
-    object RoomHistoryVisibility : StateEventType()
-    
-    
-    object RoomImagePack : StateEventType()
-    
-    
-    object RoomJoinRules : StateEventType()
-    
-    
-    object RoomMemberEvent : StateEventType()
-    
-    
-    object RoomLanguage : StateEventType()
-    
-    
-    object RoomName : StateEventType()
-    
-    
-    object RoomPinnedEvents : StateEventType()
-    
-    
-    object RoomPowerLevels : StateEventType()
-    
-    
-    object RoomServerAcl : StateEventType()
-    
-    
-    object RoomThirdPartyInvite : StateEventType()
-    
-    
-    object RoomTombstone : StateEventType()
-    
-    
-    object RoomTopic : StateEventType()
-    
-    
-    object SpaceChild : StateEventType()
-    
-    
-    object SpaceCatchAll : StateEventType()
-    
-    
-    object SpaceParent : StateEventType()
-    
-    
-    data class Custom(
-        val `value`: kotlin.String) : StateEventType()
-        
-    {
-        
-
-        companion object
-    }
-    
-
-    
-
-    
-    
-
-
-    companion object
-}
-
-/**
- * @suppress
- */
-public object FfiConverterTypeStateEventType : FfiConverterRustBuffer<StateEventType>{
-    override fun read(buf: ByteBuffer): StateEventType {
-        return when(buf.getInt()) {
-            1 -> StateEventType.BeaconInfo
-            2 -> StateEventType.CallMember
-            3 -> StateEventType.MemberHints
-            4 -> StateEventType.PolicyRuleRoom
-            5 -> StateEventType.PolicyRuleServer
-            6 -> StateEventType.PolicyRuleUser
-            7 -> StateEventType.RoomAvatar
-            8 -> StateEventType.RoomCanonicalAlias
-            9 -> StateEventType.RoomCreate
-            10 -> StateEventType.RoomEncryption
-            11 -> StateEventType.RoomGuestAccess
-            12 -> StateEventType.RoomHistoryVisibility
-            13 -> StateEventType.RoomImagePack
-            14 -> StateEventType.RoomJoinRules
-            15 -> StateEventType.RoomMemberEvent
-            16 -> StateEventType.RoomLanguage
-            17 -> StateEventType.RoomName
-            18 -> StateEventType.RoomPinnedEvents
-            19 -> StateEventType.RoomPowerLevels
-            20 -> StateEventType.RoomServerAcl
-            21 -> StateEventType.RoomThirdPartyInvite
-            22 -> StateEventType.RoomTombstone
-            23 -> StateEventType.RoomTopic
-            24 -> StateEventType.SpaceChild
-            25 -> StateEventType.SpaceCatchAll
-            26 -> StateEventType.SpaceParent
-            27 -> StateEventType.Custom(
-                FfiConverterString.read(buf),
-                )
-            else -> throw RuntimeException("invalid enum value, something is very wrong!!")
-        }
-    }
-
-    override fun allocationSize(value: StateEventType) = when(value) {
-        is StateEventType.BeaconInfo -> {
-            // Add the size for the Int that specifies the variant plus the size needed for all fields
-            (
-                4UL
-            )
-        }
-        is StateEventType.CallMember -> {
-            // Add the size for the Int that specifies the variant plus the size needed for all fields
-            (
-                4UL
-            )
-        }
-        is StateEventType.MemberHints -> {
-            // Add the size for the Int that specifies the variant plus the size needed for all fields
-            (
-                4UL
-            )
-        }
-        is StateEventType.PolicyRuleRoom -> {
-            // Add the size for the Int that specifies the variant plus the size needed for all fields
-            (
-                4UL
-            )
-        }
-        is StateEventType.PolicyRuleServer -> {
-            // Add the size for the Int that specifies the variant plus the size needed for all fields
-            (
-                4UL
-            )
-        }
-        is StateEventType.PolicyRuleUser -> {
-            // Add the size for the Int that specifies the variant plus the size needed for all fields
-            (
-                4UL
-            )
-        }
-        is StateEventType.RoomAvatar -> {
-            // Add the size for the Int that specifies the variant plus the size needed for all fields
-            (
-                4UL
-            )
-        }
-        is StateEventType.RoomCanonicalAlias -> {
-            // Add the size for the Int that specifies the variant plus the size needed for all fields
-            (
-                4UL
-            )
-        }
-        is StateEventType.RoomCreate -> {
-            // Add the size for the Int that specifies the variant plus the size needed for all fields
-            (
-                4UL
-            )
-        }
-        is StateEventType.RoomEncryption -> {
-            // Add the size for the Int that specifies the variant plus the size needed for all fields
-            (
-                4UL
-            )
-        }
-        is StateEventType.RoomGuestAccess -> {
-            // Add the size for the Int that specifies the variant plus the size needed for all fields
-            (
-                4UL
-            )
-        }
-        is StateEventType.RoomHistoryVisibility -> {
-            // Add the size for the Int that specifies the variant plus the size needed for all fields
-            (
-                4UL
-            )
-        }
-        is StateEventType.RoomImagePack -> {
-            // Add the size for the Int that specifies the variant plus the size needed for all fields
-            (
-                4UL
-            )
-        }
-        is StateEventType.RoomJoinRules -> {
-            // Add the size for the Int that specifies the variant plus the size needed for all fields
-            (
-                4UL
-            )
-        }
-        is StateEventType.RoomMemberEvent -> {
-            // Add the size for the Int that specifies the variant plus the size needed for all fields
-            (
-                4UL
-            )
-        }
-        is StateEventType.RoomLanguage -> {
-            // Add the size for the Int that specifies the variant plus the size needed for all fields
-            (
-                4UL
-            )
-        }
-        is StateEventType.RoomName -> {
-            // Add the size for the Int that specifies the variant plus the size needed for all fields
-            (
-                4UL
-            )
-        }
-        is StateEventType.RoomPinnedEvents -> {
-            // Add the size for the Int that specifies the variant plus the size needed for all fields
-            (
-                4UL
-            )
-        }
-        is StateEventType.RoomPowerLevels -> {
-            // Add the size for the Int that specifies the variant plus the size needed for all fields
-            (
-                4UL
-            )
-        }
-        is StateEventType.RoomServerAcl -> {
-            // Add the size for the Int that specifies the variant plus the size needed for all fields
-            (
-                4UL
-            )
-        }
-        is StateEventType.RoomThirdPartyInvite -> {
-            // Add the size for the Int that specifies the variant plus the size needed for all fields
-            (
-                4UL
-            )
-        }
-        is StateEventType.RoomTombstone -> {
-            // Add the size for the Int that specifies the variant plus the size needed for all fields
-            (
-                4UL
-            )
-        }
-        is StateEventType.RoomTopic -> {
-            // Add the size for the Int that specifies the variant plus the size needed for all fields
-            (
-                4UL
-            )
-        }
-        is StateEventType.SpaceChild -> {
-            // Add the size for the Int that specifies the variant plus the size needed for all fields
-            (
-                4UL
-            )
-        }
-        is StateEventType.SpaceCatchAll -> {
-            // Add the size for the Int that specifies the variant plus the size needed for all fields
-            (
-                4UL
-            )
-        }
-        is StateEventType.SpaceParent -> {
-            // Add the size for the Int that specifies the variant plus the size needed for all fields
-            (
-                4UL
-            )
-        }
-        is StateEventType.Custom -> {
-            // Add the size for the Int that specifies the variant plus the size needed for all fields
-            (
-                4UL
-                + FfiConverterString.allocationSize(value.`value`)
-            )
-        }
-    }
-
-    override fun write(value: StateEventType, buf: ByteBuffer) {
-        when(value) {
-            is StateEventType.BeaconInfo -> {
-                buf.putInt(1)
-                Unit
-            }
-            is StateEventType.CallMember -> {
-                buf.putInt(2)
-                Unit
-            }
-            is StateEventType.MemberHints -> {
-                buf.putInt(3)
-                Unit
-            }
-            is StateEventType.PolicyRuleRoom -> {
-                buf.putInt(4)
-                Unit
-            }
-            is StateEventType.PolicyRuleServer -> {
-                buf.putInt(5)
-                Unit
-            }
-            is StateEventType.PolicyRuleUser -> {
-                buf.putInt(6)
-                Unit
-            }
-            is StateEventType.RoomAvatar -> {
-                buf.putInt(7)
-                Unit
-            }
-            is StateEventType.RoomCanonicalAlias -> {
-                buf.putInt(8)
-                Unit
-            }
-            is StateEventType.RoomCreate -> {
-                buf.putInt(9)
-                Unit
-            }
-            is StateEventType.RoomEncryption -> {
-                buf.putInt(10)
-                Unit
-            }
-            is StateEventType.RoomGuestAccess -> {
-                buf.putInt(11)
-                Unit
-            }
-            is StateEventType.RoomHistoryVisibility -> {
-                buf.putInt(12)
-                Unit
-            }
-            is StateEventType.RoomImagePack -> {
-                buf.putInt(13)
-                Unit
-            }
-            is StateEventType.RoomJoinRules -> {
-                buf.putInt(14)
-                Unit
-            }
-            is StateEventType.RoomMemberEvent -> {
-                buf.putInt(15)
-                Unit
-            }
-            is StateEventType.RoomLanguage -> {
-                buf.putInt(16)
-                Unit
-            }
-            is StateEventType.RoomName -> {
-                buf.putInt(17)
-                Unit
-            }
-            is StateEventType.RoomPinnedEvents -> {
-                buf.putInt(18)
-                Unit
-            }
-            is StateEventType.RoomPowerLevels -> {
-                buf.putInt(19)
-                Unit
-            }
-            is StateEventType.RoomServerAcl -> {
-                buf.putInt(20)
-                Unit
-            }
-            is StateEventType.RoomThirdPartyInvite -> {
-                buf.putInt(21)
-                Unit
-            }
-            is StateEventType.RoomTombstone -> {
-                buf.putInt(22)
-                Unit
-            }
-            is StateEventType.RoomTopic -> {
-                buf.putInt(23)
-                Unit
-            }
-            is StateEventType.SpaceChild -> {
-                buf.putInt(24)
-                Unit
-            }
-            is StateEventType.SpaceCatchAll -> {
-                buf.putInt(25)
-                Unit
-            }
-            is StateEventType.SpaceParent -> {
-                buf.putInt(26)
-                Unit
-            }
-            is StateEventType.Custom -> {
-                buf.putInt(27)
-                FfiConverterString.write(value.`value`, buf)
-                Unit
-            }
-        }.let { /* this makes the `when` an expression, which ensures it is exhaustive */ }
-    }
-}
-
-
-
-
-
 
 
 sealed class SteadyStateException(message: String): kotlin.Exception(message) {
@@ -58179,156 +57637,6 @@ public object FfiConverterTypeTimelineEventContent : FfiConverterRustBuffer<Time
             is TimelineEventContent.State -> {
                 buf.putInt(2)
                 FfiConverterTypeStateEventContent.write(value.`content`, buf)
-                Unit
-            }
-        }.let { /* this makes the `when` an expression, which ensures it is exhaustive */ }
-    }
-}
-
-
-
-
-
-/**
- * The timeline event type.
- */
-sealed class TimelineEventType {
-    
-    /**
-     * The event is a message-like one and should be displayed as such.
-     */
-    data class MessageLike(
-        val `value`: org.matrix.rustcomponents.sdk.MessageLikeEventType) : TimelineEventType()
-        
-    {
-        
-
-    // The local Rust `Eq` implementation - only `eq` is used.
-    override fun equals(other: Any?): Boolean {
-        if (other !is TimelineEventType) return false
-        return FfiConverterBoolean.lift(
-    uniffiRustCall() { _status ->
-    UniffiLib.uniffi_matrix_sdk_ffi_fn_method_timelineeventtype_uniffi_trait_eq_eq(FfiConverterTypeTimelineEventType.lower(this),
-        FfiConverterTypeTimelineEventType.lower(`other`),_status)
-}
-    )
-    }
-    // The local Rust `Hash` implementation
-    override fun hashCode(): Int {
-        return FfiConverterULong.lift(
-    uniffiRustCall() { _status ->
-    UniffiLib.uniffi_matrix_sdk_ffi_fn_method_timelineeventtype_uniffi_trait_hash(FfiConverterTypeTimelineEventType.lower(this),
-        _status)
-}
-    ).toInt()
-    }
-        companion object
-    }
-    
-    /**
-     * The event is a state event, and may or may not be displayed in the
-     * timeline.
-     */
-    data class State(
-        val `value`: org.matrix.rustcomponents.sdk.StateEventType) : TimelineEventType()
-        
-    {
-        
-
-    // The local Rust `Eq` implementation - only `eq` is used.
-    override fun equals(other: Any?): Boolean {
-        if (other !is TimelineEventType) return false
-        return FfiConverterBoolean.lift(
-    uniffiRustCall() { _status ->
-    UniffiLib.uniffi_matrix_sdk_ffi_fn_method_timelineeventtype_uniffi_trait_eq_eq(FfiConverterTypeTimelineEventType.lower(this),
-        FfiConverterTypeTimelineEventType.lower(`other`),_status)
-}
-    )
-    }
-    // The local Rust `Hash` implementation
-    override fun hashCode(): Int {
-        return FfiConverterULong.lift(
-    uniffiRustCall() { _status ->
-    UniffiLib.uniffi_matrix_sdk_ffi_fn_method_timelineeventtype_uniffi_trait_hash(FfiConverterTypeTimelineEventType.lower(this),
-        _status)
-}
-    ).toInt()
-    }
-        companion object
-    }
-    
-
-    
-
-    
-    
-
-    // The local Rust `Eq` implementation - only `eq` is used.
-    override fun equals(other: Any?): Boolean {
-        if (other !is TimelineEventType) return false
-        return FfiConverterBoolean.lift(
-    uniffiRustCall() { _status ->
-    UniffiLib.uniffi_matrix_sdk_ffi_fn_method_timelineeventtype_uniffi_trait_eq_eq(FfiConverterTypeTimelineEventType.lower(this),
-        FfiConverterTypeTimelineEventType.lower(`other`),_status)
-}
-    )
-    }
-    // The local Rust `Hash` implementation
-    override fun hashCode(): Int {
-        return FfiConverterULong.lift(
-    uniffiRustCall() { _status ->
-    UniffiLib.uniffi_matrix_sdk_ffi_fn_method_timelineeventtype_uniffi_trait_hash(FfiConverterTypeTimelineEventType.lower(this),
-        _status)
-}
-    ).toInt()
-    }
-
-    companion object
-}
-
-/**
- * @suppress
- */
-public object FfiConverterTypeTimelineEventType : FfiConverterRustBuffer<TimelineEventType>{
-    override fun read(buf: ByteBuffer): TimelineEventType {
-        return when(buf.getInt()) {
-            1 -> TimelineEventType.MessageLike(
-                FfiConverterTypeMessageLikeEventType.read(buf),
-                )
-            2 -> TimelineEventType.State(
-                FfiConverterTypeStateEventType.read(buf),
-                )
-            else -> throw RuntimeException("invalid enum value, something is very wrong!!")
-        }
-    }
-
-    override fun allocationSize(value: TimelineEventType) = when(value) {
-        is TimelineEventType.MessageLike -> {
-            // Add the size for the Int that specifies the variant plus the size needed for all fields
-            (
-                4UL
-                + FfiConverterTypeMessageLikeEventType.allocationSize(value.`value`)
-            )
-        }
-        is TimelineEventType.State -> {
-            // Add the size for the Int that specifies the variant plus the size needed for all fields
-            (
-                4UL
-                + FfiConverterTypeStateEventType.allocationSize(value.`value`)
-            )
-        }
-    }
-
-    override fun write(value: TimelineEventType, buf: ByteBuffer) {
-        when(value) {
-            is TimelineEventType.MessageLike -> {
-                buf.putInt(1)
-                FfiConverterTypeMessageLikeEventType.write(value.`value`, buf)
-                Unit
-            }
-            is TimelineEventType.State -> {
-                buf.putInt(2)
-                FfiConverterTypeStateEventType.write(value.`value`, buf)
                 Unit
             }
         }.let { /* this makes the `when` an expression, which ensures it is exhaustive */ }
@@ -63082,6 +62390,38 @@ public object FfiConverterOptionalDuration: FfiConverterRustBuffer<java.time.Dur
 /**
  * @suppress
  */
+public object FfiConverterOptionalTypeContentScanner: FfiConverterRustBuffer<ContentScanner?> {
+    override fun read(buf: ByteBuffer): ContentScanner? {
+        if (buf.get().toInt() == 0) {
+            return null
+        }
+        return FfiConverterTypeContentScanner.read(buf)
+    }
+
+    override fun allocationSize(value: ContentScanner?): ULong {
+        if (value == null) {
+            return 1UL
+        } else {
+            return 1UL + FfiConverterTypeContentScanner.allocationSize(value)
+        }
+    }
+
+    override fun write(value: ContentScanner?, buf: ByteBuffer) {
+        if (value == null) {
+            buf.put(0)
+        } else {
+            buf.put(1)
+            FfiConverterTypeContentScanner.write(value, buf)
+        }
+    }
+}
+
+
+
+
+/**
+ * @suppress
+ */
 public object FfiConverterOptionalTypeIdentityResetHandle: FfiConverterRustBuffer<IdentityResetHandle?> {
     override fun read(buf: ByteBuffer): IdentityResetHandle? {
         if (buf.get().toInt() == 0) {
@@ -65546,28 +64886,28 @@ public object FfiConverterOptionalMapStringLong: FfiConverterRustBuffer<Map<kotl
 /**
  * @suppress
  */
-public object FfiConverterOptionalMapTypeTimelineEventTypeLong: FfiConverterRustBuffer<Map<TimelineEventType, kotlin.Long>?> {
-    override fun read(buf: ByteBuffer): Map<TimelineEventType, kotlin.Long>? {
+public object FfiConverterOptionalMapTypeFfiTimelineEventTypeLong: FfiConverterRustBuffer<Map<FfiTimelineEventType, kotlin.Long>?> {
+    override fun read(buf: ByteBuffer): Map<FfiTimelineEventType, kotlin.Long>? {
         if (buf.get().toInt() == 0) {
             return null
         }
-        return FfiConverterMapTypeTimelineEventTypeLong.read(buf)
+        return FfiConverterMapTypeFfiTimelineEventTypeLong.read(buf)
     }
 
-    override fun allocationSize(value: Map<TimelineEventType, kotlin.Long>?): ULong {
+    override fun allocationSize(value: Map<FfiTimelineEventType, kotlin.Long>?): ULong {
         if (value == null) {
             return 1UL
         } else {
-            return 1UL + FfiConverterMapTypeTimelineEventTypeLong.allocationSize(value)
+            return 1UL + FfiConverterMapTypeFfiTimelineEventTypeLong.allocationSize(value)
         }
     }
 
-    override fun write(value: Map<TimelineEventType, kotlin.Long>?, buf: ByteBuffer) {
+    override fun write(value: Map<FfiTimelineEventType, kotlin.Long>?, buf: ByteBuffer) {
         if (value == null) {
             buf.put(0)
         } else {
             buf.put(1)
-            FfiConverterMapTypeTimelineEventTypeLong.write(value, buf)
+            FfiConverterMapTypeFfiTimelineEventTypeLong.write(value, buf)
         }
     }
 }
@@ -67451,6 +66791,45 @@ public object FfiConverterMapStringSequenceString: FfiConverterRustBuffer<Map<ko
 /**
  * @suppress
  */
+public object FfiConverterMapTypeFfiTimelineEventTypeLong: FfiConverterRustBuffer<Map<FfiTimelineEventType, kotlin.Long>> {
+    override fun read(buf: ByteBuffer): Map<FfiTimelineEventType, kotlin.Long> {
+        val len = buf.getInt()
+        return buildMap<FfiTimelineEventType, kotlin.Long>(len) {
+            repeat(len) {
+                val k = FfiConverterTypeFfiTimelineEventType.read(buf)
+                val v = FfiConverterLong.read(buf)
+                this[k] = v
+            }
+        }
+    }
+
+    override fun allocationSize(value: Map<FfiTimelineEventType, kotlin.Long>): ULong {
+        val spaceForMapSize = 4UL
+        val spaceForChildren = value.map { (k, v) ->
+            FfiConverterTypeFfiTimelineEventType.allocationSize(k) +
+            FfiConverterLong.allocationSize(v)
+        }.sum()
+        return spaceForMapSize + spaceForChildren
+    }
+
+    override fun write(value: Map<FfiTimelineEventType, kotlin.Long>, buf: ByteBuffer) {
+        buf.putInt(value.size)
+        // The parens on `(k, v)` here ensure we're calling the right method,
+        // which is important for compatibility with older android devices.
+        // Ref https://blog.danlew.net/2017/03/16/kotlin-puzzler-whose-line-is-it-anyways/
+        value.forEach { (k, v) ->
+            FfiConverterTypeFfiTimelineEventType.write(k, buf)
+            FfiConverterLong.write(v, buf)
+        }
+    }
+}
+
+
+
+
+/**
+ * @suppress
+ */
 public object FfiConverterMapTypeTagNameTypeTagInfo: FfiConverterRustBuffer<Map<TagName, TagInfo>> {
     override fun read(buf: ByteBuffer): Map<TagName, TagInfo> {
         val len = buf.getInt()
@@ -67486,45 +66865,6 @@ public object FfiConverterMapTypeTagNameTypeTagInfo: FfiConverterRustBuffer<Map<
 
 
 
-
-/**
- * @suppress
- */
-public object FfiConverterMapTypeTimelineEventTypeLong: FfiConverterRustBuffer<Map<TimelineEventType, kotlin.Long>> {
-    override fun read(buf: ByteBuffer): Map<TimelineEventType, kotlin.Long> {
-        val len = buf.getInt()
-        return buildMap<TimelineEventType, kotlin.Long>(len) {
-            repeat(len) {
-                val k = FfiConverterTypeTimelineEventType.read(buf)
-                val v = FfiConverterLong.read(buf)
-                this[k] = v
-            }
-        }
-    }
-
-    override fun allocationSize(value: Map<TimelineEventType, kotlin.Long>): ULong {
-        val spaceForMapSize = 4UL
-        val spaceForChildren = value.map { (k, v) ->
-            FfiConverterTypeTimelineEventType.allocationSize(k) +
-            FfiConverterLong.allocationSize(v)
-        }.sum()
-        return spaceForMapSize + spaceForChildren
-    }
-
-    override fun write(value: Map<TimelineEventType, kotlin.Long>, buf: ByteBuffer) {
-        buf.putInt(value.size)
-        // The parens on `(k, v)` here ensure we're calling the right method,
-        // which is important for compatibility with older android devices.
-        // Ref https://blog.danlew.net/2017/03/16/kotlin-puzzler-whose-line-is-it-anyways/
-        value.forEach { (k, v) ->
-            FfiConverterTypeTimelineEventType.write(k, buf)
-            FfiConverterLong.write(v, buf)
-        }
-    }
-}
-
-
-
 /**
  * Typealias from the type name used in the UDL file to the builtin type.  This
  * is needed because the UDL type name is used in function/method signatures.
@@ -67532,6 +66872,14 @@ public object FfiConverterMapTypeTimelineEventTypeLong: FfiConverterRustBuffer<M
  */
 public typealias Timestamp = kotlin.ULong
 public typealias FfiConverterTypeTimestamp = FfiConverterULong
+
+
+
+
+
+
+
+
 
 
 
