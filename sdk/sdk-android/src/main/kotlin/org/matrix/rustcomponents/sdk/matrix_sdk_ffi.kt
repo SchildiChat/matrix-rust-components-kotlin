@@ -778,6 +778,9 @@ internal interface UniffiCallbackInterfaceBackupStateListenerMethod0 : com.sun.j
 internal interface UniffiCallbackInterfaceBackupSteadyStateListenerMethod0 : com.sun.jna.Callback {
     fun callback(`uniffiHandle`: Long,`status`: RustBuffer.ByValue,`uniffiOutReturn`: Pointer,uniffiCallStatus: UniffiRustCallStatus,)
 }
+internal interface UniffiCallbackInterfaceDehydratedDeviceEventListenerMethod0 : com.sun.jna.Callback {
+    fun callback(`uniffiHandle`: Long,`event`: RustBuffer.ByValue,`uniffiOutReturn`: Pointer,uniffiCallStatus: UniffiRustCallStatus,)
+}
 internal interface UniffiCallbackInterfaceEnableRecoveryProgressListenerMethod0 : com.sun.jna.Callback {
     fun callback(`uniffiHandle`: Long,`status`: RustBuffer.ByValue,`uniffiOutReturn`: Pointer,uniffiCallStatus: UniffiRustCallStatus,)
 }
@@ -909,6 +912,9 @@ internal interface UniffiCallbackInterfaceWidgetCapabilitiesProviderMethod0 : co
 }
 internal interface UniffiCallbackInterfaceRawX509SignerMethod0 : com.sun.jna.Callback {
     fun callback(`uniffiHandle`: Long,`message`: RustBuffer.ByValue,`uniffiOutReturn`: RustBufferRawX509Signature,uniffiCallStatus: UniffiRustCallStatus,)
+}
+internal interface UniffiCallbackInterfaceRawX509SignerMethod1 : com.sun.jna.Callback {
+    fun callback(`uniffiHandle`: Long,`uniffiOutReturn`: LongByReference,uniffiCallStatus: UniffiRustCallStatus,)
 }
 internal interface UniffiCallbackInterfaceRawX509VerifierMethod0 : com.sun.jna.Callback {
     fun callback(`uniffiHandle`: Long,`message`: RustBuffer.ByValue,`sig`: RustBufferRawX509Signature.ByValue,`uniffiOutReturn`: ByteByReference,uniffiCallStatus: UniffiRustCallStatus,)
@@ -1201,6 +1207,25 @@ internal open class UniffiVTableCallbackInterfaceBackupSteadyStateListener(
         `uniffiFree` = other.`uniffiFree`
         `uniffiClone` = other.`uniffiClone`
         `onUpdate` = other.`onUpdate`
+    }
+
+}
+@Structure.FieldOrder("uniffiFree", "uniffiClone", "onEvent")
+internal open class UniffiVTableCallbackInterfaceDehydratedDeviceEventListener(
+    @JvmField internal var `uniffiFree`: UniffiCallbackInterfaceFree? = null,
+    @JvmField internal var `uniffiClone`: UniffiCallbackInterfaceClone? = null,
+    @JvmField internal var `onEvent`: UniffiCallbackInterfaceDehydratedDeviceEventListenerMethod0? = null,
+) : Structure() {
+    class UniffiByValue(
+        `uniffiFree`: UniffiCallbackInterfaceFree? = null,
+        `uniffiClone`: UniffiCallbackInterfaceClone? = null,
+        `onEvent`: UniffiCallbackInterfaceDehydratedDeviceEventListenerMethod0? = null,
+    ): UniffiVTableCallbackInterfaceDehydratedDeviceEventListener(`uniffiFree`,`uniffiClone`,`onEvent`,), Structure.ByValue
+
+   internal fun uniffiSetValue(other: UniffiVTableCallbackInterfaceDehydratedDeviceEventListener) {
+        `uniffiFree` = other.`uniffiFree`
+        `uniffiClone` = other.`uniffiClone`
+        `onEvent` = other.`onEvent`
     }
 
 }
@@ -1925,22 +1950,25 @@ internal open class UniffiVTableCallbackInterfaceWidgetCapabilitiesProvider(
     }
 
 }
-@Structure.FieldOrder("uniffiFree", "uniffiClone", "sign")
+@Structure.FieldOrder("uniffiFree", "uniffiClone", "sign", "validityNotAfter")
 internal open class UniffiVTableCallbackInterfaceRawX509Signer(
     @JvmField internal var `uniffiFree`: UniffiCallbackInterfaceFree? = null,
     @JvmField internal var `uniffiClone`: UniffiCallbackInterfaceClone? = null,
     @JvmField internal var `sign`: UniffiCallbackInterfaceRawX509SignerMethod0? = null,
+    @JvmField internal var `validityNotAfter`: UniffiCallbackInterfaceRawX509SignerMethod1? = null,
 ) : Structure() {
     class UniffiByValue(
         `uniffiFree`: UniffiCallbackInterfaceFree? = null,
         `uniffiClone`: UniffiCallbackInterfaceClone? = null,
         `sign`: UniffiCallbackInterfaceRawX509SignerMethod0? = null,
-    ): UniffiVTableCallbackInterfaceRawX509Signer(`uniffiFree`,`uniffiClone`,`sign`,), Structure.ByValue
+        `validityNotAfter`: UniffiCallbackInterfaceRawX509SignerMethod1? = null,
+    ): UniffiVTableCallbackInterfaceRawX509Signer(`uniffiFree`,`uniffiClone`,`sign`,`validityNotAfter`,), Structure.ByValue
 
    internal fun uniffiSetValue(other: UniffiVTableCallbackInterfaceRawX509Signer) {
         `uniffiFree` = other.`uniffiFree`
         `uniffiClone` = other.`uniffiClone`
         `sign` = other.`sign`
+        `validityNotAfter` = other.`validityNotAfter`
     }
 
 }
@@ -2089,8 +2117,6 @@ external fun uniffi_matrix_sdk_ffi_checksum_method_client_can_deactivate_account
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_client_clear_caches(
 ): Short
-external fun uniffi_matrix_sdk_ffi_checksum_method_client_clear_call_status(
-): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_client_clear_user_status(
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_client_content_scanner(
@@ -2105,11 +2131,15 @@ external fun uniffi_matrix_sdk_ffi_checksum_method_client_delete_pusher(
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_client_device_id(
 ): Short
+external fun uniffi_matrix_sdk_ffi_checksum_method_client_disable_well_known_lookup(
+): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_client_display_name(
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_client_enable_all_send_queues(
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_client_enable_automatic_backpagination(
+): Short
+external fun uniffi_matrix_sdk_ffi_checksum_method_client_enable_automatic_call_status(
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_client_enable_send_queue_upload_progress(
 ): Short
@@ -2166,6 +2196,8 @@ external fun uniffi_matrix_sdk_ffi_checksum_method_client_ignored_users(
 external fun uniffi_matrix_sdk_ffi_checksum_method_client_is_livekit_rtc_supported(
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_client_is_login_with_qr_code_supported(
+): Short
+external fun uniffi_matrix_sdk_ffi_checksum_method_client_is_profiles_sliding_sync_extension_supported(
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_client_is_report_room_api_supported(
 ): Short
@@ -2242,8 +2274,6 @@ external fun uniffi_matrix_sdk_ffi_checksum_method_client_session(
 external fun uniffi_matrix_sdk_ffi_checksum_method_client_set_account_data(
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_client_set_avatar_url(
-): Short
-external fun uniffi_matrix_sdk_ffi_checksum_method_client_set_call_status(
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_client_set_content_scanner(
 ): Short
@@ -2337,11 +2367,15 @@ external fun uniffi_matrix_sdk_ffi_checksum_method_homeservercapabilities_forget
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_homeservercapabilities_refresh(
 ): Short
+external fun uniffi_matrix_sdk_ffi_checksum_method_homeservercapabilities_room_versions(
+): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_mediafilehandle_path(
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_mediafilehandle_persist(
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_rawx509signer_sign(
+): Short
+external fun uniffi_matrix_sdk_ffi_checksum_method_rawx509signer_validity_not_after(
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_rawx509verifier_verify(
 ): Short
@@ -2365,6 +2399,8 @@ external fun uniffi_matrix_sdk_ffi_checksum_method_clientbuilder_disable_built_i
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_clientbuilder_disable_ssl_verification(
 ): Short
+external fun uniffi_matrix_sdk_ffi_checksum_method_clientbuilder_disable_well_known_lookup(
+): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_clientbuilder_dm_room_definition(
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_clientbuilder_enable_share_history_on_invite(
@@ -2380,6 +2416,8 @@ external fun uniffi_matrix_sdk_ffi_checksum_method_clientbuilder_request_config(
 external fun uniffi_matrix_sdk_ffi_checksum_method_clientbuilder_room_key_recipient_strategy(
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_clientbuilder_server_name(
+): Short
+external fun uniffi_matrix_sdk_ffi_checksum_method_clientbuilder_server_name_from_user_id(
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_clientbuilder_server_name_or_homeserver_url(
 ): Short
@@ -2397,8 +2435,6 @@ external fun uniffi_matrix_sdk_ffi_checksum_method_clientbuilder_threads_enabled
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_clientbuilder_user_agent(
 ): Short
-external fun uniffi_matrix_sdk_ffi_checksum_method_clientbuilder_username(
-): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_clientbuilder_with_raw_x509_signer(
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_clientbuilder_with_raw_x509_verifier(
@@ -2413,7 +2449,13 @@ external fun uniffi_matrix_sdk_ffi_checksum_method_encryption_backup_state(
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_encryption_backup_state_listener(
 ): Short
+external fun uniffi_matrix_sdk_ffi_checksum_method_encryption_create_dehydrated_device(
+): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_encryption_curve25519_key(
+): Short
+external fun uniffi_matrix_sdk_ffi_checksum_method_encryption_dehydrated_device_event_listener(
+): Short
+external fun uniffi_matrix_sdk_ffi_checksum_method_encryption_delete_dehydrated_device(
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_encryption_disable_recovery(
 ): Short
@@ -2427,6 +2469,8 @@ external fun uniffi_matrix_sdk_ffi_checksum_method_encryption_has_devices_to_ver
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_encryption_import_secrets_bundle(
 ): Short
+external fun uniffi_matrix_sdk_ffi_checksum_method_encryption_is_dehydrated_device_supported(
+): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_encryption_is_last_device(
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_encryption_recover(
@@ -2439,9 +2483,15 @@ external fun uniffi_matrix_sdk_ffi_checksum_method_encryption_recovery_state(
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_encryption_recovery_state_listener(
 ): Short
+external fun uniffi_matrix_sdk_ffi_checksum_method_encryption_rehydrate_dehydrated_device(
+): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_encryption_reset_identity(
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_encryption_reset_recovery_key(
+): Short
+external fun uniffi_matrix_sdk_ffi_checksum_method_encryption_start_dehydrated_devices(
+): Short
+external fun uniffi_matrix_sdk_ffi_checksum_method_encryption_stop_dehydrated_devices(
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_encryption_user_identity(
 ): Short
@@ -2668,6 +2718,8 @@ external fun uniffi_matrix_sdk_ffi_checksum_method_room_live_locations_observer(
 external fun uniffi_matrix_sdk_ffi_checksum_method_room_load_composer_draft(
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_room_load_or_fetch_event(
+): Short
+external fun uniffi_matrix_sdk_ffi_checksum_method_room_load_or_fetch_event_with_relations(
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_room_load_user_receipt(
 ): Short
@@ -3003,6 +3055,8 @@ external fun uniffi_matrix_sdk_ffi_checksum_method_syncservicebuilder_finish(
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_syncservicebuilder_with_offline_mode(
 ): Short
+external fun uniffi_matrix_sdk_ffi_checksum_method_syncservicebuilder_with_parent_span(
+): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_syncservicebuilder_with_profiles_extension(
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_syncservicebuilder_with_room_list_connection_id(
@@ -3097,9 +3151,13 @@ external fun uniffi_matrix_sdk_ffi_checksum_method_timeline_send_video(
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_timeline_send_voice_message(
 ): Short
+external fun uniffi_matrix_sdk_ffi_checksum_method_timeline_send_with_extra_content(
+): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_timeline_subscribe_to_back_pagination_status(
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_timeline_toggle_reaction(
+): Short
+external fun uniffi_matrix_sdk_ffi_checksum_method_timeline_toggle_reaction_with_extra_content(
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_timeline_unpin_event(
 ): Short
@@ -3213,6 +3271,8 @@ external fun uniffi_matrix_sdk_ffi_checksum_method_backupstatelistener_on_update
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_backupsteadystatelistener_on_update(
 ): Short
+external fun uniffi_matrix_sdk_ffi_checksum_method_dehydrateddeviceeventlistener_on_event(
+): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_enablerecoveryprogresslistener_on_update(
 ): Short
 external fun uniffi_matrix_sdk_ffi_checksum_method_recoverystatelistener_on_update(
@@ -3324,6 +3384,7 @@ internal object UniffiLib {
         uniffiCallbackInterfaceCallDeclineListener.register(this)
         uniffiCallbackInterfaceClientDelegate.register(this)
         uniffiCallbackInterfaceClientSessionDelegate.register(this)
+        uniffiCallbackInterfaceDehydratedDeviceEventListener.register(this)
         uniffiCallbackInterfaceDuplicateKeyUploadErrorListener.register(this)
         uniffiCallbackInterfaceEnableRecoveryProgressListener.register(this)
         uniffiCallbackInterfaceGeneratedQrLoginProgressListener.register(this)
@@ -3432,8 +3493,6 @@ external fun uniffi_matrix_sdk_ffi_fn_method_client_can_deactivate_account(`ptr`
 ): Byte
 external fun uniffi_matrix_sdk_ffi_fn_method_client_clear_caches(`ptr`: Long,`syncService`: RustBuffer.ByValue,
 ): Long
-external fun uniffi_matrix_sdk_ffi_fn_method_client_clear_call_status(`ptr`: Long,
-): Long
 external fun uniffi_matrix_sdk_ffi_fn_method_client_clear_user_status(`ptr`: Long,
 ): Long
 external fun uniffi_matrix_sdk_ffi_fn_method_client_content_scanner(`ptr`: Long,
@@ -3448,11 +3507,15 @@ external fun uniffi_matrix_sdk_ffi_fn_method_client_delete_pusher(`ptr`: Long,`i
 ): Long
 external fun uniffi_matrix_sdk_ffi_fn_method_client_device_id(`ptr`: Long,uniffi_out_err: UniffiRustCallStatus, 
 ): RustBuffer.ByValue
+external fun uniffi_matrix_sdk_ffi_fn_method_client_disable_well_known_lookup(`ptr`: Long,`disable`: Byte,uniffi_out_err: UniffiRustCallStatus, 
+): Unit
 external fun uniffi_matrix_sdk_ffi_fn_method_client_display_name(`ptr`: Long,
 ): Long
 external fun uniffi_matrix_sdk_ffi_fn_method_client_enable_all_send_queues(`ptr`: Long,`enable`: Byte,
 ): Long
 external fun uniffi_matrix_sdk_ffi_fn_method_client_enable_automatic_backpagination(`ptr`: Long,uniffi_out_err: UniffiRustCallStatus, 
+): Unit
+external fun uniffi_matrix_sdk_ffi_fn_method_client_enable_automatic_call_status(`ptr`: Long,`enabled`: Byte,uniffi_out_err: UniffiRustCallStatus, 
 ): Unit
 external fun uniffi_matrix_sdk_ffi_fn_method_client_enable_send_queue_upload_progress(`ptr`: Long,`enable`: Byte,uniffi_out_err: UniffiRustCallStatus, 
 ): Unit
@@ -3509,6 +3572,8 @@ external fun uniffi_matrix_sdk_ffi_fn_method_client_ignored_users(`ptr`: Long,
 external fun uniffi_matrix_sdk_ffi_fn_method_client_is_livekit_rtc_supported(`ptr`: Long,
 ): Long
 external fun uniffi_matrix_sdk_ffi_fn_method_client_is_login_with_qr_code_supported(`ptr`: Long,
+): Long
+external fun uniffi_matrix_sdk_ffi_fn_method_client_is_profiles_sliding_sync_extension_supported(`ptr`: Long,
 ): Long
 external fun uniffi_matrix_sdk_ffi_fn_method_client_is_report_room_api_supported(`ptr`: Long,
 ): Long
@@ -3585,8 +3650,6 @@ external fun uniffi_matrix_sdk_ffi_fn_method_client_session(`ptr`: Long,uniffi_o
 external fun uniffi_matrix_sdk_ffi_fn_method_client_set_account_data(`ptr`: Long,`eventType`: RustBuffer.ByValue,`content`: RustBuffer.ByValue,
 ): Long
 external fun uniffi_matrix_sdk_ffi_fn_method_client_set_avatar_url(`ptr`: Long,`url`: RustBuffer.ByValue,
-): Long
-external fun uniffi_matrix_sdk_ffi_fn_method_client_set_call_status(`ptr`: Long,`call`: RustBuffer.ByValue,
 ): Long
 external fun uniffi_matrix_sdk_ffi_fn_method_client_set_content_scanner(`ptr`: Long,`contentScanner`: RustBuffer.ByValue,
 ): Long
@@ -3684,6 +3747,8 @@ external fun uniffi_matrix_sdk_ffi_fn_method_homeservercapabilities_forgets_room
 ): Long
 external fun uniffi_matrix_sdk_ffi_fn_method_homeservercapabilities_refresh(`ptr`: Long,
 ): Long
+external fun uniffi_matrix_sdk_ffi_fn_method_homeservercapabilities_room_versions(`ptr`: Long,
+): Long
 external fun uniffi_matrix_sdk_ffi_fn_clone_mediafilehandle(`handle`: Long,uniffi_out_err: UniffiRustCallStatus, 
 ): Long
 external fun uniffi_matrix_sdk_ffi_fn_free_mediafilehandle(`handle`: Long,uniffi_out_err: UniffiRustCallStatus, 
@@ -3700,6 +3765,8 @@ external fun uniffi_matrix_sdk_ffi_fn_init_callback_vtable_rawx509signer(`vtable
 ): Unit
 external fun uniffi_matrix_sdk_ffi_fn_method_rawx509signer_sign(`ptr`: Long,`message`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
 ): RustBufferRawX509Signature.ByValue
+external fun uniffi_matrix_sdk_ffi_fn_method_rawx509signer_validity_not_after(`ptr`: Long,uniffi_out_err: UniffiRustCallStatus, 
+): Long
 external fun uniffi_matrix_sdk_ffi_fn_clone_rawx509verifier(`handle`: Long,uniffi_out_err: UniffiRustCallStatus, 
 ): Long
 external fun uniffi_matrix_sdk_ffi_fn_free_rawx509verifier(`handle`: Long,uniffi_out_err: UniffiRustCallStatus, 
@@ -3734,6 +3801,8 @@ external fun uniffi_matrix_sdk_ffi_fn_method_clientbuilder_disable_built_in_root
 ): Long
 external fun uniffi_matrix_sdk_ffi_fn_method_clientbuilder_disable_ssl_verification(`ptr`: Long,uniffi_out_err: UniffiRustCallStatus, 
 ): Long
+external fun uniffi_matrix_sdk_ffi_fn_method_clientbuilder_disable_well_known_lookup(`ptr`: Long,`disableWellKnownLookup`: Byte,uniffi_out_err: UniffiRustCallStatus, 
+): Long
 external fun uniffi_matrix_sdk_ffi_fn_method_clientbuilder_dm_room_definition(`ptr`: Long,`dmRoomDefinition`: RustBufferDmRoomDefinition.ByValue,uniffi_out_err: UniffiRustCallStatus, 
 ): Long
 external fun uniffi_matrix_sdk_ffi_fn_method_clientbuilder_enable_share_history_on_invite(`ptr`: Long,`enableShareHistoryOnInvite`: Byte,uniffi_out_err: UniffiRustCallStatus, 
@@ -3750,6 +3819,8 @@ external fun uniffi_matrix_sdk_ffi_fn_method_clientbuilder_room_key_recipient_st
 ): Long
 external fun uniffi_matrix_sdk_ffi_fn_method_clientbuilder_server_name(`ptr`: Long,`serverName`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
 ): Long
+external fun uniffi_matrix_sdk_ffi_fn_method_clientbuilder_server_name_from_user_id(`ptr`: Long,`userId`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
+): Long
 external fun uniffi_matrix_sdk_ffi_fn_method_clientbuilder_server_name_or_homeserver_url(`ptr`: Long,`serverNameOrUrl`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
 ): Long
 external fun uniffi_matrix_sdk_ffi_fn_method_clientbuilder_session_paths(`ptr`: Long,`dataPath`: RustBuffer.ByValue,`cachePath`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
@@ -3765,8 +3836,6 @@ external fun uniffi_matrix_sdk_ffi_fn_method_clientbuilder_system_is_memory_cons
 external fun uniffi_matrix_sdk_ffi_fn_method_clientbuilder_threads_enabled(`ptr`: Long,`enabled`: Byte,`threadSubscriptions`: Byte,uniffi_out_err: UniffiRustCallStatus, 
 ): Long
 external fun uniffi_matrix_sdk_ffi_fn_method_clientbuilder_user_agent(`ptr`: Long,`userAgent`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
-): Long
-external fun uniffi_matrix_sdk_ffi_fn_method_clientbuilder_username(`ptr`: Long,`username`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
 ): Long
 external fun uniffi_matrix_sdk_ffi_fn_method_clientbuilder_with_raw_x509_signer(`ptr`: Long,`x509Sign`: Long,uniffi_out_err: UniffiRustCallStatus, 
 ): Long
@@ -3792,7 +3861,13 @@ external fun uniffi_matrix_sdk_ffi_fn_method_encryption_backup_state(`ptr`: Long
 ): RustBuffer.ByValue
 external fun uniffi_matrix_sdk_ffi_fn_method_encryption_backup_state_listener(`ptr`: Long,`listener`: Long,uniffi_out_err: UniffiRustCallStatus, 
 ): Long
+external fun uniffi_matrix_sdk_ffi_fn_method_encryption_create_dehydrated_device(`ptr`: Long,`displayName`: RustBuffer.ByValue,`pickleKey`: RustBuffer.ByValue,
+): Long
 external fun uniffi_matrix_sdk_ffi_fn_method_encryption_curve25519_key(`ptr`: Long,
+): Long
+external fun uniffi_matrix_sdk_ffi_fn_method_encryption_dehydrated_device_event_listener(`ptr`: Long,`listener`: Long,uniffi_out_err: UniffiRustCallStatus, 
+): Long
+external fun uniffi_matrix_sdk_ffi_fn_method_encryption_delete_dehydrated_device(`ptr`: Long,
 ): Long
 external fun uniffi_matrix_sdk_ffi_fn_method_encryption_disable_recovery(`ptr`: Long,
 ): Long
@@ -3806,6 +3881,8 @@ external fun uniffi_matrix_sdk_ffi_fn_method_encryption_has_devices_to_verify_ag
 ): Long
 external fun uniffi_matrix_sdk_ffi_fn_method_encryption_import_secrets_bundle(`ptr`: Long,`secretsBundle`: Long,
 ): Long
+external fun uniffi_matrix_sdk_ffi_fn_method_encryption_is_dehydrated_device_supported(`ptr`: Long,
+): Long
 external fun uniffi_matrix_sdk_ffi_fn_method_encryption_is_last_device(`ptr`: Long,
 ): Long
 external fun uniffi_matrix_sdk_ffi_fn_method_encryption_recover(`ptr`: Long,`recoveryKey`: RustBuffer.ByValue,
@@ -3818,10 +3895,16 @@ external fun uniffi_matrix_sdk_ffi_fn_method_encryption_recovery_state(`ptr`: Lo
 ): RustBuffer.ByValue
 external fun uniffi_matrix_sdk_ffi_fn_method_encryption_recovery_state_listener(`ptr`: Long,`listener`: Long,uniffi_out_err: UniffiRustCallStatus, 
 ): Long
+external fun uniffi_matrix_sdk_ffi_fn_method_encryption_rehydrate_dehydrated_device(`ptr`: Long,`pickleKey`: RustBuffer.ByValue,
+): Long
 external fun uniffi_matrix_sdk_ffi_fn_method_encryption_reset_identity(`ptr`: Long,
 ): Long
 external fun uniffi_matrix_sdk_ffi_fn_method_encryption_reset_recovery_key(`ptr`: Long,
 ): Long
+external fun uniffi_matrix_sdk_ffi_fn_method_encryption_start_dehydrated_devices(`ptr`: Long,`recoveryKey`: RustBuffer.ByValue,`settings`: RustBuffer.ByValue,
+): Long
+external fun uniffi_matrix_sdk_ffi_fn_method_encryption_stop_dehydrated_devices(`ptr`: Long,uniffi_out_err: UniffiRustCallStatus, 
+): Unit
 external fun uniffi_matrix_sdk_ffi_fn_method_encryption_user_identity(`ptr`: Long,`userId`: RustBuffer.ByValue,`fallbackToServer`: Byte,
 ): Long
 external fun uniffi_matrix_sdk_ffi_fn_method_encryption_verification_state(`ptr`: Long,uniffi_out_err: UniffiRustCallStatus, 
@@ -4129,6 +4212,8 @@ external fun uniffi_matrix_sdk_ffi_fn_method_room_live_locations_observer(`ptr`:
 external fun uniffi_matrix_sdk_ffi_fn_method_room_load_composer_draft(`ptr`: Long,`threadRoot`: RustBuffer.ByValue,
 ): Long
 external fun uniffi_matrix_sdk_ffi_fn_method_room_load_or_fetch_event(`ptr`: Long,`eventId`: RustBuffer.ByValue,
+): Long
+external fun uniffi_matrix_sdk_ffi_fn_method_room_load_or_fetch_event_with_relations(`ptr`: Long,`eventId`: RustBuffer.ByValue,`relationFilter`: RustBuffer.ByValue,
 ): Long
 external fun uniffi_matrix_sdk_ffi_fn_method_room_load_user_receipt(`ptr`: Long,`receiptType`: RustBuffer.ByValue,`thread`: RustBuffer.ByValue,`userId`: RustBuffer.ByValue,
 ): Long
@@ -4550,6 +4635,8 @@ external fun uniffi_matrix_sdk_ffi_fn_method_syncservicebuilder_finish(`ptr`: Lo
 ): Long
 external fun uniffi_matrix_sdk_ffi_fn_method_syncservicebuilder_with_offline_mode(`ptr`: Long,uniffi_out_err: UniffiRustCallStatus, 
 ): Long
+external fun uniffi_matrix_sdk_ffi_fn_method_syncservicebuilder_with_parent_span(`ptr`: Long,`span`: Long,uniffi_out_err: UniffiRustCallStatus, 
+): Long
 external fun uniffi_matrix_sdk_ffi_fn_method_syncservicebuilder_with_profiles_extension(`ptr`: Long,uniffi_out_err: UniffiRustCallStatus, 
 ): Long
 external fun uniffi_matrix_sdk_ffi_fn_method_syncservicebuilder_with_room_list_connection_id(`ptr`: Long,`connectionId`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
@@ -4664,9 +4751,13 @@ external fun uniffi_matrix_sdk_ffi_fn_method_timeline_send_video(`ptr`: Long,`pa
 ): Long
 external fun uniffi_matrix_sdk_ffi_fn_method_timeline_send_voice_message(`ptr`: Long,`params`: RustBuffer.ByValue,`audioInfo`: RustBuffer.ByValue,`waveform`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
 ): Long
+external fun uniffi_matrix_sdk_ffi_fn_method_timeline_send_with_extra_content(`ptr`: Long,`msg`: Long,`extraContentJson`: RustBuffer.ByValue,
+): Long
 external fun uniffi_matrix_sdk_ffi_fn_method_timeline_subscribe_to_back_pagination_status(`ptr`: Long,`listener`: Long,
 ): Long
 external fun uniffi_matrix_sdk_ffi_fn_method_timeline_toggle_reaction(`ptr`: Long,`itemId`: RustBuffer.ByValue,`key`: RustBuffer.ByValue,
+): Long
+external fun uniffi_matrix_sdk_ffi_fn_method_timeline_toggle_reaction_with_extra_content(`ptr`: Long,`itemId`: RustBuffer.ByValue,`key`: RustBuffer.ByValue,`extraContentJson`: RustBuffer.ByValue,
 ): Long
 external fun uniffi_matrix_sdk_ffi_fn_method_timeline_unpin_event(`ptr`: Long,`eventId`: RustBuffer.ByValue,
 ): Long
@@ -4779,6 +4870,8 @@ external fun uniffi_matrix_sdk_ffi_fn_init_callback_vtable_syncnotificationliste
 external fun uniffi_matrix_sdk_ffi_fn_init_callback_vtable_backupstatelistener(`vtable`: UniffiVTableCallbackInterfaceBackupStateListener,
 ): Unit
 external fun uniffi_matrix_sdk_ffi_fn_init_callback_vtable_backupsteadystatelistener(`vtable`: UniffiVTableCallbackInterfaceBackupSteadyStateListener,
+): Unit
+external fun uniffi_matrix_sdk_ffi_fn_init_callback_vtable_dehydrateddeviceeventlistener(`vtable`: UniffiVTableCallbackInterfaceDehydratedDeviceEventListener,
 ): Unit
 external fun uniffi_matrix_sdk_ffi_fn_init_callback_vtable_enablerecoveryprogresslistener(`vtable`: UniffiVTableCallbackInterfaceEnableRecoveryProgressListener,
 ): Unit
@@ -6068,12 +6161,6 @@ public interface ClientInterface {
     suspend fun `clearCaches`(`syncService`: SyncService?)
     
     /**
-     * Clear the current user's call indicator (MSC4426 `m.call` profile
-     * field).
-     */
-    suspend fun `clearCallStatus`()
-    
-    /**
      * Clear the current user's status (MSC4426).
      *
      * Deletes both `m.status` and `m.call` concurrently. Clearing `m.status`
@@ -6117,6 +6204,18 @@ public interface ClientInterface {
     
     fun `deviceId`(): kotlin.String
     
+    /**
+     * Change whether this client is allowed to look up the homeserver's
+     * `/.well-known/matrix/client` file.
+     *
+     * Some deployments must not emit any request to the well-known URI of
+     * their domain. When disabled, [`Client::tile_server`] returns `None`,
+     * [`Client::well_known_rtc_transports`] returns an empty list, and
+     * [`Client::discover_rtc_transports`] doesn't fall back to the well-known
+     * `m.rtc_foci`, relying only on the MSC4143 discovery endpoint.
+     */
+    fun `disableWellKnownLookup`(`disable`: kotlin.Boolean)
+    
     suspend fun `displayName`(): kotlin.String
     
     /**
@@ -6141,6 +6240,12 @@ public interface ClientInterface {
      * the event cache (so, before spawning a sync service or a timeline).
      */
     fun `enableAutomaticBackpagination`()
+    
+    /**
+     * Enable or disable automatic mirroring of this device's MatrixRTC
+     * participation into the MSC4426 `m.call` profile field.
+     */
+    fun `enableAutomaticCallStatus`(`enabled`: kotlin.Boolean)
     
     /**
      * Enables or disables progress reporting for media uploads in the send
@@ -6271,6 +6376,13 @@ public interface ClientInterface {
     
     /**
      * Checks if the server supports the LiveKit RTC focus for placing calls.
+     *
+     * Transports are discovered through the authenticated
+     * `GET /_matrix/client/v1/rtc/transports` endpoint (MSC4143). If the
+     * homeserver doesn't implement it, the well-known `m.rtc_foci` are used as
+     * a fallback, unless well-known discovery was disabled with
+     * [`ClientBuilder::disable_well_known_lookup`] or
+     * [`Client::disable_well_known_lookup`].
      */
     suspend fun `isLivekitRtcSupported`(): kotlin.Boolean
     
@@ -6278,6 +6390,11 @@ public interface ClientInterface {
      * Checks if the server supports login using a QR code.
      */
     suspend fun `isLoginWithQrCodeSupported`(): kotlin.Boolean
+    
+    /**
+     * Checks if the server supports the Profiles sliding sync extension.
+     */
+    suspend fun `isProfilesSlidingSyncExtensionSupported`(): kotlin.Boolean
     
     /**
      * Checks if the server supports the report room API.
@@ -6548,16 +6665,6 @@ public interface ClientInterface {
      * Updates the user's avatar using the provided MXC url.
      */
     suspend fun `setAvatarUrl`(`url`: kotlin.String)
-    
-    /**
-     * Set the current user's call indicator (MSC4426 `m.call` profile field).
-     *
-     * Presence of a value indicates the user is in a call. The optional
-     * `call_joined_ts` on [`UserCall`] carries the Unix-epoch seconds when
-     * the user joined the call, if known. Use [`Self::clear_call_status`] to
-     * remove it when the call ends.
-     */
-    suspend fun `setCallStatus`(`call`: UserCall)
     
     /**
      * Enables or disables the content scanner feature using the provided
@@ -7180,32 +7287,6 @@ open class Client: Disposable, AutoCloseable, ClientInterface
 
     
     /**
-     * Clear the current user's call indicator (MSC4426 `m.call` profile
-     * field).
-     */
-    @Throws(ClientException::class)
-    @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
-    override suspend fun `clearCallStatus`() {
-        return uniffiRustCallAsync(
-        callWithHandle { uniffiHandle ->
-            UniffiLib.uniffi_matrix_sdk_ffi_fn_method_client_clear_call_status(
-                uniffiHandle,
-                
-            )
-        },
-        { future, callback, continuation -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_poll_void(future, callback, continuation) },
-        { future, continuation -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_complete_void(future, continuation) },
-        { future -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_free_void(future) },
-        // lift function
-        { Unit },
-        
-        // Error FFI converter
-        ClientException.ErrorHandler,
-    )
-    }
-
-    
-    /**
      * Clear the current user's status (MSC4426).
      *
      * Deletes both `m.status` and `m.call` concurrently. Clearing `m.status`
@@ -7378,6 +7459,28 @@ open class Client: Disposable, AutoCloseable, ClientInterface
     
 
     
+    /**
+     * Change whether this client is allowed to look up the homeserver's
+     * `/.well-known/matrix/client` file.
+     *
+     * Some deployments must not emit any request to the well-known URI of
+     * their domain. When disabled, [`Client::tile_server`] returns `None`,
+     * [`Client::well_known_rtc_transports`] returns an empty list, and
+     * [`Client::discover_rtc_transports`] doesn't fall back to the well-known
+     * `m.rtc_foci`, relying only on the MSC4143 discovery endpoint.
+     */override fun `disableWellKnownLookup`(`disable`: kotlin.Boolean)
+        = 
+    callWithHandle {
+    uniffiRustCall() { _status ->
+    UniffiLib.uniffi_matrix_sdk_ffi_fn_method_client_disable_well_known_lookup(
+        it,
+        FfiConverterBoolean.lower(`disable`),_status)
+}
+    }
+    
+    
+
+    
     @Throws(ClientException::class)
     @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
     override suspend fun `displayName`() : kotlin.String {
@@ -7445,6 +7548,22 @@ open class Client: Disposable, AutoCloseable, ClientInterface
     UniffiLib.uniffi_matrix_sdk_ffi_fn_method_client_enable_automatic_backpagination(
         it,
         _status)
+}
+    }
+    
+    
+
+    
+    /**
+     * Enable or disable automatic mirroring of this device's MatrixRTC
+     * participation into the MSC4426 `m.call` profile field.
+     */override fun `enableAutomaticCallStatus`(`enabled`: kotlin.Boolean)
+        = 
+    callWithHandle {
+    uniffiRustCall() { _status ->
+    UniffiLib.uniffi_matrix_sdk_ffi_fn_method_client_enable_automatic_call_status(
+        it,
+        FfiConverterBoolean.lower(`enabled`),_status)
 }
     }
     
@@ -8019,6 +8138,13 @@ open class Client: Disposable, AutoCloseable, ClientInterface
     
     /**
      * Checks if the server supports the LiveKit RTC focus for placing calls.
+     *
+     * Transports are discovered through the authenticated
+     * `GET /_matrix/client/v1/rtc/transports` endpoint (MSC4143). If the
+     * homeserver doesn't implement it, the well-known `m.rtc_foci` are used as
+     * a fallback, unless well-known discovery was disabled with
+     * [`ClientBuilder::disable_well_known_lookup`] or
+     * [`Client::disable_well_known_lookup`].
      */
     @Throws(ClientException::class)
     @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
@@ -8050,6 +8176,30 @@ open class Client: Disposable, AutoCloseable, ClientInterface
         return uniffiRustCallAsync(
         callWithHandle { uniffiHandle ->
             UniffiLib.uniffi_matrix_sdk_ffi_fn_method_client_is_login_with_qr_code_supported(
+                uniffiHandle,
+                
+            )
+        },
+        { future, callback, continuation -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_poll_i8(future, callback, continuation) },
+        { future, continuation -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_complete_i8(future, continuation) },
+        { future -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_free_i8(future) },
+        // lift function
+        { FfiConverterBoolean.lift(it) },
+        // Error FFI converter
+        ClientException.ErrorHandler,
+    )
+    }
+
+    
+    /**
+     * Checks if the server supports the Profiles sliding sync extension.
+     */
+    @Throws(ClientException::class)
+    @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
+    override suspend fun `isProfilesSlidingSyncExtensionSupported`() : kotlin.Boolean {
+        return uniffiRustCallAsync(
+        callWithHandle { uniffiHandle ->
+            UniffiLib.uniffi_matrix_sdk_ffi_fn_method_client_is_profiles_sliding_sync_extension_supported(
                 uniffiHandle,
                 
             )
@@ -8996,36 +9146,6 @@ open class Client: Disposable, AutoCloseable, ClientInterface
             UniffiLib.uniffi_matrix_sdk_ffi_fn_method_client_set_avatar_url(
                 uniffiHandle,
                 FfiConverterString.lower(`url`),
-            )
-        },
-        { future, callback, continuation -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_poll_void(future, callback, continuation) },
-        { future, continuation -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_complete_void(future, continuation) },
-        { future -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_free_void(future) },
-        // lift function
-        { Unit },
-        
-        // Error FFI converter
-        ClientException.ErrorHandler,
-    )
-    }
-
-    
-    /**
-     * Set the current user's call indicator (MSC4426 `m.call` profile field).
-     *
-     * Presence of a value indicates the user is in a call. The optional
-     * `call_joined_ts` on [`UserCall`] carries the Unix-epoch seconds when
-     * the user joined the call, if known. Use [`Self::clear_call_status`] to
-     * remove it when the call ends.
-     */
-    @Throws(ClientException::class)
-    @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
-    override suspend fun `setCallStatus`(`call`: UserCall) {
-        return uniffiRustCallAsync(
-        callWithHandle { uniffiHandle ->
-            UniffiLib.uniffi_matrix_sdk_ffi_fn_method_client_set_call_status(
-                uniffiHandle,
-                FfiConverterTypeUserCall.lower(`call`),
             )
         },
         { future, callback, continuation -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_poll_void(future, callback, continuation) },
@@ -10101,6 +10221,28 @@ public interface ClientBuilderInterface {
     
     fun `disableSslVerification`(): ClientBuilder
     
+    /**
+     * Disable all the `.well-known/matrix/client` lookups, both the one
+     * performed by `ClientBuilder::build` to discover the homeserver, and all
+     * the ones performed later by the built client.
+     *
+     * Some deployments must not emit any request to the well-known URI of
+     * their domain. When disabled, `Client::tile_server` returns `None` and
+     * RTC transport discovery doesn't fall back to the well-known
+     * `m.rtc_foci`, meaning `Client::is_livekit_rtc_supported` only relies on
+     * the MSC4143 discovery endpoint.
+     *
+     * The homeserver must then be resolvable without a well-known lookup, so
+     * `ClientBuilder::homeserver_url` must be used.
+     * `ClientBuilder::server_name` and
+     * `ClientBuilder::server_name_from_user_id` can only be resolved through
+     * the well-known, and `ClientBuilder::build` fails with
+     * `ClientBuildError::WellKnownLookupDisabled` in that case.
+     * `ClientBuilder::server_name_or_homeserver_url` skips the well-known step
+     * and works only when given a homeserver URL.
+     */
+    fun `disableWellKnownLookup`(`disableWellKnownLookup`: kotlin.Boolean): ClientBuilder
+    
     fun `dmRoomDefinition`(`dmRoomDefinition`: DmRoomDefinition): ClientBuilder
     
     /**
@@ -10111,6 +10253,18 @@ public interface ClientBuilderInterface {
      */
     fun `enableShareHistoryOnInvite`(`enableShareHistoryOnInvite`: kotlin.Boolean): ClientBuilder
     
+    /**
+     * Set the homeserver URL to use.
+     *
+     * The following methods are mutually exclusive: [`Self::homeserver_url`],
+     * [`Self::server_name`], [`Self::server_name_or_homeserver_url`] and
+     * [`Self::server_name_from_user_id`]. If you set more than one, then
+     * whichever was set last will be used.
+     *
+     * This is the only one of them that never performs a
+     * `.well-known/matrix/client` lookup, so it is the one to use together
+     * with [`Self::disable_well_known_lookup`].
+     */
     fun `homeserverUrl`(`url`: kotlin.String): ClientBuilder
     
     /**
@@ -10131,8 +10285,57 @@ public interface ClientBuilderInterface {
      */
     fun `roomKeyRecipientStrategy`(`strategy`: CollectStrategy): ClientBuilder
     
+    /**
+     * Set the server name to discover the homeserver from.
+     *
+     * The following methods are mutually exclusive: [`Self::homeserver_url`],
+     * [`Self::server_name`], [`Self::server_name_or_homeserver_url`] and
+     * [`Self::server_name_from_user_id`]. If you set more than one, then
+     * whichever was set last will be used.
+     *
+     * This performs a `.well-known/matrix/client` lookup, and is therefore
+     * incompatible with [`Self::disable_well_known_lookup`]: [`Self::build`]
+     * then fails with [`ClientBuildError::WellKnownLookupDisabled`].
+     */
     fun `serverName`(`serverName`: kotlin.String): ClientBuilder
     
+    /**
+     * Uses the server name from the supplied the user ID to discover the
+     * homeserver.
+     *
+     * When building a client for restoration, prefer to use
+     * [`Self::homeserver_url`] as the restoration will pick up the user ID
+     * from the [`Session`], and using this will result in a needless request
+     * to re-discover the homeserver.
+     *
+     * The following methods are mutually exclusive: [`Self::homeserver_url`],
+     * [`Self::server_name`], [`Self::server_name_or_homeserver_url`] and
+     * [`Self::server_name_from_user_id`]. If you set more than one, then
+     * whichever was set last will be used.
+     *
+     * This performs a `.well-known/matrix/client` lookup, and is therefore
+     * incompatible with [`Self::disable_well_known_lookup`]: [`Self::build`]
+     * then fails with [`ClientBuildError::WellKnownLookupDisabled`].
+     */
+    fun `serverNameFromUserId`(`userId`: kotlin.String): ClientBuilder
+    
+    /**
+     * Set the server name to discover the homeserver from, falling back to
+     * using it as a homeserver URL if discovery fails. When falling back to a
+     * homeserver URL, a check is made to ensure that the server exists (unlike
+     * [`Self::homeserver_url`], so you can guarantee that the client is ready
+     * to use.
+     *
+     * The following methods are mutually exclusive: [`Self::homeserver_url`],
+     * [`Self::server_name`], [`Self::server_name_or_homeserver_url`] and
+     * [`Self::server_name_from_user_id`]. If you set more than one, then
+     * whichever was set last will be used.
+     *
+     * With [`Self::disable_well_known_lookup`], the discovery step is skipped
+     * and only the homeserver URL check is performed, so a homeserver URL
+     * still works while a delegating server name fails with
+     * [`ClientBuildError::InvalidServerName`].
+     */
     fun `serverNameOrHomeserverUrl`(`serverNameOrUrl`: kotlin.String): ClientBuilder
     
     /**
@@ -10172,8 +10375,6 @@ public interface ClientBuilderInterface {
     fun `threadsEnabled`(`enabled`: kotlin.Boolean, `threadSubscriptions`: kotlin.Boolean): ClientBuilder
     
     fun `userAgent`(`userAgent`: kotlin.String): ClientBuilder
-    
-    fun `username`(`username`: kotlin.String): ClientBuilder
     
     fun `withRawX509Signer`(`x509Sign`: RawX509Signer): ClientBuilder
     
@@ -10456,6 +10657,39 @@ open class ClientBuilder: Disposable, AutoCloseable, ClientBuilderInterface
     }
     
 
+    
+    /**
+     * Disable all the `.well-known/matrix/client` lookups, both the one
+     * performed by `ClientBuilder::build` to discover the homeserver, and all
+     * the ones performed later by the built client.
+     *
+     * Some deployments must not emit any request to the well-known URI of
+     * their domain. When disabled, `Client::tile_server` returns `None` and
+     * RTC transport discovery doesn't fall back to the well-known
+     * `m.rtc_foci`, meaning `Client::is_livekit_rtc_supported` only relies on
+     * the MSC4143 discovery endpoint.
+     *
+     * The homeserver must then be resolvable without a well-known lookup, so
+     * `ClientBuilder::homeserver_url` must be used.
+     * `ClientBuilder::server_name` and
+     * `ClientBuilder::server_name_from_user_id` can only be resolved through
+     * the well-known, and `ClientBuilder::build` fails with
+     * `ClientBuildError::WellKnownLookupDisabled` in that case.
+     * `ClientBuilder::server_name_or_homeserver_url` skips the well-known step
+     * and works only when given a homeserver URL.
+     */override fun `disableWellKnownLookup`(`disableWellKnownLookup`: kotlin.Boolean): ClientBuilder {
+            return FfiConverterTypeClientBuilder.lift(
+    callWithHandle {
+    uniffiRustCall() { _status ->
+    UniffiLib.uniffi_matrix_sdk_ffi_fn_method_clientbuilder_disable_well_known_lookup(
+        it,
+        FfiConverterBoolean.lower(`disableWellKnownLookup`),_status)
+}
+    }
+    )
+    }
+    
+
     override fun `dmRoomDefinition`(`dmRoomDefinition`: DmRoomDefinition): ClientBuilder {
             return FfiConverterTypeClientBuilder.lift(
     callWithHandle {
@@ -10488,7 +10722,19 @@ open class ClientBuilder: Disposable, AutoCloseable, ClientBuilderInterface
     }
     
 
-    override fun `homeserverUrl`(`url`: kotlin.String): ClientBuilder {
+    
+    /**
+     * Set the homeserver URL to use.
+     *
+     * The following methods are mutually exclusive: [`Self::homeserver_url`],
+     * [`Self::server_name`], [`Self::server_name_or_homeserver_url`] and
+     * [`Self::server_name_from_user_id`]. If you set more than one, then
+     * whichever was set last will be used.
+     *
+     * This is the only one of them that never performs a
+     * `.well-known/matrix/client` lookup, so it is the one to use together
+     * with [`Self::disable_well_known_lookup`].
+     */override fun `homeserverUrl`(`url`: kotlin.String): ClientBuilder {
             return FfiConverterTypeClientBuilder.lift(
     callWithHandle {
     uniffiRustCall() { _status ->
@@ -10563,7 +10809,19 @@ open class ClientBuilder: Disposable, AutoCloseable, ClientBuilderInterface
     }
     
 
-    override fun `serverName`(`serverName`: kotlin.String): ClientBuilder {
+    
+    /**
+     * Set the server name to discover the homeserver from.
+     *
+     * The following methods are mutually exclusive: [`Self::homeserver_url`],
+     * [`Self::server_name`], [`Self::server_name_or_homeserver_url`] and
+     * [`Self::server_name_from_user_id`]. If you set more than one, then
+     * whichever was set last will be used.
+     *
+     * This performs a `.well-known/matrix/client` lookup, and is therefore
+     * incompatible with [`Self::disable_well_known_lookup`]: [`Self::build`]
+     * then fails with [`ClientBuildError::WellKnownLookupDisabled`].
+     */override fun `serverName`(`serverName`: kotlin.String): ClientBuilder {
             return FfiConverterTypeClientBuilder.lift(
     callWithHandle {
     uniffiRustCall() { _status ->
@@ -10576,7 +10834,55 @@ open class ClientBuilder: Disposable, AutoCloseable, ClientBuilderInterface
     }
     
 
-    override fun `serverNameOrHomeserverUrl`(`serverNameOrUrl`: kotlin.String): ClientBuilder {
+    
+    /**
+     * Uses the server name from the supplied the user ID to discover the
+     * homeserver.
+     *
+     * When building a client for restoration, prefer to use
+     * [`Self::homeserver_url`] as the restoration will pick up the user ID
+     * from the [`Session`], and using this will result in a needless request
+     * to re-discover the homeserver.
+     *
+     * The following methods are mutually exclusive: [`Self::homeserver_url`],
+     * [`Self::server_name`], [`Self::server_name_or_homeserver_url`] and
+     * [`Self::server_name_from_user_id`]. If you set more than one, then
+     * whichever was set last will be used.
+     *
+     * This performs a `.well-known/matrix/client` lookup, and is therefore
+     * incompatible with [`Self::disable_well_known_lookup`]: [`Self::build`]
+     * then fails with [`ClientBuildError::WellKnownLookupDisabled`].
+     */override fun `serverNameFromUserId`(`userId`: kotlin.String): ClientBuilder {
+            return FfiConverterTypeClientBuilder.lift(
+    callWithHandle {
+    uniffiRustCall() { _status ->
+    UniffiLib.uniffi_matrix_sdk_ffi_fn_method_clientbuilder_server_name_from_user_id(
+        it,
+        FfiConverterString.lower(`userId`),_status)
+}
+    }
+    )
+    }
+    
+
+    
+    /**
+     * Set the server name to discover the homeserver from, falling back to
+     * using it as a homeserver URL if discovery fails. When falling back to a
+     * homeserver URL, a check is made to ensure that the server exists (unlike
+     * [`Self::homeserver_url`], so you can guarantee that the client is ready
+     * to use.
+     *
+     * The following methods are mutually exclusive: [`Self::homeserver_url`],
+     * [`Self::server_name`], [`Self::server_name_or_homeserver_url`] and
+     * [`Self::server_name_from_user_id`]. If you set more than one, then
+     * whichever was set last will be used.
+     *
+     * With [`Self::disable_well_known_lookup`], the discovery step is skipped
+     * and only the homeserver URL check is performed, so a homeserver URL
+     * still works while a delegating server name fails with
+     * [`ClientBuildError::InvalidServerName`].
+     */override fun `serverNameOrHomeserverUrl`(`serverNameOrUrl`: kotlin.String): ClientBuilder {
             return FfiConverterTypeClientBuilder.lift(
     callWithHandle {
     uniffiRustCall() { _status ->
@@ -10698,19 +11004,6 @@ open class ClientBuilder: Disposable, AutoCloseable, ClientBuilderInterface
     UniffiLib.uniffi_matrix_sdk_ffi_fn_method_clientbuilder_user_agent(
         it,
         FfiConverterString.lower(`userAgent`),_status)
-}
-    }
-    )
-    }
-    
-
-    override fun `username`(`username`: kotlin.String): ClientBuilder {
-            return FfiConverterTypeClientBuilder.lift(
-    callWithHandle {
-    uniffiRustCall() { _status ->
-    UniffiLib.uniffi_matrix_sdk_ffi_fn_method_clientbuilder_username(
-        it,
-        FfiConverterString.lower(`username`),_status)
 }
     }
     )
@@ -11505,10 +11798,33 @@ public interface EncryptionInterface {
     fun `backupStateListener`(`listener`: BackupStateListener): TaskHandle
     
     /**
+     * Build a fresh dehydrated device, encrypt it with the supplied pickle
+     * key, and upload it to the homeserver. Returns the new device ID.
+     *
+     * The pickle key is a 32-byte secret, base64 encoded. Callers are
+     * responsible for storing the pickle key safely (typically in Secret
+     * Storage via [`Encryption::start_dehydrated_devices`]).
+     */
+    suspend fun `createDehydratedDevice`(`displayName`: kotlin.String?, `pickleKey`: kotlin.String): kotlin.String
+    
+    /**
      * Get the public curve25519 key of our own device in base64. This is
      * usually what is called the identity key of the device.
      */
     suspend fun `curve25519Key`(): kotlin.String?
+    
+    /**
+     * Subscribe to lifecycle events emitted by the dehydrated-device
+     * manager. The returned [`TaskHandle`] keeps the listener alive; drop
+     * it to unsubscribe.
+     */
+    fun `dehydratedDeviceEventListener`(`listener`: DehydratedDeviceEventListener): TaskHandle
+    
+    /**
+     * Delete the current dehydrated device, if one exists. Silent if no
+     * device is on the server or the server does not implement MSC3814.
+     */
+    suspend fun `deleteDehydratedDevice`()
     
     suspend fun `disableRecovery`()
     
@@ -11547,6 +11863,12 @@ public interface EncryptionInterface {
      */
     suspend fun `importSecretsBundle`(`secretsBundle`: SecretsBundleWithUserId)
     
+    /**
+     * Return whether the homeserver advertises support for MSC3814
+     * dehydrated devices.
+     */
+    suspend fun `isDehydratedDeviceSupported`(): kotlin.Boolean
+    
     suspend fun `isLastDevice`(): kotlin.Boolean
     
     /**
@@ -11574,12 +11896,39 @@ public interface EncryptionInterface {
     fun `recoveryStateListener`(`listener`: RecoveryStateListener): TaskHandle
     
     /**
+     * Rehydrate the dehydrated device currently on the server, if any.
+     *
+     * Returns `true` if a device was rehydrated end to end, `false` if the
+     * server reports no dehydrated device or does not implement the endpoint.
+     */
+    suspend fun `rehydrateDehydratedDevice`(`pickleKey`: kotlin.String): kotlin.Boolean
+    
+    /**
      * Completely reset the current user's crypto identity: reset the cross
      * signing keys, delete the existing backup and recovery key.
      */
     suspend fun `resetIdentity`(): IdentityResetHandle?
     
     suspend fun `resetRecoveryKey`(): kotlin.String
+    
+    /**
+     * Start using dehydrated devices for this client, resolving the pickle
+     * key through Secret Storage and scheduling weekly rotation.
+     *
+     * The Rust-side copy of the recovery key is zeroized after Secret
+     * Storage has been unlocked; the caller keeps responsibility for the
+     * string it passed in.
+     */
+    suspend fun `startDehydratedDevices`(`recoveryKey`: kotlin.String, `settings`: StartDehydratedDevicesSettings)
+    
+    /**
+     * Stop the scheduled dehydrated-device rotation.
+     *
+     * Has no effect when no rotation is scheduled. Existing dehydrated
+     * devices on the server are left in place; pair with
+     * [`Encryption::delete_dehydrated_device`] to remove them.
+     */
+    fun `stopDehydratedDevices`()
     
     /**
      * Get the E2EE identity of a user.
@@ -11774,6 +12123,35 @@ open class Encryption: Disposable, AutoCloseable, EncryptionInterface
 
     
     /**
+     * Build a fresh dehydrated device, encrypt it with the supplied pickle
+     * key, and upload it to the homeserver. Returns the new device ID.
+     *
+     * The pickle key is a 32-byte secret, base64 encoded. Callers are
+     * responsible for storing the pickle key safely (typically in Secret
+     * Storage via [`Encryption::start_dehydrated_devices`]).
+     */
+    @Throws(DehydratedDeviceException::class)
+    @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
+    override suspend fun `createDehydratedDevice`(`displayName`: kotlin.String?, `pickleKey`: kotlin.String) : kotlin.String {
+        return uniffiRustCallAsync(
+        callWithHandle { uniffiHandle ->
+            UniffiLib.uniffi_matrix_sdk_ffi_fn_method_encryption_create_dehydrated_device(
+                uniffiHandle,
+                FfiConverterOptionalString.lower(`displayName`),FfiConverterString.lower(`pickleKey`),
+            )
+        },
+        { future, callback, continuation -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_poll_rust_buffer(future, callback, continuation) },
+        { future, continuation -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_complete_rust_buffer(future, continuation) },
+        { future -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_free_rust_buffer(future) },
+        // lift function
+        { FfiConverterString.lift(it) },
+        // Error FFI converter
+        DehydratedDeviceException.ErrorHandler,
+    )
+    }
+
+    
+    /**
      * Get the public curve25519 key of our own device in base64. This is
      * usually what is called the identity key of the device.
      */
@@ -11793,6 +12171,50 @@ open class Encryption: Disposable, AutoCloseable, EncryptionInterface
         { FfiConverterOptionalString.lift(it) },
         // Error FFI converter
         UniffiNullRustCallStatusErrorHandler,
+    )
+    }
+
+    
+    /**
+     * Subscribe to lifecycle events emitted by the dehydrated-device
+     * manager. The returned [`TaskHandle`] keeps the listener alive; drop
+     * it to unsubscribe.
+     */override fun `dehydratedDeviceEventListener`(`listener`: DehydratedDeviceEventListener): TaskHandle {
+            return FfiConverterTypeTaskHandle.lift(
+    callWithHandle {
+    uniffiRustCall() { _status ->
+    UniffiLib.uniffi_matrix_sdk_ffi_fn_method_encryption_dehydrated_device_event_listener(
+        it,
+        FfiConverterTypeDehydratedDeviceEventListener.lower(`listener`),_status)
+}
+    }
+    )
+    }
+    
+
+    
+    /**
+     * Delete the current dehydrated device, if one exists. Silent if no
+     * device is on the server or the server does not implement MSC3814.
+     */
+    @Throws(DehydratedDeviceException::class)
+    @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
+    override suspend fun `deleteDehydratedDevice`() {
+        return uniffiRustCallAsync(
+        callWithHandle { uniffiHandle ->
+            UniffiLib.uniffi_matrix_sdk_ffi_fn_method_encryption_delete_dehydrated_device(
+                uniffiHandle,
+                
+            )
+        },
+        { future, callback, continuation -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_poll_void(future, callback, continuation) },
+        { future, continuation -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_complete_void(future, continuation) },
+        { future -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_free_void(future) },
+        // lift function
+        { Unit },
+        
+        // Error FFI converter
+        DehydratedDeviceException.ErrorHandler,
     )
     }
 
@@ -11950,6 +12372,31 @@ open class Encryption: Disposable, AutoCloseable, EncryptionInterface
     }
 
     
+    /**
+     * Return whether the homeserver advertises support for MSC3814
+     * dehydrated devices.
+     */
+    @Throws(DehydratedDeviceException::class)
+    @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
+    override suspend fun `isDehydratedDeviceSupported`() : kotlin.Boolean {
+        return uniffiRustCallAsync(
+        callWithHandle { uniffiHandle ->
+            UniffiLib.uniffi_matrix_sdk_ffi_fn_method_encryption_is_dehydrated_device_supported(
+                uniffiHandle,
+                
+            )
+        },
+        { future, callback, continuation -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_poll_i8(future, callback, continuation) },
+        { future, continuation -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_complete_i8(future, continuation) },
+        { future -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_free_i8(future) },
+        // lift function
+        { FfiConverterBoolean.lift(it) },
+        // Error FFI converter
+        DehydratedDeviceException.ErrorHandler,
+    )
+    }
+
+    
     @Throws(RecoveryException::class)
     @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
     override suspend fun `isLastDevice`() : kotlin.Boolean {
@@ -12077,6 +12524,33 @@ open class Encryption: Disposable, AutoCloseable, EncryptionInterface
 
     
     /**
+     * Rehydrate the dehydrated device currently on the server, if any.
+     *
+     * Returns `true` if a device was rehydrated end to end, `false` if the
+     * server reports no dehydrated device or does not implement the endpoint.
+     */
+    @Throws(DehydratedDeviceException::class)
+    @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
+    override suspend fun `rehydrateDehydratedDevice`(`pickleKey`: kotlin.String) : kotlin.Boolean {
+        return uniffiRustCallAsync(
+        callWithHandle { uniffiHandle ->
+            UniffiLib.uniffi_matrix_sdk_ffi_fn_method_encryption_rehydrate_dehydrated_device(
+                uniffiHandle,
+                FfiConverterString.lower(`pickleKey`),
+            )
+        },
+        { future, callback, continuation -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_poll_i8(future, callback, continuation) },
+        { future, continuation -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_complete_i8(future, continuation) },
+        { future -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_free_i8(future) },
+        // lift function
+        { FfiConverterBoolean.lift(it) },
+        // Error FFI converter
+        DehydratedDeviceException.ErrorHandler,
+    )
+    }
+
+    
+    /**
      * Completely reset the current user's crypto identity: reset the cross
      * signing keys, delete the existing backup and recovery key.
      */
@@ -12120,6 +12594,55 @@ open class Encryption: Disposable, AutoCloseable, EncryptionInterface
         RecoveryException.ErrorHandler,
     )
     }
+
+    
+    /**
+     * Start using dehydrated devices for this client, resolving the pickle
+     * key through Secret Storage and scheduling weekly rotation.
+     *
+     * The Rust-side copy of the recovery key is zeroized after Secret
+     * Storage has been unlocked; the caller keeps responsibility for the
+     * string it passed in.
+     */
+    @Throws(DehydratedDeviceException::class)
+    @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
+    override suspend fun `startDehydratedDevices`(`recoveryKey`: kotlin.String, `settings`: StartDehydratedDevicesSettings) {
+        return uniffiRustCallAsync(
+        callWithHandle { uniffiHandle ->
+            UniffiLib.uniffi_matrix_sdk_ffi_fn_method_encryption_start_dehydrated_devices(
+                uniffiHandle,
+                FfiConverterString.lower(`recoveryKey`),FfiConverterTypeStartDehydratedDevicesSettings.lower(`settings`),
+            )
+        },
+        { future, callback, continuation -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_poll_void(future, callback, continuation) },
+        { future, continuation -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_complete_void(future, continuation) },
+        { future -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_free_void(future) },
+        // lift function
+        { Unit },
+        
+        // Error FFI converter
+        DehydratedDeviceException.ErrorHandler,
+    )
+    }
+
+    
+    /**
+     * Stop the scheduled dehydrated-device rotation.
+     *
+     * Has no effect when no rotation is scheduled. Existing dehydrated
+     * devices on the server are left in place; pair with
+     * [`Encryption::delete_dehydrated_device`] to remove them.
+     */override fun `stopDehydratedDevices`()
+        = 
+    callWithHandle {
+    uniffiRustCall() { _status ->
+    UniffiLib.uniffi_matrix_sdk_ffi_fn_method_encryption_stop_dehydrated_devices(
+        it,
+        _status)
+}
+    }
+    
+    
 
     
     /**
@@ -12756,6 +13279,8 @@ public interface HomeserverCapabilitiesInterface {
     
     suspend fun `refresh`()
     
+    suspend fun `roomVersions`(): RoomVersions
+    
     companion object
 }
 
@@ -13019,6 +13544,27 @@ open class HomeserverCapabilities: Disposable, AutoCloseable, HomeserverCapabili
         // lift function
         { Unit },
         
+        // Error FFI converter
+        ClientException.ErrorHandler,
+    )
+    }
+
+    
+    @Throws(ClientException::class)
+    @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
+    override suspend fun `roomVersions`() : RoomVersions {
+        return uniffiRustCallAsync(
+        callWithHandle { uniffiHandle ->
+            UniffiLib.uniffi_matrix_sdk_ffi_fn_method_homeservercapabilities_room_versions(
+                uniffiHandle,
+                
+            )
+        },
+        { future, callback, continuation -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_poll_rust_buffer(future, callback, continuation) },
+        { future, continuation -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_complete_rust_buffer(future, continuation) },
+        { future -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_free_rust_buffer(future) },
+        // lift function
+        { FfiConverterTypeRoomVersions.lift(it) },
         // Error FFI converter
         ClientException.ErrorHandler,
     )
@@ -18357,9 +18903,16 @@ public interface RawX509Signer {
     /**
      * Create a signature for the given message using our private key
      *
-     * Returns (key ID, signature)
+     * Note: the matrix-rust-sdk implementation supports asynchronous signing,
+     * but (for now) in this FFI we only support synchronous.
      */
     fun `sign`(`message`: kotlin.ByteArray): RawX509Signature
+    
+    /**
+     * Return the "not after" time for the certificate's validity period as a
+     * UNIX timestamp.
+     */
+    fun `validityNotAfter`(): kotlin.ULong
     
     companion object
 }
@@ -18468,7 +19021,8 @@ open class RawX509SignerImpl: Disposable, AutoCloseable, RawX509Signer
     /**
      * Create a signature for the given message using our private key
      *
-     * Returns (key ID, signature)
+     * Note: the matrix-rust-sdk implementation supports asynchronous signing,
+     * but (for now) in this FFI we only support synchronous.
      */
     @Throws(ClientException::class)override fun `sign`(`message`: kotlin.ByteArray): RawX509Signature {
             return FfiConverterTypeRawX509Signature.lift(
@@ -18477,6 +19031,24 @@ open class RawX509SignerImpl: Disposable, AutoCloseable, RawX509Signer
     UniffiLib.uniffi_matrix_sdk_ffi_fn_method_rawx509signer_sign(
         it,
         FfiConverterByteArray.lower(`message`),_status)
+}
+    }
+    )
+    }
+    
+
+    
+    /**
+     * Return the "not after" time for the certificate's validity period as a
+     * UNIX timestamp.
+     */
+    @Throws(ClientException::class)override fun `validityNotAfter`(): kotlin.ULong {
+            return FfiConverterULong.lift(
+    callWithHandle {
+    uniffiRustCallWithError(ClientException) { _status ->
+    UniffiLib.uniffi_matrix_sdk_ffi_fn_method_rawx509signer_validity_not_after(
+        it,
+        _status)
 }
     }
     )
@@ -18518,6 +19090,22 @@ internal object uniffiCallbackInterfaceRawX509Signer {
             )
         }
     }
+    internal object `validityNotAfter`: UniffiCallbackInterfaceRawX509SignerMethod1 {
+        override fun callback(`uniffiHandle`: Long,`uniffiOutReturn`: LongByReference,uniffiCallStatus: UniffiRustCallStatus,) {
+            val uniffiObj = FfiConverterTypeRawX509Signer.handleMap.get(uniffiHandle)
+            val makeCall = { ->
+                uniffiObj.`validityNotAfter`(
+                )
+            }
+            val writeReturn = { value: kotlin.ULong -> uniffiOutReturn.setValue(FfiConverterULong.lower(value)) }
+            uniffiTraitInterfaceCallWithError(
+                uniffiCallStatus,
+                makeCall,
+                writeReturn,
+                { e: ClientException -> FfiConverterTypeClientError.lower(e) }
+            )
+        }
+    }
 
     internal object uniffiFree: UniffiCallbackInterfaceFree {
         override fun callback(handle: Long) {
@@ -18535,6 +19123,7 @@ internal object uniffiCallbackInterfaceRawX509Signer {
         uniffiFree,
         uniffiClone,
         `sign`,
+        `validityNotAfter`,
     )
 
     // Registers the foreign callback with the Rust side.
@@ -19250,6 +19839,16 @@ public interface RoomInterface {
      * cache or fetches it from the homeserver.
      */
     suspend fun `loadOrFetchEvent`(`eventId`: kotlin.String): TimelineEvent
+    
+    /**
+     * Either loads the event associated with the `event_id` from the event
+     * cache or fetches it from the homeserver, along with the events related
+     * to it (e.g. reactions and edits), fetched recursively.
+     *
+     * An optional filter restricts the relation types fetched; no filter
+     * fetches relations of all types.
+     */
+    suspend fun `loadOrFetchEventWithRelations`(`eventId`: kotlin.String, `relationFilter`: List<RelationType>?): EventWithRelations
     
     /**
      * Load the receipt of the given type for the given user in this room,
@@ -20781,6 +21380,35 @@ open class Room: Disposable, AutoCloseable, RoomInterface
         { future -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_free_u64(future) },
         // lift function
         { FfiConverterTypeTimelineEvent.lift(it) },
+        // Error FFI converter
+        ClientException.ErrorHandler,
+    )
+    }
+
+    
+    /**
+     * Either loads the event associated with the `event_id` from the event
+     * cache or fetches it from the homeserver, along with the events related
+     * to it (e.g. reactions and edits), fetched recursively.
+     *
+     * An optional filter restricts the relation types fetched; no filter
+     * fetches relations of all types.
+     */
+    @Throws(ClientException::class)
+    @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
+    override suspend fun `loadOrFetchEventWithRelations`(`eventId`: kotlin.String, `relationFilter`: List<RelationType>?) : EventWithRelations {
+        return uniffiRustCallAsync(
+        callWithHandle { uniffiHandle ->
+            UniffiLib.uniffi_matrix_sdk_ffi_fn_method_room_load_or_fetch_event_with_relations(
+                uniffiHandle,
+                FfiConverterString.lower(`eventId`),FfiConverterOptionalSequenceTypeRelationType.lower(`relationFilter`),
+            )
+        },
+        { future, callback, continuation -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_poll_rust_buffer(future, callback, continuation) },
+        { future, continuation -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_complete_rust_buffer(future, continuation) },
+        { future -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_free_rust_buffer(future) },
+        // lift function
+        { FfiConverterTypeEventWithRelations.lift(it) },
         // Error FFI converter
         ClientException.ErrorHandler,
     )
@@ -30839,6 +31467,11 @@ public interface SyncServiceBuilderInterface {
     fun `withOfflineMode`(): SyncServiceBuilder
     
     /**
+     * Set a parent tracing Span for the tasks within this sync service.
+     */
+    fun `withParentSpan`(`span`: Span): SyncServiceBuilder
+    
+    /**
      * Enable the Profiles sliding sync extension for the room list service.
      *
      * Required to merge the global `m.status` and `m.call` fields into the
@@ -30996,6 +31629,22 @@ open class SyncServiceBuilder: Disposable, AutoCloseable, SyncServiceBuilderInte
     UniffiLib.uniffi_matrix_sdk_ffi_fn_method_syncservicebuilder_with_offline_mode(
         it,
         _status)
+}
+    }
+    )
+    }
+    
+
+    
+    /**
+     * Set a parent tracing Span for the tasks within this sync service.
+     */override fun `withParentSpan`(`span`: Span): SyncServiceBuilder {
+            return FfiConverterTypeSyncServiceBuilder.lift(
+    callWithHandle {
+    uniffiRustCall() { _status ->
+    UniffiLib.uniffi_matrix_sdk_ffi_fn_method_syncservicebuilder_with_parent_span(
+        it,
+        FfiConverterTypeSpan.lower(`span`),_status)
 }
     }
     )
@@ -31541,8 +32190,9 @@ public interface ThreadListServiceInterface {
     /**
      * Subscribes to changes in the pagination state.
      *
-     * The `listener` is called once for every state transition. The returned
-     * [`TaskHandle`] keeps the subscription alive
+     * The `listener` is immediately called with the current state, then once
+     * for every state transition. The returned [`TaskHandle`] keeps the
+     * subscription alive
      */
     fun `subscribeToPaginationStateUpdates`(`listener`: ThreadListPaginationStateListener): TaskHandle
     
@@ -31767,8 +32417,9 @@ open class ThreadListService: Disposable, AutoCloseable, ThreadListServiceInterf
     /**
      * Subscribes to changes in the pagination state.
      *
-     * The `listener` is called once for every state transition. The returned
-     * [`TaskHandle`] keeps the subscription alive
+     * The `listener` is immediately called with the current state, then once
+     * for every state transition. The returned [`TaskHandle`] keeps the
+     * subscription alive
      */override fun `subscribeToPaginationStateUpdates`(`listener`: ThreadListPaginationStateListener): TaskHandle {
             return FfiConverterTypeTaskHandle.lift(
     callWithHandle {
@@ -32335,9 +32986,9 @@ public interface TimelineInterface {
      *
      * If the replied to event has a thread relation, it is forwarded on the
      * reply so that clients that support threads can render the reply
-     * inside the thread.
+     * inside the thread. Returns a handle to abort the pending send.
      */
-    suspend fun `sendReply`(`msg`: RoomMessageEventContentWithoutRelation, `eventId`: kotlin.String)
+    suspend fun `sendReply`(`msg`: RoomMessageEventContentWithoutRelation, `eventId`: kotlin.String): SendHandle
     
     /**
      * SC
@@ -32352,6 +33003,12 @@ public interface TimelineInterface {
     fun `sendVideo`(`params`: UploadParameters, `thumbnailSource`: UploadSource?, `videoInfo`: VideoInfo): SendAttachmentJoinHandle
     
     fun `sendVoiceMessage`(`params`: UploadParameters, `audioInfo`: AudioInfo, `waveform`: List<kotlin.Float>): SendAttachmentJoinHandle
+    
+    /**
+     * Like [`Self::send`], but merges the given additional top-level fields
+     * (a JSON object, encoded as a string) into the outgoing event's content.
+     */
+    suspend fun `sendWithExtraContent`(`msg`: RoomMessageEventContentWithoutRelation, `extraContentJson`: kotlin.String?): SendHandle
     
     suspend fun `subscribeToBackPaginationStatus`(`listener`: PaginationStatusListener): TaskHandle
     
@@ -32371,6 +33028,16 @@ public interface TimelineInterface {
      * Returns `true` if the reaction was added, `false` if it was removed.
      */
     suspend fun `toggleReaction`(`itemId`: EventOrTransactionId, `key`: kotlin.String): kotlin.Boolean
+    
+    /**
+     * Like [`Self::toggle_reaction`], but merges the given additional
+     * top-level fields (a JSON object, encoded as a string) into the
+     * reaction's content when one is added.
+     *
+     * Removing a reaction is a redaction, which carries no content, so the
+     * extra fields are only used when adding one.
+     */
+    suspend fun `toggleReactionWithExtraContent`(`itemId`: EventOrTransactionId, `key`: kotlin.String, `extraContentJson`: kotlin.String?): kotlin.Boolean
     
     /**
      * Adds a new pinned event by sending an updated `m.room.pinned_events`
@@ -33116,11 +33783,11 @@ open class Timeline: Disposable, AutoCloseable, TimelineInterface
      *
      * If the replied to event has a thread relation, it is forwarded on the
      * reply so that clients that support threads can render the reply
-     * inside the thread.
+     * inside the thread. Returns a handle to abort the pending send.
      */
     @Throws(ClientException::class)
     @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
-    override suspend fun `sendReply`(`msg`: RoomMessageEventContentWithoutRelation, `eventId`: kotlin.String) {
+    override suspend fun `sendReply`(`msg`: RoomMessageEventContentWithoutRelation, `eventId`: kotlin.String) : SendHandle {
         return uniffiRustCallAsync(
         callWithHandle { uniffiHandle ->
             UniffiLib.uniffi_matrix_sdk_ffi_fn_method_timeline_send_reply(
@@ -33128,12 +33795,11 @@ open class Timeline: Disposable, AutoCloseable, TimelineInterface
                 FfiConverterTypeRoomMessageEventContentWithoutRelation.lower(`msg`),FfiConverterString.lower(`eventId`),
             )
         },
-        { future, callback, continuation -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_poll_void(future, callback, continuation) },
-        { future, continuation -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_complete_void(future, continuation) },
-        { future -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_free_void(future) },
+        { future, callback, continuation -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_poll_u64(future, callback, continuation) },
+        { future, continuation -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_complete_u64(future, continuation) },
+        { future -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_free_u64(future) },
         // lift function
-        { Unit },
-        
+        { FfiConverterTypeSendHandle.lift(it) },
         // Error FFI converter
         ClientException.ErrorHandler,
     )
@@ -33216,6 +33882,31 @@ open class Timeline: Disposable, AutoCloseable, TimelineInterface
     
 
     
+    /**
+     * Like [`Self::send`], but merges the given additional top-level fields
+     * (a JSON object, encoded as a string) into the outgoing event's content.
+     */
+    @Throws(ClientException::class)
+    @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
+    override suspend fun `sendWithExtraContent`(`msg`: RoomMessageEventContentWithoutRelation, `extraContentJson`: kotlin.String?) : SendHandle {
+        return uniffiRustCallAsync(
+        callWithHandle { uniffiHandle ->
+            UniffiLib.uniffi_matrix_sdk_ffi_fn_method_timeline_send_with_extra_content(
+                uniffiHandle,
+                FfiConverterTypeRoomMessageEventContentWithoutRelation.lower(`msg`),FfiConverterOptionalString.lower(`extraContentJson`),
+            )
+        },
+        { future, callback, continuation -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_poll_u64(future, callback, continuation) },
+        { future, continuation -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_complete_u64(future, continuation) },
+        { future -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_free_u64(future) },
+        // lift function
+        { FfiConverterTypeSendHandle.lift(it) },
+        // Error FFI converter
+        ClientException.ErrorHandler,
+    )
+    }
+
+    
     @Throws(ClientException::class)
     @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
     override suspend fun `subscribeToBackPaginationStatus`(`listener`: PaginationStatusListener) : TaskHandle {
@@ -33260,6 +33951,35 @@ open class Timeline: Disposable, AutoCloseable, TimelineInterface
             UniffiLib.uniffi_matrix_sdk_ffi_fn_method_timeline_toggle_reaction(
                 uniffiHandle,
                 FfiConverterTypeEventOrTransactionId.lower(`itemId`),FfiConverterString.lower(`key`),
+            )
+        },
+        { future, callback, continuation -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_poll_i8(future, callback, continuation) },
+        { future, continuation -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_complete_i8(future, continuation) },
+        { future -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_free_i8(future) },
+        // lift function
+        { FfiConverterBoolean.lift(it) },
+        // Error FFI converter
+        ClientException.ErrorHandler,
+    )
+    }
+
+    
+    /**
+     * Like [`Self::toggle_reaction`], but merges the given additional
+     * top-level fields (a JSON object, encoded as a string) into the
+     * reaction's content when one is added.
+     *
+     * Removing a reaction is a redaction, which carries no content, so the
+     * extra fields are only used when adding one.
+     */
+    @Throws(ClientException::class)
+    @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
+    override suspend fun `toggleReactionWithExtraContent`(`itemId`: EventOrTransactionId, `key`: kotlin.String, `extraContentJson`: kotlin.String?) : kotlin.Boolean {
+        return uniffiRustCallAsync(
+        callWithHandle { uniffiHandle ->
+            UniffiLib.uniffi_matrix_sdk_ffi_fn_method_timeline_toggle_reaction_with_extra_content(
+                uniffiHandle,
+                FfiConverterTypeEventOrTransactionId.lower(`itemId`),FfiConverterString.lower(`key`),FfiConverterOptionalString.lower(`extraContentJson`),
             )
         },
         { future, callback, continuation -> UniffiLib.ffi_matrix_sdk_ffi_rust_future_poll_i8(future, callback, continuation) },
@@ -36221,6 +36941,8 @@ public object FfiConverterTypeConditionalPushRule: FfiConverterRustBuffer<Condit
 data class CreateRoomParameters (
     var `name`: kotlin.String?
     , 
+    var `roomVersion`: kotlin.String? = null 
+    , 
     var `topic`: kotlin.String? = null 
     , 
     var `isEncrypted`: kotlin.Boolean
@@ -36262,6 +36984,7 @@ public object FfiConverterTypeCreateRoomParameters: FfiConverterRustBuffer<Creat
         return CreateRoomParameters(
             FfiConverterOptionalString.read(buf),
             FfiConverterOptionalString.read(buf),
+            FfiConverterOptionalString.read(buf),
             FfiConverterBoolean.read(buf),
             FfiConverterBoolean.read(buf),
             FfiConverterTypeRoomVisibility.read(buf),
@@ -36278,6 +37001,7 @@ public object FfiConverterTypeCreateRoomParameters: FfiConverterRustBuffer<Creat
 
     override fun allocationSize(value: CreateRoomParameters) = (
             FfiConverterOptionalString.allocationSize(value.`name`) +
+            FfiConverterOptionalString.allocationSize(value.`roomVersion`) +
             FfiConverterOptionalString.allocationSize(value.`topic`) +
             FfiConverterBoolean.allocationSize(value.`isEncrypted`) +
             FfiConverterBoolean.allocationSize(value.`isDirect`) +
@@ -36294,6 +37018,7 @@ public object FfiConverterTypeCreateRoomParameters: FfiConverterRustBuffer<Creat
 
     override fun write(value: CreateRoomParameters, buf: ByteBuffer) {
             FfiConverterOptionalString.write(value.`name`, buf)
+            FfiConverterOptionalString.write(value.`roomVersion`, buf)
             FfiConverterOptionalString.write(value.`topic`, buf)
             FfiConverterBoolean.write(value.`isEncrypted`, buf)
             FfiConverterBoolean.write(value.`isDirect`, buf)
@@ -36579,6 +37304,64 @@ public object FfiConverterTypeEventTimelineItemDebugInfo: FfiConverterRustBuffer
             FfiConverterString.write(value.`model`, buf)
             FfiConverterOptionalString.write(value.`originalJson`, buf)
             FfiConverterOptionalString.write(value.`latestEditJson`, buf)
+    }
+}
+
+
+
+/**
+ * An event and the events related to it, as returned by
+ * [`Room::load_or_fetch_event_with_relations`].
+ */
+data class EventWithRelations (
+    /**
+     * The event itself.
+     */
+    var `event`: TimelineEvent
+    , 
+    /**
+     * The events related to it, directly or (recursively) through other
+     * related events.
+     */
+    var `relatedEvents`: List<TimelineEvent>
+    
+): Disposable{
+    
+
+    
+
+    
+    @Suppress("UNNECESSARY_SAFE_CALL") // codegen is much simpler if we unconditionally emit safe calls here
+    override fun destroy() {
+        
+    Disposable.destroy(
+        this.`event`,
+        this.`relatedEvents`
+    )
+    }
+    
+    companion object
+}
+
+/**
+ * @suppress
+ */
+public object FfiConverterTypeEventWithRelations: FfiConverterRustBuffer<EventWithRelations> {
+    override fun read(buf: ByteBuffer): EventWithRelations {
+        return EventWithRelations(
+            FfiConverterTypeTimelineEvent.read(buf),
+            FfiConverterSequenceTypeTimelineEvent.read(buf),
+        )
+    }
+
+    override fun allocationSize(value: EventWithRelations) = (
+            FfiConverterTypeTimelineEvent.allocationSize(value.`event`) +
+            FfiConverterSequenceTypeTimelineEvent.allocationSize(value.`relatedEvents`)
+    )
+
+    override fun write(value: EventWithRelations, buf: ByteBuffer) {
+            FfiConverterTypeTimelineEvent.write(value.`event`, buf)
+            FfiConverterSequenceTypeTimelineEvent.write(value.`relatedEvents`, buf)
     }
 }
 
@@ -37865,6 +38648,8 @@ data class MessageContent (
     var `isEdited`: kotlin.Boolean
     , 
     var `mentions`: Mentions?
+    , 
+    var `perMessageProfile`: PerMessageProfile?
     
 ): Disposable{
     
@@ -37879,7 +38664,8 @@ data class MessageContent (
         this.`msgType`,
         this.`body`,
         this.`isEdited`,
-        this.`mentions`
+        this.`mentions`,
+        this.`perMessageProfile`
     )
     }
     
@@ -37896,6 +38682,7 @@ public object FfiConverterTypeMessageContent: FfiConverterRustBuffer<MessageCont
             FfiConverterString.read(buf),
             FfiConverterBoolean.read(buf),
             FfiConverterOptionalTypeMentions.read(buf),
+            FfiConverterOptionalTypePerMessageProfile.read(buf),
         )
     }
 
@@ -37903,7 +38690,8 @@ public object FfiConverterTypeMessageContent: FfiConverterRustBuffer<MessageCont
             FfiConverterTypeMessageType.allocationSize(value.`msgType`) +
             FfiConverterString.allocationSize(value.`body`) +
             FfiConverterBoolean.allocationSize(value.`isEdited`) +
-            FfiConverterOptionalTypeMentions.allocationSize(value.`mentions`)
+            FfiConverterOptionalTypeMentions.allocationSize(value.`mentions`) +
+            FfiConverterOptionalTypePerMessageProfile.allocationSize(value.`perMessageProfile`)
     )
 
     override fun write(value: MessageContent, buf: ByteBuffer) {
@@ -37911,6 +38699,7 @@ public object FfiConverterTypeMessageContent: FfiConverterRustBuffer<MessageCont
             FfiConverterString.write(value.`body`, buf)
             FfiConverterBoolean.write(value.`isEdited`, buf)
             FfiConverterOptionalTypeMentions.write(value.`mentions`, buf)
+            FfiConverterOptionalTypePerMessageProfile.write(value.`perMessageProfile`, buf)
     }
 }
 
@@ -38942,6 +39731,74 @@ public object FfiConverterTypePatternedPushRule: FfiConverterRustBuffer<Patterne
             FfiConverterBoolean.write(value.`enabled`, buf)
             FfiConverterString.write(value.`ruleId`, buf)
             FfiConverterString.write(value.`pattern`, buf)
+    }
+}
+
+
+
+/**
+ * SC: Profile metadata attached to an individual message.
+ */
+data class PerMessageProfile (
+    var `id`: kotlin.String
+    , 
+    var `displayName`: kotlin.String?
+    , 
+    var `avatarUrl`: kotlin.String?
+    , 
+    var `avatarFile`: MediaSource?
+    , 
+    var `hasFallback`: kotlin.Boolean
+    
+): Disposable{
+    
+
+    
+
+    
+    @Suppress("UNNECESSARY_SAFE_CALL") // codegen is much simpler if we unconditionally emit safe calls here
+    override fun destroy() {
+        
+    Disposable.destroy(
+        this.`id`,
+        this.`displayName`,
+        this.`avatarUrl`,
+        this.`avatarFile`,
+        this.`hasFallback`
+    )
+    }
+    
+    companion object
+}
+
+/**
+ * @suppress
+ */
+public object FfiConverterTypePerMessageProfile: FfiConverterRustBuffer<PerMessageProfile> {
+    override fun read(buf: ByteBuffer): PerMessageProfile {
+        return PerMessageProfile(
+            FfiConverterString.read(buf),
+            FfiConverterOptionalString.read(buf),
+            FfiConverterOptionalString.read(buf),
+            FfiConverterOptionalTypeMediaSource.read(buf),
+            FfiConverterBoolean.read(buf),
+        )
+    }
+
+    override fun allocationSize(value: PerMessageProfile) = (
+            FfiConverterString.allocationSize(value.`id`) +
+            FfiConverterOptionalString.allocationSize(value.`displayName`) +
+            FfiConverterOptionalString.allocationSize(value.`avatarUrl`) +
+            FfiConverterOptionalTypeMediaSource.allocationSize(value.`avatarFile`) +
+            FfiConverterBoolean.allocationSize(value.`hasFallback`)
+    )
+
+    override fun write(value: PerMessageProfile, buf: ByteBuffer) {
+            FfiConverterString.write(value.`id`, buf)
+            FfiConverterOptionalString.write(value.`displayName`, buf)
+            FfiConverterOptionalString.write(value.`avatarUrl`, buf)
+            FfiConverterOptionalTypeMediaSource.write(value.`avatarFile`, buf)
+            FfiConverterBoolean.write(value.`hasFallback`, buf)
     }
 }
 
@@ -40622,6 +41479,44 @@ public object FfiConverterTypeRoomPreviewInfo: FfiConverterRustBuffer<RoomPrevie
 
 
 
+data class RoomVersions (
+    var `default`: kotlin.String
+    , 
+    var `available`: Map<kotlin.String, kotlin.String>
+    
+){
+    
+
+    
+
+    
+    companion object
+}
+
+/**
+ * @suppress
+ */
+public object FfiConverterTypeRoomVersions: FfiConverterRustBuffer<RoomVersions> {
+    override fun read(buf: ByteBuffer): RoomVersions {
+        return RoomVersions(
+            FfiConverterString.read(buf),
+            FfiConverterMapStringString.read(buf),
+        )
+    }
+
+    override fun allocationSize(value: RoomVersions) = (
+            FfiConverterString.allocationSize(value.`default`) +
+            FfiConverterMapStringString.allocationSize(value.`available`)
+    )
+
+    override fun write(value: RoomVersions, buf: ByteBuffer) {
+            FfiConverterString.write(value.`default`, buf)
+            FfiConverterMapStringString.write(value.`available`, buf)
+    }
+}
+
+
+
 /**
  * A push ruleset scopes a set of rules according to some criteria.
  */
@@ -41351,6 +42246,64 @@ public object FfiConverterTypeSpaceRoom: FfiConverterRustBuffer<SpaceRoom> {
             FfiConverterOptionalSequenceTypeRoomHero.write(value.`heroes`, buf)
             FfiConverterSequenceString.write(value.`via`, buf)
             FfiConverterOptionalBoolean.write(value.`isDm`, buf)
+    }
+}
+
+
+
+/**
+ * Settings for [`Encryption::start_dehydrated_devices`].
+ */
+data class StartDehydratedDevicesSettings (
+    /**
+     * Force generation of a fresh random pickle key on start, replacing
+     * any existing entry in Secret Storage and the local cache.
+     */
+    var `createNewKey`: kotlin.Boolean = false 
+    , 
+    /**
+     * Whether to attempt to rehydrate the existing dehydrated device, if
+     * any, before creating the next one.
+     */
+    var `rehydrate`: kotlin.Boolean = true 
+    , 
+    /**
+     * If `true`, the call becomes a no-op when no pickle key is cached
+     * locally.
+     */
+    var `onlyIfKeyCached`: kotlin.Boolean = false 
+    
+){
+    
+
+    
+
+    
+    companion object
+}
+
+/**
+ * @suppress
+ */
+public object FfiConverterTypeStartDehydratedDevicesSettings: FfiConverterRustBuffer<StartDehydratedDevicesSettings> {
+    override fun read(buf: ByteBuffer): StartDehydratedDevicesSettings {
+        return StartDehydratedDevicesSettings(
+            FfiConverterBoolean.read(buf),
+            FfiConverterBoolean.read(buf),
+            FfiConverterBoolean.read(buf),
+        )
+    }
+
+    override fun allocationSize(value: StartDehydratedDevicesSettings) = (
+            FfiConverterBoolean.allocationSize(value.`createNewKey`) +
+            FfiConverterBoolean.allocationSize(value.`rehydrate`) +
+            FfiConverterBoolean.allocationSize(value.`onlyIfKeyCached`)
+    )
+
+    override fun write(value: StartDehydratedDevicesSettings, buf: ByteBuffer) {
+            FfiConverterBoolean.write(value.`createNewKey`, buf)
+            FfiConverterBoolean.write(value.`rehydrate`, buf)
+            FfiConverterBoolean.write(value.`onlyIfKeyCached`, buf)
     }
 }
 
@@ -42502,6 +43455,12 @@ data class UploadParameters (
      * Optional Event ID to reply to.
      */
     var `inReplyTo`: kotlin.String?
+    , 
+    /**
+     * Optional additional top-level fields for the media event's content,
+     * as a serialized JSON object.
+     */
+    var `extraContentJson`: kotlin.String? = null 
     
 ){
     
@@ -42524,6 +43483,7 @@ public object FfiConverterTypeUploadParameters: FfiConverterRustBuffer<UploadPar
             FfiConverterBoolean.read(buf),
             FfiConverterOptionalTypeMentions.read(buf),
             FfiConverterOptionalString.read(buf),
+            FfiConverterOptionalString.read(buf),
         )
     }
 
@@ -42533,7 +43493,8 @@ public object FfiConverterTypeUploadParameters: FfiConverterRustBuffer<UploadPar
             FfiConverterOptionalTypeFormattedBody.allocationSize(value.`formattedCaption`) +
             FfiConverterBoolean.allocationSize(value.`skipCaptionAutoformat`) +
             FfiConverterOptionalTypeMentions.allocationSize(value.`mentions`) +
-            FfiConverterOptionalString.allocationSize(value.`inReplyTo`)
+            FfiConverterOptionalString.allocationSize(value.`inReplyTo`) +
+            FfiConverterOptionalString.allocationSize(value.`extraContentJson`)
     )
 
     override fun write(value: UploadParameters, buf: ByteBuffer) {
@@ -42543,6 +43504,7 @@ public object FfiConverterTypeUploadParameters: FfiConverterRustBuffer<UploadPar
             FfiConverterBoolean.write(value.`skipCaptionAutoformat`, buf)
             FfiConverterOptionalTypeMentions.write(value.`mentions`, buf)
             FfiConverterOptionalString.write(value.`inReplyTo`, buf)
+            FfiConverterOptionalString.write(value.`extraContentJson`, buf)
     }
 }
 
@@ -43008,6 +43970,12 @@ data class WidgetCapabilities (
      * This allows the widget to download files (avatars)
      */
     var `downloadFiles`: kotlin.Boolean
+    , 
+    /**
+     * This allows the widget to discover the RTC transports advertised by the
+     * homeserver (MSC4515).
+     */
+    var `rtcTransports`: kotlin.Boolean
     
 ){
     
@@ -43030,6 +43998,7 @@ public object FfiConverterTypeWidgetCapabilities: FfiConverterRustBuffer<WidgetC
             FfiConverterBoolean.read(buf),
             FfiConverterBoolean.read(buf),
             FfiConverterBoolean.read(buf),
+            FfiConverterBoolean.read(buf),
         )
     }
 
@@ -43039,7 +44008,8 @@ public object FfiConverterTypeWidgetCapabilities: FfiConverterRustBuffer<WidgetC
             FfiConverterBoolean.allocationSize(value.`requiresClient`) +
             FfiConverterBoolean.allocationSize(value.`updateDelayedEvent`) +
             FfiConverterBoolean.allocationSize(value.`sendDelayedEvent`) +
-            FfiConverterBoolean.allocationSize(value.`downloadFiles`)
+            FfiConverterBoolean.allocationSize(value.`downloadFiles`) +
+            FfiConverterBoolean.allocationSize(value.`rtcTransports`)
     )
 
     override fun write(value: WidgetCapabilities, buf: ByteBuffer) {
@@ -43049,6 +44019,7 @@ public object FfiConverterTypeWidgetCapabilities: FfiConverterRustBuffer<WidgetC
             FfiConverterBoolean.write(value.`updateDelayedEvent`, buf)
             FfiConverterBoolean.write(value.`sendDelayedEvent`, buf)
             FfiConverterBoolean.write(value.`downloadFiles`, buf)
+            FfiConverterBoolean.write(value.`rtcTransports`, buf)
     }
 }
 
@@ -44414,6 +45385,8 @@ sealed class ClientBuildException(message: String): kotlin.Exception(message) {
         
         class InvalidServerName(message: String) : ClientBuildException(message)
         
+        class WellKnownLookupDisabled(message: String) : ClientBuildException(message)
+        
         class ServerUnreachable(message: String) : ClientBuildException(message)
         
         class WellKnownLookupFailed(message: String) : ClientBuildException(message)
@@ -44446,15 +45419,16 @@ public object FfiConverterTypeClientBuildError : FfiConverterRustBuffer<ClientBu
         
             return when(buf.getInt()) {
             1 -> ClientBuildException.InvalidServerName(FfiConverterString.read(buf))
-            2 -> ClientBuildException.ServerUnreachable(FfiConverterString.read(buf))
-            3 -> ClientBuildException.WellKnownLookupFailed(FfiConverterString.read(buf))
-            4 -> ClientBuildException.WellKnownDeserializationException(FfiConverterString.read(buf))
-            5 -> ClientBuildException.SlidingSync(FfiConverterString.read(buf))
-            6 -> ClientBuildException.SlidingSyncVersion(FfiConverterString.read(buf))
-            7 -> ClientBuildException.Sdk(FfiConverterString.read(buf))
-            8 -> ClientBuildException.EventCache(FfiConverterString.read(buf))
-            9 -> ClientBuildException.InvalidRawKey(FfiConverterString.read(buf))
-            10 -> ClientBuildException.Generic(FfiConverterString.read(buf))
+            2 -> ClientBuildException.WellKnownLookupDisabled(FfiConverterString.read(buf))
+            3 -> ClientBuildException.ServerUnreachable(FfiConverterString.read(buf))
+            4 -> ClientBuildException.WellKnownLookupFailed(FfiConverterString.read(buf))
+            5 -> ClientBuildException.WellKnownDeserializationException(FfiConverterString.read(buf))
+            6 -> ClientBuildException.SlidingSync(FfiConverterString.read(buf))
+            7 -> ClientBuildException.SlidingSyncVersion(FfiConverterString.read(buf))
+            8 -> ClientBuildException.Sdk(FfiConverterString.read(buf))
+            9 -> ClientBuildException.EventCache(FfiConverterString.read(buf))
+            10 -> ClientBuildException.InvalidRawKey(FfiConverterString.read(buf))
+            11 -> ClientBuildException.Generic(FfiConverterString.read(buf))
             else -> throw RuntimeException("invalid error enum value, something is very wrong!!")
         }
         
@@ -44470,40 +45444,44 @@ public object FfiConverterTypeClientBuildError : FfiConverterRustBuffer<ClientBu
                 buf.putInt(1)
                 Unit
             }
-            is ClientBuildException.ServerUnreachable -> {
+            is ClientBuildException.WellKnownLookupDisabled -> {
                 buf.putInt(2)
                 Unit
             }
-            is ClientBuildException.WellKnownLookupFailed -> {
+            is ClientBuildException.ServerUnreachable -> {
                 buf.putInt(3)
                 Unit
             }
-            is ClientBuildException.WellKnownDeserializationException -> {
+            is ClientBuildException.WellKnownLookupFailed -> {
                 buf.putInt(4)
                 Unit
             }
-            is ClientBuildException.SlidingSync -> {
+            is ClientBuildException.WellKnownDeserializationException -> {
                 buf.putInt(5)
                 Unit
             }
-            is ClientBuildException.SlidingSyncVersion -> {
+            is ClientBuildException.SlidingSync -> {
                 buf.putInt(6)
                 Unit
             }
-            is ClientBuildException.Sdk -> {
+            is ClientBuildException.SlidingSyncVersion -> {
                 buf.putInt(7)
                 Unit
             }
-            is ClientBuildException.EventCache -> {
+            is ClientBuildException.Sdk -> {
                 buf.putInt(8)
                 Unit
             }
-            is ClientBuildException.InvalidRawKey -> {
+            is ClientBuildException.EventCache -> {
                 buf.putInt(9)
                 Unit
             }
-            is ClientBuildException.Generic -> {
+            is ClientBuildException.InvalidRawKey -> {
                 buf.putInt(10)
+                Unit
+            }
+            is ClientBuildException.Generic -> {
+                buf.putInt(11)
                 Unit
             }
         }.let { /* this makes the `when` an expression, which ensures it is exhaustive */ }
@@ -45006,6 +45984,361 @@ public object FfiConverterTypeDateDividerMode: FfiConverterRustBuffer<DateDivide
 
     override fun write(value: DateDividerMode, buf: ByteBuffer) {
         buf.putInt(value.ordinal + 1)
+    }
+}
+
+
+
+
+
+
+
+/**
+ * Errors returned by the dehydrated-device FFI surface.
+ */
+sealed class DehydratedDeviceException(message: String): kotlin.Exception(message) {
+        
+    /**
+     * The client is not logged in.
+     */
+        class NotLoggedIn(message: String) : DehydratedDeviceException(message)
+        
+    /**
+     * The supplied base64-encoded pickle key did not decode to 32 bytes.
+     */
+        class InvalidPickleKey(message: String) : DehydratedDeviceException(message)
+        
+    /**
+     * Opening Secret Storage with the supplied recovery key failed.
+     */
+        class SecretStorage(message: String) : DehydratedDeviceException(message)
+        
+    /**
+     * Any other failure surfaced by the SDK.
+     */
+        class Sdk(message: String) : DehydratedDeviceException(message)
+        
+
+    companion object ErrorHandler : UniffiRustCallStatusErrorHandler<DehydratedDeviceException> {
+        override fun lift(error_buf: RustBuffer.ByValue): DehydratedDeviceException = FfiConverterTypeDehydratedDeviceError.lift(error_buf)
+    }
+}
+
+/**
+ * @suppress
+ */
+public object FfiConverterTypeDehydratedDeviceError : FfiConverterRustBuffer<DehydratedDeviceException> {
+    override fun read(buf: ByteBuffer): DehydratedDeviceException {
+        
+            return when(buf.getInt()) {
+            1 -> DehydratedDeviceException.NotLoggedIn(FfiConverterString.read(buf))
+            2 -> DehydratedDeviceException.InvalidPickleKey(FfiConverterString.read(buf))
+            3 -> DehydratedDeviceException.SecretStorage(FfiConverterString.read(buf))
+            4 -> DehydratedDeviceException.Sdk(FfiConverterString.read(buf))
+            else -> throw RuntimeException("invalid error enum value, something is very wrong!!")
+        }
+        
+    }
+
+    override fun allocationSize(value: DehydratedDeviceException): ULong {
+        return 4UL
+    }
+
+    override fun write(value: DehydratedDeviceException, buf: ByteBuffer) {
+        when(value) {
+            is DehydratedDeviceException.NotLoggedIn -> {
+                buf.putInt(1)
+                Unit
+            }
+            is DehydratedDeviceException.InvalidPickleKey -> {
+                buf.putInt(2)
+                Unit
+            }
+            is DehydratedDeviceException.SecretStorage -> {
+                buf.putInt(3)
+                Unit
+            }
+            is DehydratedDeviceException.Sdk -> {
+                buf.putInt(4)
+                Unit
+            }
+        }.let { /* this makes the `when` an expression, which ensures it is exhaustive */ }
+    }
+
+}
+
+
+
+/**
+ * Lifecycle event emitted by the dehydrated-device manager.
+ *
+ * Mirrors [`dehydrated_devices::DehydratedDeviceEvent`]; subscribe via
+ * [`Encryption::dehydrated_device_event_listener`].
+ */
+sealed class DehydratedDeviceEvent {
+    
+    /**
+     * A fresh dehydrated device was constructed in the local crypto store,
+     * before the upload PUT.
+     */
+    data class Created(
+        val `deviceId`: kotlin.String) : DehydratedDeviceEvent()
+        
+    {
+        
+
+        companion object
+    }
+    
+    /**
+     * The homeserver accepted the upload of the dehydrated device.
+     */
+    data class Uploaded(
+        val `deviceId`: kotlin.String) : DehydratedDeviceEvent()
+        
+    {
+        
+
+        companion object
+    }
+    
+    /**
+     * The dehydrated device on the homeserver was deleted.
+     */
+    object Deleted : DehydratedDeviceEvent()
+    
+    
+    /**
+     * A pickle key was cached in the local crypto store.
+     */
+    object KeyCached : DehydratedDeviceEvent()
+    
+    
+    /**
+     * Rehydration of a dehydrated device began.
+     */
+    data class RehydrationStarted(
+        val `deviceId`: kotlin.String) : DehydratedDeviceEvent()
+        
+    {
+        
+
+        companion object
+    }
+    
+    /**
+     * A batch of to-device events has been imported during rehydration.
+     */
+    data class RehydrationProgress(
+        val `roomKeysImported`: kotlin.ULong, 
+        val `toDeviceEvents`: kotlin.ULong) : DehydratedDeviceEvent()
+        
+    {
+        
+
+        companion object
+    }
+    
+    /**
+     * Rehydration finished successfully.
+     */
+    data class RehydrationCompleted(
+        val `deviceId`: kotlin.String, 
+        val `roomKeysImported`: kotlin.ULong, 
+        val `toDeviceEvents`: kotlin.ULong) : DehydratedDeviceEvent()
+        
+    {
+        
+
+        companion object
+    }
+    
+    /**
+     * Rehydration failed.
+     */
+    data class RehydrationError(
+        val `error`: kotlin.String) : DehydratedDeviceEvent()
+        
+    {
+        
+
+        companion object
+    }
+    
+    /**
+     * A scheduled rotation tick failed; the rotation task remains scheduled.
+     */
+    data class RotationError(
+        val `error`: kotlin.String) : DehydratedDeviceEvent()
+        
+    {
+        
+
+        companion object
+    }
+    
+
+    
+
+    
+    
+
+
+    companion object
+}
+
+/**
+ * @suppress
+ */
+public object FfiConverterTypeDehydratedDeviceEvent : FfiConverterRustBuffer<DehydratedDeviceEvent>{
+    override fun read(buf: ByteBuffer): DehydratedDeviceEvent {
+        return when(buf.getInt()) {
+            1 -> DehydratedDeviceEvent.Created(
+                FfiConverterString.read(buf),
+                )
+            2 -> DehydratedDeviceEvent.Uploaded(
+                FfiConverterString.read(buf),
+                )
+            3 -> DehydratedDeviceEvent.Deleted
+            4 -> DehydratedDeviceEvent.KeyCached
+            5 -> DehydratedDeviceEvent.RehydrationStarted(
+                FfiConverterString.read(buf),
+                )
+            6 -> DehydratedDeviceEvent.RehydrationProgress(
+                FfiConverterULong.read(buf),
+                FfiConverterULong.read(buf),
+                )
+            7 -> DehydratedDeviceEvent.RehydrationCompleted(
+                FfiConverterString.read(buf),
+                FfiConverterULong.read(buf),
+                FfiConverterULong.read(buf),
+                )
+            8 -> DehydratedDeviceEvent.RehydrationError(
+                FfiConverterString.read(buf),
+                )
+            9 -> DehydratedDeviceEvent.RotationError(
+                FfiConverterString.read(buf),
+                )
+            else -> throw RuntimeException("invalid enum value, something is very wrong!!")
+        }
+    }
+
+    override fun allocationSize(value: DehydratedDeviceEvent) = when(value) {
+        is DehydratedDeviceEvent.Created -> {
+            // Add the size for the Int that specifies the variant plus the size needed for all fields
+            (
+                4UL
+                + FfiConverterString.allocationSize(value.`deviceId`)
+            )
+        }
+        is DehydratedDeviceEvent.Uploaded -> {
+            // Add the size for the Int that specifies the variant plus the size needed for all fields
+            (
+                4UL
+                + FfiConverterString.allocationSize(value.`deviceId`)
+            )
+        }
+        is DehydratedDeviceEvent.Deleted -> {
+            // Add the size for the Int that specifies the variant plus the size needed for all fields
+            (
+                4UL
+            )
+        }
+        is DehydratedDeviceEvent.KeyCached -> {
+            // Add the size for the Int that specifies the variant plus the size needed for all fields
+            (
+                4UL
+            )
+        }
+        is DehydratedDeviceEvent.RehydrationStarted -> {
+            // Add the size for the Int that specifies the variant plus the size needed for all fields
+            (
+                4UL
+                + FfiConverterString.allocationSize(value.`deviceId`)
+            )
+        }
+        is DehydratedDeviceEvent.RehydrationProgress -> {
+            // Add the size for the Int that specifies the variant plus the size needed for all fields
+            (
+                4UL
+                + FfiConverterULong.allocationSize(value.`roomKeysImported`)
+                + FfiConverterULong.allocationSize(value.`toDeviceEvents`)
+            )
+        }
+        is DehydratedDeviceEvent.RehydrationCompleted -> {
+            // Add the size for the Int that specifies the variant plus the size needed for all fields
+            (
+                4UL
+                + FfiConverterString.allocationSize(value.`deviceId`)
+                + FfiConverterULong.allocationSize(value.`roomKeysImported`)
+                + FfiConverterULong.allocationSize(value.`toDeviceEvents`)
+            )
+        }
+        is DehydratedDeviceEvent.RehydrationError -> {
+            // Add the size for the Int that specifies the variant plus the size needed for all fields
+            (
+                4UL
+                + FfiConverterString.allocationSize(value.`error`)
+            )
+        }
+        is DehydratedDeviceEvent.RotationError -> {
+            // Add the size for the Int that specifies the variant plus the size needed for all fields
+            (
+                4UL
+                + FfiConverterString.allocationSize(value.`error`)
+            )
+        }
+    }
+
+    override fun write(value: DehydratedDeviceEvent, buf: ByteBuffer) {
+        when(value) {
+            is DehydratedDeviceEvent.Created -> {
+                buf.putInt(1)
+                FfiConverterString.write(value.`deviceId`, buf)
+                Unit
+            }
+            is DehydratedDeviceEvent.Uploaded -> {
+                buf.putInt(2)
+                FfiConverterString.write(value.`deviceId`, buf)
+                Unit
+            }
+            is DehydratedDeviceEvent.Deleted -> {
+                buf.putInt(3)
+                Unit
+            }
+            is DehydratedDeviceEvent.KeyCached -> {
+                buf.putInt(4)
+                Unit
+            }
+            is DehydratedDeviceEvent.RehydrationStarted -> {
+                buf.putInt(5)
+                FfiConverterString.write(value.`deviceId`, buf)
+                Unit
+            }
+            is DehydratedDeviceEvent.RehydrationProgress -> {
+                buf.putInt(6)
+                FfiConverterULong.write(value.`roomKeysImported`, buf)
+                FfiConverterULong.write(value.`toDeviceEvents`, buf)
+                Unit
+            }
+            is DehydratedDeviceEvent.RehydrationCompleted -> {
+                buf.putInt(7)
+                FfiConverterString.write(value.`deviceId`, buf)
+                FfiConverterULong.write(value.`roomKeysImported`, buf)
+                FfiConverterULong.write(value.`toDeviceEvents`, buf)
+                Unit
+            }
+            is DehydratedDeviceEvent.RehydrationError -> {
+                buf.putInt(8)
+                FfiConverterString.write(value.`error`, buf)
+                Unit
+            }
+            is DehydratedDeviceEvent.RotationError -> {
+                buf.putInt(9)
+                FfiConverterString.write(value.`error`, buf)
+                Unit
+            }
+        }.let { /* this makes the `when` an expression, which ensures it is exhaustive */ }
     }
 }
 
@@ -51716,7 +53049,8 @@ sealed class MsgLikeKind: Disposable  {
     data class Sticker(
         val `body`: kotlin.String, 
         val `info`: org.matrix.rustcomponents.sdk.ImageInfo, 
-        val `source`: org.matrix.rustcomponents.sdk.MediaSource) : MsgLikeKind()
+        val `source`: org.matrix.rustcomponents.sdk.MediaSource, 
+        val `perMessageProfile`: org.matrix.rustcomponents.sdk.PerMessageProfile?) : MsgLikeKind()
         
     {
         
@@ -51804,7 +53138,8 @@ sealed class MsgLikeKind: Disposable  {
     Disposable.destroy(
         this.`body`,
         this.`info`,
-        this.`source`
+        this.`source`,
+        this.`perMessageProfile`
     )
                 
             }
@@ -51868,6 +53203,7 @@ public object FfiConverterTypeMsgLikeKind : FfiConverterRustBuffer<MsgLikeKind>{
                 FfiConverterString.read(buf),
                 FfiConverterTypeImageInfo.read(buf),
                 FfiConverterTypeMediaSource.read(buf),
+                FfiConverterOptionalTypePerMessageProfile.read(buf),
                 )
             3 -> MsgLikeKind.Poll(
                 FfiConverterString.read(buf),
@@ -51907,6 +53243,7 @@ public object FfiConverterTypeMsgLikeKind : FfiConverterRustBuffer<MsgLikeKind>{
                 + FfiConverterString.allocationSize(value.`body`)
                 + FfiConverterTypeImageInfo.allocationSize(value.`info`)
                 + FfiConverterTypeMediaSource.allocationSize(value.`source`)
+                + FfiConverterOptionalTypePerMessageProfile.allocationSize(value.`perMessageProfile`)
             )
         }
         is MsgLikeKind.Poll -> {
@@ -51963,6 +53300,7 @@ public object FfiConverterTypeMsgLikeKind : FfiConverterRustBuffer<MsgLikeKind>{
                 FfiConverterString.write(value.`body`, buf)
                 FfiConverterTypeImageInfo.write(value.`info`, buf)
                 FfiConverterTypeMediaSource.write(value.`source`, buf)
+                FfiConverterOptionalTypePerMessageProfile.write(value.`perMessageProfile`, buf)
                 Unit
             }
             is MsgLikeKind.Poll -> {
@@ -54767,6 +56105,58 @@ public object FfiConverterTypeRecoveryState: FfiConverterRustBuffer<RecoveryStat
     override fun allocationSize(value: RecoveryState) = 4UL
 
     override fun write(value: RecoveryState, buf: ByteBuffer) {
+        buf.putInt(value.ordinal + 1)
+    }
+}
+
+
+
+
+
+/**
+ * The relation types that can be used to filter related events when calling
+ * [`Room::load_or_fetch_event_with_relations`].
+ */
+
+enum class RelationType {
+    
+    /**
+     * An annotation to an event (e.g. a reaction), `m.annotation`.
+     */
+    ANNOTATION,
+    /**
+     * A reference to another event, `m.reference`.
+     */
+    REFERENCE,
+    /**
+     * An event that replaces another event (e.g. an edit), `m.replace`.
+     */
+    REPLACEMENT,
+    /**
+     * An event that belongs to a thread, `m.thread`.
+     */
+    THREAD;
+
+    
+
+
+    companion object
+}
+
+
+/**
+ * @suppress
+ */
+public object FfiConverterTypeRelationType: FfiConverterRustBuffer<RelationType> {
+    override fun read(buf: ByteBuffer) = try {
+        RelationType.values()[buf.getInt() - 1]
+    } catch (e: IndexOutOfBoundsException) {
+        throw RuntimeException("invalid enum value, something is very wrong!!", e)
+    }
+
+    override fun allocationSize(value: RelationType) = 4UL
+
+    override fun write(value: RelationType, buf: ByteBuffer) {
         buf.putInt(value.ordinal + 1)
     }
 }
@@ -61160,7 +62550,11 @@ enum class TraceLogPacks {
     /**
      * Enables all the logs relevant to the latest events.
      */
-    LATEST_EVENTS;
+    LATEST_EVENTS,
+    /**
+     * Enables all the logs relevant to message search.
+     */
+    SEARCH;
 
     
 
@@ -62223,6 +63617,66 @@ internal object uniffiCallbackInterfaceClientSessionDelegate {
  * @suppress
  */
 public object FfiConverterTypeClientSessionDelegate: FfiConverterCallbackInterface<ClientSessionDelegate>()
+
+
+
+
+
+public interface DehydratedDeviceEventListener {
+    
+    fun `onEvent`(`event`: DehydratedDeviceEvent)
+    
+    companion object
+}
+
+
+
+// Put the implementation in an object so we don't pollute the top-level namespace
+internal object uniffiCallbackInterfaceDehydratedDeviceEventListener {
+    internal object `onEvent`: UniffiCallbackInterfaceDehydratedDeviceEventListenerMethod0 {
+        override fun callback(`uniffiHandle`: Long,`event`: RustBuffer.ByValue,`uniffiOutReturn`: Pointer,uniffiCallStatus: UniffiRustCallStatus,) {
+            val uniffiObj = FfiConverterTypeDehydratedDeviceEventListener.handleMap.get(uniffiHandle)
+            val makeCall = { ->
+                uniffiObj.`onEvent`(
+                    FfiConverterTypeDehydratedDeviceEvent.lift(`event`),
+                )
+            }
+            val writeReturn = { _: Unit -> Unit }
+            uniffiTraitInterfaceCall(uniffiCallStatus, makeCall, writeReturn)
+        }
+    }
+
+    internal object uniffiFree: UniffiCallbackInterfaceFree {
+        override fun callback(handle: Long) {
+            FfiConverterTypeDehydratedDeviceEventListener.handleMap.remove(handle)
+        }
+    }
+
+    internal object uniffiClone: UniffiCallbackInterfaceClone {
+        override fun callback(handle: Long): Long {
+            return FfiConverterTypeDehydratedDeviceEventListener.handleMap.clone(handle)
+        }
+    }
+
+    internal var vtable = UniffiVTableCallbackInterfaceDehydratedDeviceEventListener.UniffiByValue(
+        uniffiFree,
+        uniffiClone,
+        `onEvent`,
+    )
+
+    // Registers the foreign callback with the Rust side.
+    // This method is generated for each callback interface.
+    internal fun register(lib: UniffiLib) {
+        lib.uniffi_matrix_sdk_ffi_fn_init_callback_vtable_dehydrateddeviceeventlistener(vtable)
+    }
+}
+
+/**
+ * The ffiConverter which transforms the Callbacks in to handles to pass to Rust.
+ *
+ * @suppress
+ */
+public object FfiConverterTypeDehydratedDeviceEventListener: FfiConverterCallbackInterface<DehydratedDeviceEventListener>()
 
 
 
@@ -66374,6 +67828,38 @@ public object FfiConverterOptionalTypePasswordStrengthFeedback: FfiConverterRust
 /**
  * @suppress
  */
+public object FfiConverterOptionalTypePerMessageProfile: FfiConverterRustBuffer<PerMessageProfile?> {
+    override fun read(buf: ByteBuffer): PerMessageProfile? {
+        if (buf.get().toInt() == 0) {
+            return null
+        }
+        return FfiConverterTypePerMessageProfile.read(buf)
+    }
+
+    override fun allocationSize(value: PerMessageProfile?): ULong {
+        if (value == null) {
+            return 1UL
+        } else {
+            return 1UL + FfiConverterTypePerMessageProfile.allocationSize(value)
+        }
+    }
+
+    override fun write(value: PerMessageProfile?, buf: ByteBuffer) {
+        if (value == null) {
+            buf.put(0)
+        } else {
+            buf.put(1)
+            FfiConverterTypePerMessageProfile.write(value, buf)
+        }
+    }
+}
+
+
+
+
+/**
+ * @suppress
+ */
 public object FfiConverterOptionalTypePowerLevelChanges: FfiConverterRustBuffer<PowerLevelChanges?> {
     override fun read(buf: ByteBuffer): PowerLevelChanges? {
         if (buf.get().toInt() == 0) {
@@ -67974,6 +69460,38 @@ public object FfiConverterOptionalSequenceTypeAction: FfiConverterRustBuffer<Lis
 /**
  * @suppress
  */
+public object FfiConverterOptionalSequenceTypeRelationType: FfiConverterRustBuffer<List<RelationType>?> {
+    override fun read(buf: ByteBuffer): List<RelationType>? {
+        if (buf.get().toInt() == 0) {
+            return null
+        }
+        return FfiConverterSequenceTypeRelationType.read(buf)
+    }
+
+    override fun allocationSize(value: List<RelationType>?): ULong {
+        if (value == null) {
+            return 1UL
+        } else {
+            return 1UL + FfiConverterSequenceTypeRelationType.allocationSize(value)
+        }
+    }
+
+    override fun write(value: List<RelationType>?, buf: ByteBuffer) {
+        if (value == null) {
+            buf.put(0)
+        } else {
+            buf.put(1)
+            FfiConverterSequenceTypeRelationType.write(value, buf)
+        }
+    }
+}
+
+
+
+
+/**
+ * @suppress
+ */
 public object FfiConverterOptionalMapStringLong: FfiConverterRustBuffer<Map<kotlin.String, kotlin.Long>?> {
     override fun read(buf: ByteBuffer): Map<kotlin.String, kotlin.Long>? {
         if (buf.get().toInt() == 0) {
@@ -68228,6 +69746,34 @@ public object FfiConverterSequenceTypeSessionVerificationEmoji: FfiConverterRust
         buf.putInt(value.size)
         value.iterator().forEach {
             FfiConverterTypeSessionVerificationEmoji.write(it, buf)
+        }
+    }
+}
+
+
+
+
+/**
+ * @suppress
+ */
+public object FfiConverterSequenceTypeTimelineEvent: FfiConverterRustBuffer<List<TimelineEvent>> {
+    override fun read(buf: ByteBuffer): List<TimelineEvent> {
+        val len = buf.getInt()
+        return List<TimelineEvent>(len) {
+            FfiConverterTypeTimelineEvent.read(buf)
+        }
+    }
+
+    override fun allocationSize(value: List<TimelineEvent>): ULong {
+        val sizeForLength = 4UL
+        val sizeForItems = value.map { FfiConverterTypeTimelineEvent.allocationSize(it) }.sum()
+        return sizeForLength + sizeForItems
+    }
+
+    override fun write(value: List<TimelineEvent>, buf: ByteBuffer) {
+        buf.putInt(value.size)
+        value.iterator().forEach {
+            FfiConverterTypeTimelineEvent.write(it, buf)
         }
     }
 }
@@ -69292,6 +70838,34 @@ public object FfiConverterSequenceTypePushCondition: FfiConverterRustBuffer<List
         buf.putInt(value.size)
         value.iterator().forEach {
             FfiConverterTypePushCondition.write(it, buf)
+        }
+    }
+}
+
+
+
+
+/**
+ * @suppress
+ */
+public object FfiConverterSequenceTypeRelationType: FfiConverterRustBuffer<List<RelationType>> {
+    override fun read(buf: ByteBuffer): List<RelationType> {
+        val len = buf.getInt()
+        return List<RelationType>(len) {
+            FfiConverterTypeRelationType.read(buf)
+        }
+    }
+
+    override fun allocationSize(value: List<RelationType>): ULong {
+        val sizeForLength = 4UL
+        val sizeForItems = value.map { FfiConverterTypeRelationType.allocationSize(it) }.sum()
+        return sizeForLength + sizeForItems
+    }
+
+    override fun write(value: List<RelationType>, buf: ByteBuffer) {
+        buf.putInt(value.size)
+        value.iterator().forEach {
+            FfiConverterTypeRelationType.write(it, buf)
         }
     }
 }
