@@ -1138,8 +1138,8 @@ public object FfiConverterTypeMembershipChangeFilter: FfiConverterRustBuffer<Mem
  * different for this high-level UI API.
  *
  * This is implemented this way so that it's impossible to filter by “group”
- * and by “people” at the same time: these criteria are mutually
- * exclusive by design per filter.
+ * and by “people” at the same time: these criteria are mutually exclusive by
+ * design per filter.
  */
 
 enum class RoomListFilterCategory {
@@ -1552,8 +1552,8 @@ sealed class TimelineEventCondition {
     }
     
     /**
-     * The event is an `m.room.member` event that represents a profile
-     * change (displayname or avatar URL).
+     * The event is an `m.room.member` event that represents a profile change
+     * (displayname or avatar URL).
      */
     object ProfileChange : TimelineEventCondition()
     
@@ -1761,8 +1761,8 @@ public object FfiConverterTypeTimelineEventFilter : FfiConverterRustBuffer<Timel
 
 
 /**
- * Options for controlling the behaviour of [`TimelineFocus::Event`]
- * for threaded events.
+ * Options for controlling the behaviour of [`TimelineFocus::Event`] for
+ * threaded events.
  */
 sealed class TimelineEventFocusThreadMode {
     
@@ -1771,8 +1771,7 @@ sealed class TimelineEventFocusThreadMode {
      *
      * When the focused event is part of a thread, the timeline will be focused
      * on that thread's root. Otherwise, the timeline will treat the target
-     * event itself as the thread root. Threaded events will never be
-     * hidden.
+     * event itself as the thread root. Threaded events will never be hidden.
      */
     object ForceThread : TimelineEventFocusThreadMode()
     
@@ -1780,19 +1779,37 @@ sealed class TimelineEventFocusThreadMode {
     /**
      * Automatically determine if the target event is part of a thread or not.
      *
-     * If the event is part of a thread, the timeline
-     * will be filtered to on-thread events.
+     * If the event is part of a thread, the timeline will be filtered to
+     * on-thread events.
      */
     data class Automatic(
         /**
-         * When the target event is not part of a thread, whether to
-         * hide in-thread replies from the live timeline.
+         * When the target event is not part of a thread, whether to hide
+         * in-thread replies from the live timeline.
          *
          * Has no effect when the target event is part of a thread.
          *
          * This should be set to true when the client can create
          * [`TimelineFocus::Thread`]-focused timelines from the thread roots
          * themselves and doesn't use the [`Self::ForceThread`] mode.
+         */
+        val `hideThreadedEvents`: kotlin.Boolean) : TimelineEventFocusThreadMode()
+        
+    {
+        
+
+        companion object
+    }
+    
+    /**
+     * SC: Stay in the main timeline, even when the target event is part of a
+     * thread. The target event itself is always shown, while other in-thread
+     * replies are shown or hidden according to the flag.
+     */
+    data class ForceMain(
+        /**
+         * Whether to hide in-thread replies (other than the target event) from
+         * the timeline.
          */
         val `hideThreadedEvents`: kotlin.Boolean) : TimelineEventFocusThreadMode()
         
@@ -1822,6 +1839,9 @@ public object FfiConverterTypeTimelineEventFocusThreadMode : FfiConverterRustBuf
             2 -> TimelineEventFocusThreadMode.Automatic(
                 FfiConverterBoolean.read(buf),
                 )
+            3 -> TimelineEventFocusThreadMode.ForceMain(
+                FfiConverterBoolean.read(buf),
+                )
             else -> throw RuntimeException("invalid enum value, something is very wrong!!")
         }
     }
@@ -1840,6 +1860,13 @@ public object FfiConverterTypeTimelineEventFocusThreadMode : FfiConverterRustBuf
                 + FfiConverterBoolean.allocationSize(value.`hideThreadedEvents`)
             )
         }
+        is TimelineEventFocusThreadMode.ForceMain -> {
+            // Add the size for the Int that specifies the variant plus the size needed for all fields
+            (
+                4UL
+                + FfiConverterBoolean.allocationSize(value.`hideThreadedEvents`)
+            )
+        }
     }
 
     override fun write(value: TimelineEventFocusThreadMode, buf: ByteBuffer) {
@@ -1850,6 +1877,11 @@ public object FfiConverterTypeTimelineEventFocusThreadMode : FfiConverterRustBuf
             }
             is TimelineEventFocusThreadMode.Automatic -> {
                 buf.putInt(2)
+                FfiConverterBoolean.write(value.`hideThreadedEvents`, buf)
+                Unit
+            }
+            is TimelineEventFocusThreadMode.ForceMain -> {
+                buf.putInt(3)
                 FfiConverterBoolean.write(value.`hideThreadedEvents`, buf)
                 Unit
             }
